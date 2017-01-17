@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define HWPromiseNetworkFail promise.failObj = @"网络异常";
+
 @class HWPromiseResult;
 @class HWPromise;
 
