@@ -25,10 +25,10 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-    Functional Operators.
+    Functional tools for Objective-C. Include HWRxObserver、HWPromise、HWAnimation.
                    DESC
 
-  s.homepage     = "https://github.com/chunzhiying/HWKit/tree/master/HWFunctionalType"
+  s.homepage     = "https://github.com/chunzhiying"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
