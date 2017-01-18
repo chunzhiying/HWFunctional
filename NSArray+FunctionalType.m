@@ -155,6 +155,32 @@
     };
 }
 
+- (NSArray *(^)(NSUInteger))drop {
+    return ^(NSUInteger count) {
+        if (count >= self.count) {
+            return [NSArray new];
+        }
+        NSMutableArray *result = [NSMutableArray new];
+        for (NSInteger i = count; i < self.count; i++) {
+            [result addObject:[self objectAtIndex:i]];
+        }
+        return (NSArray *)result;
+    };
+}
+
+- (NSArray *(^)(NSUInteger))dropLast {
+    return ^(NSUInteger count) {
+        if (count >= self.count) {
+            return [NSArray new];
+        }
+        NSMutableArray *result = [NSMutableArray new];
+        for (NSInteger i = 0; i < self.count - count; i++) {
+            [result addObject:[self objectAtIndex:i]];
+        }
+        return (NSArray *)result;
+    };
+}
+
 - (NSArray *(^)(forEachType))forEach {
     return ^(forEachType block) {
         if (!self) {
