@@ -20,6 +20,7 @@ typedef id(^mapType)(id element);
 typedef id(^mapWithIndexType)(id element, NSUInteger index);
 typedef id(^flatMapType)(id element);
 typedef id(^reduceType)(id result, id element);
+typedef BOOL(^findType)(id element);
 
 typedef NSNumber *(^compareType)(id obj1, id obj2); //bool
 typedef NSNumber *(^filterType)(id obj1); //bool
@@ -39,8 +40,13 @@ typedef NSComparisonResult(^sortType)(id obj1, id obj2);
 @property (nonatomic, readonly) id(^reduce)(id, reduceType);
 @property (nonatomic, readonly) BOOL(^compare)(compareType);
 
+@property (nonatomic, readonly) id (^find)(findType);
+@property (nonatomic, readonly) BOOL(^contains)(findType);
+
 @property (nonatomic, readonly) id<HWFunctionalType>(^just)(NSUInteger count);
 @property (nonatomic, readonly) id<HWFunctionalType>(^justTail)(NSUInteger count);
+@property (nonatomic, readonly) id<HWFunctionalType>(^drop)(NSUInteger count);
+@property (nonatomic, readonly) id<HWFunctionalType>(^dropLast)(NSUInteger count);
 
 @property (nonatomic, readonly) id<HWFunctionalType>(^forEach)(forEachType);
 @property (nonatomic, readonly) id<HWFunctionalType>(^forEachWithIndex)(forEachWithIndexType);

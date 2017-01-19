@@ -95,6 +95,30 @@
     };
 }
 
+- (id (^)(findType))find {
+    return ^(findType block) {
+        id result = nil;
+        for (id element in self) {
+            if (block(element)) {
+                result = element;
+                break;
+            }
+        }
+        return result;
+    };
+}
+
+- (BOOL (^)(findType))contains {
+    return ^(findType block) {
+        for (id element in self) {
+            if (block(element)) {
+                return YES;
+            }
+        }
+        return NO;
+    };
+}
+
 - (BOOL (^)(compareType block))compare {
     return ^(compareType block) {
         BOOL result = YES;
@@ -204,6 +228,12 @@
             }
             return self;
         }
+    };
+}
+
+- (NSMutableArray *(^)())mutate {
+    return ^{
+        return [[NSMutableArray alloc] initWithArray:self];
     };
 }
 

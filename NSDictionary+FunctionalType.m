@@ -61,5 +61,11 @@
     };
 }
 
+- (NSMutableDictionary *(^)())mutate {
+    return ^{
+        return [[NSMutableDictionary alloc] initWithDictionary:self];
+    };
+}
+
 @end
 

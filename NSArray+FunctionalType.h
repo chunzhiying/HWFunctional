@@ -20,14 +20,18 @@
 @property (nonatomic, readonly) id (^reduce)(id, reduceType);
 @property (nonatomic, readonly) BOOL(^compare)(compareType);
 
+@property (nonatomic, readonly) id (^find)(findType);
+@property (nonatomic, readonly) BOOL(^contains)(findType);
+
 @property (nonatomic, readonly) NSArray *(^just)(NSUInteger count);
 @property (nonatomic, readonly) NSArray *(^justTail)(NSUInteger count);
-
 @property (nonatomic, readonly) NSArray *(^drop)(NSUInteger count);
 @property (nonatomic, readonly) NSArray *(^dropLast)(NSUInteger count);
 
 @property (nonatomic, readonly) NSArray *(^forEach)(forEachType);
 @property (nonatomic, readonly) NSArray *(^forEachWithIndex)(forEachWithIndexType);
+
+@property (nonatomic, readonly) NSMutableArray *(^mutate)();
 
 @end
 

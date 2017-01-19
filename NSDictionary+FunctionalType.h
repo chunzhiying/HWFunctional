@@ -17,4 +17,6 @@
 @property (nonatomic, readonly) NSDictionary *(^filter)(filterType);
 @property (nonatomic, readonly) id (^reduce)(id, reduceType);
 
+@property (nonatomic, readonly) NSMutableDictionary *(^mutate)();
+
 @end
