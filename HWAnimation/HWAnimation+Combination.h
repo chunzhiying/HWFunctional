@@ -10,9 +10,13 @@
 
 #import "HWAnimation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface HWAnimation (Combination)
 
 @property (nonatomic, readonly) HWAnimation *(^frameTo)(CGRect);
 @property (nonatomic, readonly) HWAnimation *(^scaleBounce)(CGFloat, CGFloat, CGFloat, CGFloat); //start, middle, end, duration
 
 @end
+
+NS_ASSUME_NONNULL_END

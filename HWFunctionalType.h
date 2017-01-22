@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #define Interface(class, property) @interface class (FunctionalType_Basic)  property  @end
 #define Implementation(class, method) @implementation class (FunctionalType_Basic)  method  @end
 
@@ -16,14 +18,14 @@ typedef void(^thenType)(id obj);
 typedef void(^forEachType)(id obj);
 typedef void(^forEachWithIndexType)(id obj, NSUInteger index);
 
-typedef id(^mapType)(id element);
-typedef id(^mapWithIndexType)(id element, NSUInteger index);
-typedef id(^flatMapType)(id element);
-typedef id(^reduceType)(id result, id element);
+typedef id _Nonnull (^mapType)(id element);
+typedef id _Nonnull (^mapWithIndexType)(id element, NSUInteger index);
+typedef id _Nonnull (^flatMapType)(id element);
+typedef id _Nonnull (^reduceType)(id result, id element);
 typedef BOOL(^findType)(id element);
 
-typedef NSNumber *(^compareType)(id obj1, id obj2); //bool
-typedef NSNumber *(^filterType)(id obj1); //bool
+typedef NSNumber * _Nonnull (^compareType)(id obj1, id obj2); //bool
+typedef NSNumber * _Nonnull (^filterType)(id obj1); //bool
 typedef NSComparisonResult(^sortType)(id obj1, id obj2);
 
 
@@ -62,5 +64,7 @@ typedef NSComparisonResult(^sortType)(id obj1, id obj2);
 
 Interface(NSObject, IFace_then)
 Implementation(NSObject, Imp_then)
+
+NS_ASSUME_NONNULL_END
 
 

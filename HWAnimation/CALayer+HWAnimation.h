@@ -8,6 +8,8 @@
 
 #import "NSArray+FunctionalType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class HWAnimation;
 
 @interface CALayer (HWAnimation)
@@ -17,3 +19,5 @@
 - (void)removeAllHWAnimations;
 
 @end
+
+NS_ASSUME_NONNULL_END

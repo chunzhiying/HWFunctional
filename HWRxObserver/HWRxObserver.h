@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "HWFunctionalType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class HWRxObserver;
 
 typedef void(^nextBlankType)();
@@ -65,3 +67,5 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *combineLatest;
 
 @end
+
+NS_ASSUME_NONNULL_END

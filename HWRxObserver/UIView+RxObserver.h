@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NSObject+RxObserver.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIView (RxObserver)
 
 @property (nonatomic, readonly) HWRxObserver *rx_tap;
@@ -28,4 +30,4 @@
 
 @end
 
-
+NS_ASSUME_NONNULL_END

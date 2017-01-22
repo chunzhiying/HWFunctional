@@ -10,6 +10,8 @@
 #import "HWFunctionalType.h"
 #import "NSArray+FunctionalType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSDictionary (FunctionalType) <HWFunctionalType>
 
 @property (nonatomic, readonly) NSDictionary *(^map)(mapType);
@@ -20,3 +22,5 @@
 @property (nonatomic, readonly) NSMutableDictionary *(^mutate)();
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "HWRxObserver.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSObject (RxObserver_Base)
 
 @property (nonatomic, strong) NSMutableArray<HWRxObserver *> *rx_observers;
@@ -26,3 +28,5 @@
 @property (nonatomic, readonly) void(^rx_repost)(NSString *keyPath); //repost with lastest data, prepare for property without KVC
 
 @end
+
+NS_ASSUME_NONNULL_END

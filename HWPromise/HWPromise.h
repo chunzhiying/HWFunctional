@@ -10,13 +10,15 @@
 
 #define HWPromiseNetworkFail promise.failObj = @"网络异常";
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class HWPromiseResult;
 @class HWPromise;
 
 typedef void(^finishType)(id obj);
 typedef void(^alwaysType)(HWPromiseResult *result);
 typedef void(^completeType)(NSArray<HWPromiseResult *> *results);
-typedef HWPromise *(^nextFinishedType)(id obj);
+typedef HWPromise * _Nonnull (^nextFinishedType)(id obj);
 
 
 @interface HWPromise<__covariant SuccessT, __covariant FailT> : NSObject
@@ -57,3 +59,5 @@ typedef HWPromise *(^nextFinishedType)(id obj);
 @property (nonatomic, readonly) HWPromise *promise;
 
 @end
+
+NS_ASSUME_NONNULL_END

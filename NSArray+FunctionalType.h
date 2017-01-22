@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "HWFunctionalType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSArray (FunctionalType) <HWFunctionalType>
 
 @property (nonatomic, readonly) NSArray *(^map)(mapType);
@@ -40,4 +42,6 @@
 + (instancetype)allocWithElementCount:(NSUInteger)elementCount;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

@@ -12,6 +12,8 @@
 
 #define HWAnimInstance [HWAnimation new]
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void(^FinishedBlock)(BOOL);
 typedef void(^StopBlock)();
 
@@ -101,3 +103,4 @@ typedef NS_ENUM(NSUInteger, HWTimingFunctionType) {
 
 @end
 
+NS_ASSUME_NONNULL_END
