@@ -11,8 +11,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define Interface(class, property) @interface class (FunctionalType_Basic)  property  @end
-#define Implementation(class, method) @implementation class (FunctionalType_Basic)  method  @end
+#define HW_CONECT(x, y)     x, y
+#define HW_MACROCAT(x, y)   x##y
+
+#define HW_APPEND_0(x)      x * HW_MACROCAT($, 0)
+#define HW_APPEND_1(x)      x * HW_MACROCAT($, 1)
+#define HW_APPEND_2(x)      x * HW_MACROCAT($, 2)
+#define HW_APPEND_3(x)      x * HW_MACROCAT($, 3)
+
+#define HW_PARAMETER_1(a)               HW_APPEND_0(a)
+#define HW_PARAMETER_2(a, b)            HW_CONECT(HW_PARAMETER_1(a), HW_APPEND_1(b))
+#define HW_PARAMETER_3(a, b, c)         HW_CONECT(HW_PARAMETER_2(a, b), HW_APPEND_2(c))
+#define HW_PARAMETER_4(a, b, c, d)      HW_CONECT(HW_PARAMETER_3(a, b, c), HW_APPEND_3(d))
+
 
 typedef void(^thenType)(id obj);
 typedef void(^forEachType)(id obj);
@@ -27,7 +38,6 @@ typedef BOOL(^findType)(id element);
 typedef NSNumber * _Nonnull (^compareType)(id obj1, id obj2); //bool
 typedef NSNumber * _Nonnull (^filterType)(id obj1); //bool
 typedef NSComparisonResult(^sortType)(id obj1, id obj2);
-
 
 
 @protocol HWFunctionalType <NSObject>
@@ -55,12 +65,14 @@ typedef NSComparisonResult(^sortType)(id obj1, id obj2);
 
 @end
 
+#define Interface(class, property) @interface class (FunctionalType_Basic)  property  @end
+#define Implementation(class, method) @implementation class (FunctionalType_Basic)  method  @end
+
 #define IFace_then \
 @property (nonatomic, readonly) id(^then)(thenType);
 
 #define Imp_then \
 - (id(^)(thenType block))then { return ^(thenType block) { block(self); return self;}; }
-
 
 Interface(NSObject, IFace_then)
 Implementation(NSObject, Imp_then)
