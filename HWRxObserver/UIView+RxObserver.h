@@ -24,10 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface UIResponder (RxObserver_dealloc)
-
-@property (nonatomic, readonly) HWRxObserver *rx_dealloc;
-
-@end
+//@interface UIResponder (RxObserver_dealloc)
+//
+//@property (nonatomic, readonly) HWRxObserver *rx_dealloc;
+//
+//@end
 
 NS_ASSUME_NONNULL_END
