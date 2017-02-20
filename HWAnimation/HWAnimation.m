@@ -10,9 +10,6 @@
 #import "NSArray+FunctionalType.h"
 #import "CALayer+HWAnimation.h"
 
-#define SafeBlock(atBlock, ...) \
-    if(atBlock) { atBlock(__VA_ARGS__); }
-
 #define SeparateSymbol @"_"
 
 @interface HWAnimation () <CAAnimationDelegate>

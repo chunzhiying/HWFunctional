@@ -6,7 +6,7 @@
 //  Copyright © 2016年 YY. All rights reserved.
 //
 
-#define SafeBlock(atBlock, ...) if(atBlock) { atBlock(__VA_ARGS__); }
+
 
 #import "HWPromise.h"
 #import "NSArray+FunctionalType.h"

@@ -6,16 +6,6 @@
 //  Copyright © 2016年 YY. All rights reserved.
 //
 
-#define weak(object) \
-__weak __typeof(object) weak_##object = object;
-
-#define strong(object) \
-if (!weak_##object) { return; } \
-__strong __typeof(weak_##object) strong_##object = weak_##object;
-
-#define SafeBlock(atBlock, ...) \
-if(atBlock) { atBlock(__VA_ARGS__); }
-
 #import "HWRxObserver.h"
 #import <objc/runtime.h>
 #import "NSArray+FunctionalType.h"
@@ -194,10 +184,10 @@ if(atBlock) { atBlock(__VA_ARGS__); }
 
 - (HWRxObserver *(^)(id object, NSString *keyPath))bindTo {
     return ^(id object, NSString *keyPath) {
-        weak(object)
+        Weakify(object)
         self.subscribe(^(id result) {
-            strong(object)
-            [strong_object setValue:result forKey:keyPath];
+            Strongify(object)
+            [object setValue:result forKey:keyPath];
         });
         return self;
     };
@@ -246,10 +236,10 @@ if(atBlock) { atBlock(__VA_ARGS__); }
 
 - (HWRxObserver *(^)(HWRxObserver *))takeUntil {
     return ^(HWRxObserver *another) {
-        weak(self)
+        Weakify(self)
         another.subscribe(^(id data) {
-            strong(self)
-            strong_self.disconnect();
+            Strongify(self)
+            self.disconnect();
         });
         return self;
     };
