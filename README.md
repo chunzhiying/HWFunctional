@@ -20,11 +20,13 @@
 ### Cocoapods 
 
 #### 使用
-```pod 'HWFunctional', '= 0.1.2'```
+```pod 'HWFunctional', '= 0.2.0'```
 
 
 #### 版本说明
 **```0.0.2```**：```包含NSArray&NSDictionary类别，HWRxObserver，HWAnimation，HWPromise等基本功能。```
 
 **```0.1.0```**：```添加HWEnum。``` 
+
+**```0.2.0```**：```添加HWMacro，提供常用宏，以及Parameter的便捷写法。```
 
