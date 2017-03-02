@@ -20,7 +20,7 @@
 ### Cocoapods 
 
 #### 使用
-```pod 'HWFunctional', '= 0.2.0'```
+```pod 'HWFunctional', '= 0.2.1'```
 
 
 #### 版本说明
@@ -28,5 +28,5 @@
 
 **```0.1.0```**：```添加HWEnum。``` 
 
-**```0.2.0```**：```添加HWMacro，提供常用宏，以及Parameter的便捷写法。```
+**```0.2.1```**：```添加HWMacro、HWTypeDef，提供常用宏，以及Parameter的便捷写法。```
 
