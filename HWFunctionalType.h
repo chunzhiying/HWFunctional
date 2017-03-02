@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HWMacro.h"
 #import <UIKit/UIKit.h>
+#import "HWMacro.h"
+#import "HWTypeDef.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

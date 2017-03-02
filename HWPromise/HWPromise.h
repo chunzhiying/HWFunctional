@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HWTypeDef.h"
 
 #define HWPromiseNetworkFail promise.failObj = @"网络异常";
 
