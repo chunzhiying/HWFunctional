@@ -23,7 +23,8 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, weak) NSObject *target;
 @property (nonatomic, strong) NSString *disposer;
 @property (nonatomic, strong) NSString *keyPath;
-@property (nonatomic, assign) SEL tapAction;
+@property (nonatomic) SEL tapAction;
+
 
 - (void)registeredToObserve:(NSObject *)object;
 

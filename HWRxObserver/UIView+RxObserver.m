@@ -16,10 +16,8 @@
 - (void)addRxObserver:(HWRxObserver *)observer {
     if ([observer.keyPath isEqualToString:@"RxObserver_tap"]) {
         [self addGestureObserver:observer];
-        [self.rx_observers addObject:observer];
-    } else {
-        [super addRxObserver:observer];
     }
+    [super addRxObserver:observer];
 }
 
 - (void)addGestureObserver:(HWRxObserver *)observer {

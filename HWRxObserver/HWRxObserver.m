@@ -12,9 +12,11 @@
 #import "NSObject+RxObserver.h"
 
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
+    HWRxObserverType_UnOwned, // created during Operating. AotuReleased when block over.
     HWRxObserverType_KVO,
     HWRxObserverType_Notification,
-    HWRxObserverType_UnKonwn
+    HWRxObserverType_Special, //RxObserver_dealloc、RxObserver_tap
+    HWRxObserverType_UnKonwn // no such property, observe failed
 };
 
 @interface HWRxObserver ()
@@ -130,16 +132,25 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     
     _type = HWRxObserverType_UnKonwn;
     
+    if ([_keyPath isEqualToString:@"RxObserver_dealloc"]
+        || [_keyPath isEqualToString:@"RxObserver_tap"])
+    {
+        _type = HWRxObserverType_Special;
+        return;
+    }
+    
     if ([object isKindOfClass:[NSNotificationCenter class]]) {
         _type = HWRxObserverType_Notification;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNofication:)
                                                      name:self.keyPath object:nil];
+        return;
     }
     
     if (class_getProperty([object class], [self.keyPath cStringUsingEncoding:NSASCIIStringEncoding])) {
         _type = HWRxObserverType_KVO;
         [object addObserver:self forKeyPath:self.keyPath
                     options:NSKeyValueObservingOptionNew context:NULL];
+        return;
     }
 }
 
