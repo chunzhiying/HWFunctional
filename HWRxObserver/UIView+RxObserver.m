@@ -76,34 +76,3 @@
 }
 
 @end
-
-
-//@implementation UIResponder (RxObserver_dealloc)
-//
-//- (HWRxObserver *)rx_dealloc {
-//    return self.Rx(@"RxObserver_dealloc");
-//}
-//
-//#pragma mark - Method Swizzling
-//+ (void)load {
-//    Method originalMethod = class_getInstanceMethod([self class], NSSelectorFromString(@"dealloc"));
-//    Method swizzledMethod = class_getInstanceMethod([self class], @selector(RxObserver_dealloc));
-//    method_exchangeImplementations(originalMethod, swizzledMethod);
-//}
-//
-//- (void)RxObserver_dealloc {
-//    
-//    if (![self isKindOfClass:[UIView class]] && ![self isKindOfClass:[UIViewController class]] ) {
-//        return;
-//    }
-//    if (self.rx_observers.count != 0) {
-//        self.rx_observers.forEach(^(HWRxObserver *observer) {
-//            if ([observer.keyPath isEqualToString:@"RxObserver_dealloc"]) {
-//                [observer setValue:@"RxObserver_dealloc" forKey:@"rxObj"];
-//            }
-//        });
-//    }
-//    [self RxObserver_dealloc];
-//}
-//
-//@end

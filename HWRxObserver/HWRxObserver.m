@@ -9,9 +9,17 @@
 #import "HWRxObserver.h"
 #import <objc/runtime.h>
 #import "NSArray+FunctionalType.h"
+#import "NSObject+RxObserver.h"
+
+typedef NS_ENUM(NSUInteger, HWRxObserverType) {
+    HWRxObserverType_KVO,
+    HWRxObserverType_Notification,
+    HWRxObserverType_UnKonwn
+};
 
 @interface HWRxObserver ()
 {
+    HWRxObserverType _type;
     BOOL _connect;
     
     NSObject *_latestData;
@@ -48,7 +56,7 @@
 
 
 - (void)dealloc {
-    
+
 }
 
 - (void)onTap {
@@ -119,12 +127,17 @@
 
 #pragma mark - Register
 - (void)registeredToObserve:(NSObject *)object {
+    
+    _type = HWRxObserverType_UnKonwn;
+    
     if ([object isKindOfClass:[NSNotificationCenter class]]) {
+        _type = HWRxObserverType_Notification;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNofication:)
                                                      name:self.keyPath object:nil];
     }
     
     if (class_getProperty([object class], [self.keyPath cStringUsingEncoding:NSASCIIStringEncoding])) {
+        _type = HWRxObserverType_KVO;
         [object addObserver:self forKeyPath:self.keyPath
                     options:NSKeyValueObservingOptionNew context:NULL];
     }
@@ -196,6 +209,11 @@
 - (HWRxObserver *(^)(NSObject *))disposeBy {
     return ^(NSObject *obj) {
         self.disposer = [NSString stringWithFormat:@"%p", obj];
+        
+        if (!obj.rx_delegateTo_disposers) {
+            obj.rx_delegateTo_disposers = [NSMutableArray new];
+        }
+        [obj.rx_delegateTo_disposers addObject:_target];
         return self;
     };
 }

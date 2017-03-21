@@ -33,6 +33,10 @@
 }
 
 - (void)executeDisposalBy:(NSObject *)disposer {
+    
+    if (self.rx_observers.count == 0) {
+        return;
+    }
     self.rx_observers.filter(^(HWRxObserver *observer) {
         return @([observer.disposer isEqualToString:[NSString stringWithFormat:@"%p", disposer]]);
     }).forEach(^(HWRxObserver *observer) {
@@ -47,6 +51,14 @@
 
 - (NSMutableArray<HWRxObserver *> *)rx_observers {
     return objc_getAssociatedObject(self, @selector(rx_observers));
+}
+
+- (void)setRx_delegateTo_disposers:(NSMutableArray<NSObject *> *)rx_disposers {
+    objc_setAssociatedObject(self, @selector(rx_delegateTo_disposers), rx_disposers, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSMutableArray<NSObject *> *)rx_delegateTo_disposers {
+    return objc_getAssociatedObject(self, @selector(rx_delegateTo_disposers));
 }
 
 @end
@@ -73,4 +85,58 @@
     };
 }
 
+- (HWRxObserver *)rx_dealloc {
+    return self.Rx(@"RxObserver_dealloc");
+}
+
 @end
+
+@implementation NSObject (RxObserver_dealloc)
+
++ (void)load {
+    
+    SEL originalSelector = NSSelectorFromString(@"dealloc");
+    SEL swizzledSelector = @selector(RxObserver_dealloc);
+    
+    Method originalMethod = class_getInstanceMethod([self class], originalSelector);
+    Method swizzledMethod = class_getInstanceMethod([self class], swizzledSelector);
+    
+    BOOL didAddMethod =
+    class_addMethod([self class],
+                    originalSelector,
+                    method_getImplementation(swizzledMethod),
+                    method_getTypeEncoding(swizzledMethod));
+    
+    if (didAddMethod) {
+        class_replaceMethod([self class],
+                            swizzledSelector,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+
+}
+
+- (void)RxObserver_dealloc {
+    
+    if (self.rx_observers.count != 0) {
+        self.rx_observers.forEach(^(HWRxObserver *observer) {
+            if ([observer.keyPath isEqualToString:@"RxObserver_dealloc"]) {
+                [observer setValue:@"RxObserver_dealloc" forKey:@"rxObj"];
+            }
+        });
+        [self removeAllRxObserver];
+    }
+    
+    if (self.rx_delegateTo_disposers.count != 0) {
+        self.rx_delegateTo_disposers.forEach(HW_BLOCK(NSObject *) {
+            [$0 executeDisposalBy:self];
+        });
+    }
+    
+    [self RxObserver_dealloc];
+}
+
+@end
+
