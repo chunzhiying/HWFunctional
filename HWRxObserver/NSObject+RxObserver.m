@@ -10,8 +10,7 @@
 #import "NSArray+FunctionalType.h"
 #import <objc/runtime.h>
 
-#define RxLock [self rx_lock]
-#define RxLockSet if (!RxLock) {[self setRx_lock:[NSLock new]];}
+#define RxLockSet if (!objc_getAssociatedObject(self, @selector(rx_lock))) {[self setRx_lock:[NSRecursiveLock new]];}
 
 @implementation NSObject (RxObserver_Base)
 
@@ -34,15 +33,17 @@
 }
 
 - (void)removeAllRxObserver {
+    [RxLock lock];
     self.rx_observers.map(^(HWRxObserver *observer) {
         return observer;
     }).forEach(^(HWRxObserver *observer) {
         [self removeRxObserver:observer];
     });
+    [RxLock unlock];
 }
 
 - (void)executeDisposalBy:(NSObject *)disposer {
-    
+    [RxLock lock];
     if (self.rx_observers.count == 0) {
         return;
     }
@@ -51,14 +52,15 @@
     }).forEach(^(HWRxObserver *observer) {
         [self removeRxObserver:observer];
     });
+    [RxLock unlock];
 }
 
 #pragma mark - Lock
-- (void)setRx_lock:(NSLock *)lock {
+- (void)setRx_lock:(NSRecursiveLock *)lock {
     objc_setAssociatedObject(self, @selector(rx_lock), lock, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSLock *)rx_lock {
+- (NSRecursiveLock *)rx_lock { RxLockSet
     return objc_getAssociatedObject(self, @selector(rx_lock));
 }
 
@@ -85,7 +87,6 @@
 
 - (HWRxObserver *(^)(NSString *))Rx {
     return ^(NSString *keyPath) {
-        RxLockSet
         if (!self.rx_observers) {
             self.rx_observers = [NSMutableArray new];
         }

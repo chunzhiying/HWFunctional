@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "HWRxObserver.h"
 
+#define RxLock [self rx_lock]
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (RxObserver_Base)
 
+@property (nonatomic, strong, readonly) NSRecursiveLock *rx_lock;
 @property (nonatomic, strong) NSMutableArray<HWRxObserver *> *rx_observers;
 @property (nonatomic, strong) NSMutableArray<NSObject *> *rx_delegateTo_disposers; //when self dealloc, [obj executeDisposalBy:self]
 

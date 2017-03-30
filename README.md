@@ -20,7 +20,7 @@
 ### Cocoapods 
 
 #### 使用
-```pod 'HWFunctional', '= 0.3.2'```
+```pod 'HWFunctional', '= 0.3.3'```
 
 
 #### 版本说明

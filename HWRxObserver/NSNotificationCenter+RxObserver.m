@@ -13,18 +13,22 @@
 
 - (void (^)(NSString *))rx_repost {
     return ^(NSString *notifyName) {
+        [RxLock lock];
         self.rx_observers.forEach(^(HWRxObserver *observer){
             if ([observer.keyPath isEqualToString:notifyName]) {
                 [self postNotificationName:notifyName object:nil userInfo:[observer valueForKey:@"_latestData"]];
                 return;
             }
         });
+        [RxLock unlock];
     };
 }
 
 - (void)removeRxObserver:(HWRxObserver *)observer {
+    [RxLock lock];
     [self removeObserver:observer];
     [self.rx_observers removeObject:observer];
+    [RxLock unlock];
 }
 
 @end
