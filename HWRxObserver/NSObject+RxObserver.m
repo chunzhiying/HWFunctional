@@ -10,18 +10,27 @@
 #import "NSArray+FunctionalType.h"
 #import <objc/runtime.h>
 
+#define RxLock [self rx_lock]
+#define RxLockSet if (!RxLock) {[self setRx_lock:[NSLock new]];}
+
 @implementation NSObject (RxObserver_Base)
 
 - (void)addRxObserver:(HWRxObserver *)observer {
     [observer registeredToObserve:self];
+    [RxLock lock];
     [self.rx_observers addObject:observer];
+    [RxLock unlock];
 }
 
 - (void)removeRxObserver:(HWRxObserver *)observer {
-    if (class_getProperty([self class], [observer.keyPath cStringUsingEncoding:NSASCIIStringEncoding])) {
-        [self removeObserver:observer forKeyPath:observer.keyPath];
+    [RxLock lock];
+    if ([self.rx_observers containsObject:observer]) {
+        if (class_getProperty([self class], [observer.keyPath cStringUsingEncoding:NSASCIIStringEncoding])) {
+            [self removeObserver:observer forKeyPath:observer.keyPath];
+        }
+        [self.rx_observers removeObject:observer];
     }
-    [self.rx_observers removeObject:observer];
+    [RxLock unlock];
 }
 
 - (void)removeAllRxObserver {
@@ -42,6 +51,15 @@
     }).forEach(^(HWRxObserver *observer) {
         [self removeRxObserver:observer];
     });
+}
+
+#pragma mark - Lock
+- (void)setRx_lock:(NSLock *)lock {
+    objc_setAssociatedObject(self, @selector(rx_lock), lock, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSLock *)rx_lock {
+    return objc_getAssociatedObject(self, @selector(rx_lock));
 }
 
 #pragma mark - Observers
@@ -67,6 +85,7 @@
 
 - (HWRxObserver *(^)(NSString *))Rx {
     return ^(NSString *keyPath) {
+        RxLockSet
         if (!self.rx_observers) {
             self.rx_observers = [NSMutableArray new];
         }
@@ -133,6 +152,7 @@
         self.rx_delegateTo_disposers.forEach(HW_BLOCK(NSObject *) {
             [$0 executeDisposalBy:self];
         });
+        [self.rx_delegateTo_disposers removeAllObjects];
     }
     
     [self RxObserver_dealloc];
