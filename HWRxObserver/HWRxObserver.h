@@ -43,7 +43,7 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^throttle)(CGFloat value); // after value seconds, then received.
 @property (nonatomic, readonly) HWRxObserver *(^startWith)(id object);
 
-@property (nonatomic, readonly) HWRxObserver *(^behavior)(); // receive data when connect()
+@property (nonatomic, readonly) HWRxObserver *(^behavior)(); // receive data until connect()
 @property (nonatomic, readonly) HWRxObserver *(^connect)();
 @property (nonatomic, readonly) HWRxObserver *(^disconnect)();
 
