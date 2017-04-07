@@ -247,8 +247,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     return ^() {
         if (!_connect) {
             _connect = YES;
-            [self postAllWith:_startWithData];
-            [self postAllWith:_latestData];
+            !_startWithData ?: [self postAllWith:_startWithData];
+            !_latestData ?: [self postAllWith:_latestData];
         }
         _connect = YES;
         return self;

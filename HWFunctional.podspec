@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/chunzhiying/HWFunctional.git", :tag => "#{s.version}" }
-  s.source_files  = "**/*.{h,m}"
+  s.source_files  = "src/**/*.{h,m}"
   s.frameworks = "UIKit", "QuartzCore", "Foundation"
 
 
