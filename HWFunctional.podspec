@@ -23,8 +23,8 @@ Pod::Spec.new do |s|
   s.author       = { "chunzhiying" => "chun.zhiying.ggl@gmail.com" }
   
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/chunzhiying/HWFunctional.git", :tag => "#{s.version}" }
-  s.source_files  = "NAME_OF_POD/src/**/*.{h,m}"
+  s.source       = { :git => "https://github.com/chunzhiying/HWFunctional.git", :tag => "#{s.version}", :commit => "e0a5be94d7f3517f93c46ac4d65c06bdcdd8c848" }
+  s.source_files  = "Classes/**/*.{h,m}"
   s.frameworks = "UIKit", "QuartzCore", "Foundation"
 
 
