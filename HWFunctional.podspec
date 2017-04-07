@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/chunzhiying"
-  # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
   s.license      = "MIT"
 
@@ -25,7 +24,7 @@ Pod::Spec.new do |s|
   
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/chunzhiying/HWFunctional.git", :tag => "#{s.version}" }
-  s.source_files  = "src/**/*.{h,m}"
+  s.source_files  = "NAME_OF_POD/src/**/*.{h,m}"
   s.frameworks = "UIKit", "QuartzCore", "Foundation"
 
 
