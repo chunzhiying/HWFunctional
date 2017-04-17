@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Aggregate.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>HWFunctional.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>HWRxObserverDemo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +23,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>98743AF11DDC53B3005B394F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>98841B061EA4C99C00A0556F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>98841B0F1EA4C9CF00A0556F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -1,0 +1,6 @@
+framework module HWFunctional {
+  umbrella header "HWFunctional.h"
+
+  export *
+  module * { export * }
+}

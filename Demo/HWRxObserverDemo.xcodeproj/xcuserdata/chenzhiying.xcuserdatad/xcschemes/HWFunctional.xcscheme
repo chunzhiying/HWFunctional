@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98743AF11DDC53B3005B394F"
-               BuildableName = "HWRxObserverDemo.app"
-               BlueprintName = "HWRxObserverDemo"
+               BlueprintIdentifier = "98841B0F1EA4C9CF00A0556F"
+               BuildableName = "HWFunctional.framework"
+               BlueprintName = "HWFunctional"
                ReferencedContainer = "container:HWRxObserverDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98743AF11DDC53B3005B394F"
-            BuildableName = "HWRxObserverDemo.app"
-            BlueprintName = "HWRxObserverDemo"
-            ReferencedContainer = "container:HWRxObserverDemo.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98743AF11DDC53B3005B394F"
-            BuildableName = "HWRxObserverDemo.app"
-            BlueprintName = "HWRxObserverDemo"
+            BlueprintIdentifier = "98841B0F1EA4C9CF00A0556F"
+            BuildableName = "HWFunctional.framework"
+            BlueprintName = "HWFunctional"
             ReferencedContainer = "container:HWRxObserverDemo.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98743AF11DDC53B3005B394F"
-            BuildableName = "HWRxObserverDemo.app"
-            BlueprintName = "HWRxObserverDemo"
+            BlueprintIdentifier = "98841B0F1EA4C9CF00A0556F"
+            BuildableName = "HWFunctional.framework"
+            BlueprintName = "HWFunctional"
             ReferencedContainer = "container:HWRxObserverDemo.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
