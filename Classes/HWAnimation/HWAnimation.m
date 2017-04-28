@@ -141,6 +141,13 @@
     };
 }
 
+- (HWAnimation *(^)(BOOL))autoreverses {
+    return ^(BOOL autoreverses) {
+        self.animation.autoreverses = autoreverses;
+        return self;
+    };
+}
+
 #pragma mark - Auto Set
 - (void)shouldAutoSet {
     switch (_type) {
