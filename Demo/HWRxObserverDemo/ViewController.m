@@ -32,7 +32,7 @@
     });
     
     _testBtn.rx_tap.response(^{
-        HWAnimInstance.scaleBounce(0.1, 2, 1, 1).addTo(_testBtn.layer).run();
+        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
     });
     
 //        @[[self after:1 result:YES flag:@"一"],

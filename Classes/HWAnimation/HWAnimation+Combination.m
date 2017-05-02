@@ -22,16 +22,22 @@
     };
 }
 
-- (HWAnimation *(^)(CGFloat, CGFloat, CGFloat, CGFloat))scaleBounce {
-    return ^(CGFloat start, CGFloat middle, CGFloat end, CGFloat duration) {
+- (HWAnimation *(^)(CGFloat, CGFloat, CGFloat, CGFloat, CGFloat))scale {
+    return ^(CGFloat start, CGFloat middle, CGFloat end, CGFloat startDuration, CGFloat middleDuration) {
         return self
         .animateGroup()
         .animations(@[HWAnimInstance.animate(HW_Animation_Basic, @"transform.scale")
-                        .from(@(start)).to(@(middle)).duration(duration),
+                      .from(@(start)).to(@(middle)).duration(startDuration),
                       HWAnimInstance.animate(HW_Animation_Basic, @"transform.scale")
-                        .from(@(middle)).to(@(end)).duration(duration).beginTime(duration)])
+                      .from(@(middle)).to(@(end)).duration(middleDuration).beginTime(startDuration)])
         .fillMode(HW_FillMode_Retain)
-        .duration(2 * duration);
+        .duration(startDuration + middleDuration);
+    };
+}
+
+- (HWAnimation *(^)(CGFloat, CGFloat, CGFloat, CGFloat))scaleBounce {
+    return ^(CGFloat start, CGFloat middle, CGFloat end, CGFloat duration) {
+        return self.scale(start, middle, end, duration, duration);
     };
 }
 
