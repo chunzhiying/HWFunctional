@@ -28,45 +28,20 @@
 		98743B021DDC53B3005B394F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98743B011DDC53B3005B394F /* Assets.xcassets */; };
 		98743B051DDC53B3005B394F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98743B031DDC53B3005B394F /* LaunchScreen.storyboard */; };
 		98743B271DDC607D005B394F /* SViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98743B261DDC607D005B394F /* SViewController.m */; };
-		98841AFB1EA4C96900A0556F /* CALayer+HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE01EA4C96900A0556F /* CALayer+HWAnimation.m */; };
-		98841AFC1EA4C96900A0556F /* HWAnimation+Combination.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE21EA4C96900A0556F /* HWAnimation+Combination.m */; };
-		98841AFD1EA4C96900A0556F /* HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE41EA4C96900A0556F /* HWAnimation.m */; };
-		98841AFE1EA4C96900A0556F /* HWEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE71EA4C96900A0556F /* HWEnum.m */; };
-		98841AFF1EA4C96900A0556F /* HWPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AEC1EA4C96900A0556F /* HWPromise.m */; };
-		98841B001EA4C96900A0556F /* HWRxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AEF1EA4C96900A0556F /* HWRxObserver.m */; };
-		98841B011EA4C96900A0556F /* NSNotificationCenter+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF11EA4C96900A0556F /* NSNotificationCenter+RxObserver.m */; };
-		98841B021EA4C96900A0556F /* NSObject+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF31EA4C96900A0556F /* NSObject+RxObserver.m */; };
-		98841B031EA4C96900A0556F /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF51EA4C96900A0556F /* UIView+RxObserver.m */; };
-		98841B041EA4C96900A0556F /* NSArray+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF81EA4C96900A0556F /* NSArray+FunctionalType.m */; };
-		98841B051EA4C96900A0556F /* NSDictionary+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AFA1EA4C96900A0556F /* NSDictionary+FunctionalType.m */; };
 		98841B141EA4C9CF00A0556F /* HWFunctional.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841B121EA4C9CF00A0556F /* HWFunctional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98841B171EA4C9CF00A0556F /* HWFunctional.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98841B101EA4C9CF00A0556F /* HWFunctional.framework */; };
 		98841B181EA4C9CF00A0556F /* HWFunctional.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 98841B101EA4C9CF00A0556F /* HWFunctional.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		98841B1D1EA4CA7E00A0556F /* CALayer+HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE01EA4C96900A0556F /* CALayer+HWAnimation.m */; };
-		98841B1E1EA4CA7E00A0556F /* HWAnimation+Combination.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE21EA4C96900A0556F /* HWAnimation+Combination.m */; };
-		98841B1F1EA4CA7E00A0556F /* HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE41EA4C96900A0556F /* HWAnimation.m */; };
-		98841B201EA4CA7E00A0556F /* HWEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AE71EA4C96900A0556F /* HWEnum.m */; };
-		98841B211EA4CA7E00A0556F /* HWPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AEC1EA4C96900A0556F /* HWPromise.m */; };
-		98841B221EA4CA7E00A0556F /* HWRxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AEF1EA4C96900A0556F /* HWRxObserver.m */; };
-		98841B231EA4CA7E00A0556F /* NSNotificationCenter+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF11EA4C96900A0556F /* NSNotificationCenter+RxObserver.m */; };
-		98841B241EA4CA7E00A0556F /* NSObject+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF31EA4C96900A0556F /* NSObject+RxObserver.m */; };
-		98841B251EA4CA7E00A0556F /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF51EA4C96900A0556F /* UIView+RxObserver.m */; };
-		98841B261EA4CA7E00A0556F /* NSArray+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AF81EA4C96900A0556F /* NSArray+FunctionalType.m */; };
-		98841B271EA4CA7E00A0556F /* NSDictionary+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98841AFA1EA4C96900A0556F /* NSDictionary+FunctionalType.m */; };
-		98841B281EA4CA9500A0556F /* CALayer+HWAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841ADF1EA4C96900A0556F /* CALayer+HWAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B291EA4CA9500A0556F /* HWAnimation+Combination.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AE11EA4C96900A0556F /* HWAnimation+Combination.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2A1EA4CA9500A0556F /* HWAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AE31EA4C96900A0556F /* HWAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2B1EA4CA9500A0556F /* HWEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AE61EA4C96900A0556F /* HWEnum.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2C1EA4CA9500A0556F /* HWFunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AE81EA4C96900A0556F /* HWFunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2D1EA4CA9500A0556F /* HWMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AE91EA4C96900A0556F /* HWMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2E1EA4CA9500A0556F /* HWPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AEB1EA4C96900A0556F /* HWPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B2F1EA4CA9500A0556F /* HWRxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AEE1EA4C96900A0556F /* HWRxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B301EA4CA9500A0556F /* NSNotificationCenter+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF01EA4C96900A0556F /* NSNotificationCenter+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B311EA4CA9500A0556F /* NSObject+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF21EA4C96900A0556F /* NSObject+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B321EA4CA9500A0556F /* UIView+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF41EA4C96900A0556F /* UIView+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B331EA4CA9500A0556F /* HWTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF61EA4C96900A0556F /* HWTypeDef.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B341EA4CA9500A0556F /* NSArray+FunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF71EA4C96900A0556F /* NSArray+FunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98841B351EA4CA9500A0556F /* NSDictionary+FunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841AF91EA4C96900A0556F /* NSDictionary+FunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98948CD41EB825ED006FBD83 /* CALayer+HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CB91EB825ED006FBD83 /* CALayer+HWAnimation.m */; };
+		98948CD51EB825ED006FBD83 /* HWAnimation+Combination.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CBB1EB825ED006FBD83 /* HWAnimation+Combination.m */; };
+		98948CD61EB825ED006FBD83 /* HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CBD1EB825ED006FBD83 /* HWAnimation.m */; };
+		98948CD71EB825ED006FBD83 /* HWEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC01EB825ED006FBD83 /* HWEnum.m */; };
+		98948CD81EB825ED006FBD83 /* HWPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC51EB825ED006FBD83 /* HWPromise.m */; };
+		98948CD91EB825ED006FBD83 /* HWRxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC81EB825ED006FBD83 /* HWRxObserver.m */; };
+		98948CDA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m */; };
+		98948CDB1EB825ED006FBD83 /* NSObject+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCC1EB825ED006FBD83 /* NSObject+RxObserver.m */; };
+		98948CDC1EB825ED006FBD83 /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCE1EB825ED006FBD83 /* UIView+RxObserver.m */; };
+		98948CDD1EB825ED006FBD83 /* NSArray+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */; };
+		98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD31EB825ED006FBD83 /* NSDictionary+FunctionalType.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,34 +81,34 @@
 		98743B061DDC53B3005B394F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98743B251DDC607D005B394F /* SViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SViewController.h; sourceTree = "<group>"; };
 		98743B261DDC607D005B394F /* SViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SViewController.m; sourceTree = "<group>"; };
-		98841ADF1EA4C96900A0556F /* CALayer+HWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+HWAnimation.h"; sourceTree = "<group>"; };
-		98841AE01EA4C96900A0556F /* CALayer+HWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+HWAnimation.m"; sourceTree = "<group>"; };
-		98841AE11EA4C96900A0556F /* HWAnimation+Combination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HWAnimation+Combination.h"; sourceTree = "<group>"; };
-		98841AE21EA4C96900A0556F /* HWAnimation+Combination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HWAnimation+Combination.m"; sourceTree = "<group>"; };
-		98841AE31EA4C96900A0556F /* HWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWAnimation.h; sourceTree = "<group>"; };
-		98841AE41EA4C96900A0556F /* HWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWAnimation.m; sourceTree = "<group>"; };
-		98841AE61EA4C96900A0556F /* HWEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWEnum.h; sourceTree = "<group>"; };
-		98841AE71EA4C96900A0556F /* HWEnum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWEnum.m; sourceTree = "<group>"; };
-		98841AE81EA4C96900A0556F /* HWFunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWFunctionalType.h; sourceTree = "<group>"; };
-		98841AE91EA4C96900A0556F /* HWMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWMacro.h; sourceTree = "<group>"; };
-		98841AEB1EA4C96900A0556F /* HWPromise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWPromise.h; sourceTree = "<group>"; };
-		98841AEC1EA4C96900A0556F /* HWPromise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWPromise.m; sourceTree = "<group>"; };
-		98841AEE1EA4C96900A0556F /* HWRxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWRxObserver.h; sourceTree = "<group>"; };
-		98841AEF1EA4C96900A0556F /* HWRxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWRxObserver.m; sourceTree = "<group>"; };
-		98841AF01EA4C96900A0556F /* NSNotificationCenter+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+RxObserver.h"; sourceTree = "<group>"; };
-		98841AF11EA4C96900A0556F /* NSNotificationCenter+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+RxObserver.m"; sourceTree = "<group>"; };
-		98841AF21EA4C96900A0556F /* NSObject+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RxObserver.h"; sourceTree = "<group>"; };
-		98841AF31EA4C96900A0556F /* NSObject+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RxObserver.m"; sourceTree = "<group>"; };
-		98841AF41EA4C96900A0556F /* UIView+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RxObserver.h"; sourceTree = "<group>"; };
-		98841AF51EA4C96900A0556F /* UIView+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RxObserver.m"; sourceTree = "<group>"; };
-		98841AF61EA4C96900A0556F /* HWTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWTypeDef.h; sourceTree = "<group>"; };
-		98841AF71EA4C96900A0556F /* NSArray+FunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+FunctionalType.h"; sourceTree = "<group>"; };
-		98841AF81EA4C96900A0556F /* NSArray+FunctionalType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+FunctionalType.m"; sourceTree = "<group>"; };
-		98841AF91EA4C96900A0556F /* NSDictionary+FunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+FunctionalType.h"; sourceTree = "<group>"; };
-		98841AFA1EA4C96900A0556F /* NSDictionary+FunctionalType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+FunctionalType.m"; sourceTree = "<group>"; };
 		98841B101EA4C9CF00A0556F /* HWFunctional.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HWFunctional.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98841B121EA4C9CF00A0556F /* HWFunctional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HWFunctional.h; sourceTree = "<group>"; };
 		98841B131EA4C9CF00A0556F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98948CB81EB825ED006FBD83 /* CALayer+HWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+HWAnimation.h"; sourceTree = "<group>"; };
+		98948CB91EB825ED006FBD83 /* CALayer+HWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+HWAnimation.m"; sourceTree = "<group>"; };
+		98948CBA1EB825ED006FBD83 /* HWAnimation+Combination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HWAnimation+Combination.h"; sourceTree = "<group>"; };
+		98948CBB1EB825ED006FBD83 /* HWAnimation+Combination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HWAnimation+Combination.m"; sourceTree = "<group>"; };
+		98948CBC1EB825ED006FBD83 /* HWAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWAnimation.h; sourceTree = "<group>"; };
+		98948CBD1EB825ED006FBD83 /* HWAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWAnimation.m; sourceTree = "<group>"; };
+		98948CBF1EB825ED006FBD83 /* HWEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWEnum.h; sourceTree = "<group>"; };
+		98948CC01EB825ED006FBD83 /* HWEnum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWEnum.m; sourceTree = "<group>"; };
+		98948CC11EB825ED006FBD83 /* HWFunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWFunctionalType.h; sourceTree = "<group>"; };
+		98948CC21EB825ED006FBD83 /* HWMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWMacro.h; sourceTree = "<group>"; };
+		98948CC41EB825ED006FBD83 /* HWPromise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWPromise.h; sourceTree = "<group>"; };
+		98948CC51EB825ED006FBD83 /* HWPromise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWPromise.m; sourceTree = "<group>"; };
+		98948CC71EB825ED006FBD83 /* HWRxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWRxObserver.h; sourceTree = "<group>"; };
+		98948CC81EB825ED006FBD83 /* HWRxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWRxObserver.m; sourceTree = "<group>"; };
+		98948CC91EB825ED006FBD83 /* NSNotificationCenter+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+RxObserver.h"; sourceTree = "<group>"; };
+		98948CCA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+RxObserver.m"; sourceTree = "<group>"; };
+		98948CCB1EB825ED006FBD83 /* NSObject+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RxObserver.h"; sourceTree = "<group>"; };
+		98948CCC1EB825ED006FBD83 /* NSObject+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RxObserver.m"; sourceTree = "<group>"; };
+		98948CCD1EB825ED006FBD83 /* UIView+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RxObserver.h"; sourceTree = "<group>"; };
+		98948CCE1EB825ED006FBD83 /* UIView+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RxObserver.m"; sourceTree = "<group>"; };
+		98948CCF1EB825ED006FBD83 /* HWTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWTypeDef.h; sourceTree = "<group>"; };
+		98948CD01EB825ED006FBD83 /* NSArray+FunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+FunctionalType.h"; sourceTree = "<group>"; };
+		98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+FunctionalType.m"; sourceTree = "<group>"; };
+		98948CD21EB825ED006FBD83 /* NSDictionary+FunctionalType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+FunctionalType.h"; sourceTree = "<group>"; };
+		98948CD31EB825ED006FBD83 /* NSDictionary+FunctionalType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+FunctionalType.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,7 +151,7 @@
 		98743AF41DDC53B3005B394F /* HWRxObserverDemo */ = {
 			isa = PBXGroup;
 			children = (
-				98841ADD1EA4C96900A0556F /* Classes */,
+				98948CB61EB825ED006FBD83 /* Classes */,
 				98743AF81DDC53B3005B394F /* AppDelegate.h */,
 				98743AF91DDC53B3005B394F /* AppDelegate.m */,
 				98743AFB1DDC53B3005B394F /* ViewController.h */,
@@ -200,71 +175,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		98841ADD1EA4C96900A0556F /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				98841ADE1EA4C96900A0556F /* HWAnimation */,
-				98841AE51EA4C96900A0556F /* HWEnum */,
-				98841AE81EA4C96900A0556F /* HWFunctionalType.h */,
-				98841AE91EA4C96900A0556F /* HWMacro.h */,
-				98841AEA1EA4C96900A0556F /* HWPromise */,
-				98841AED1EA4C96900A0556F /* HWRxObserver */,
-				98841AF61EA4C96900A0556F /* HWTypeDef.h */,
-				98841AF71EA4C96900A0556F /* NSArray+FunctionalType.h */,
-				98841AF81EA4C96900A0556F /* NSArray+FunctionalType.m */,
-				98841AF91EA4C96900A0556F /* NSDictionary+FunctionalType.h */,
-				98841AFA1EA4C96900A0556F /* NSDictionary+FunctionalType.m */,
-			);
-			name = Classes;
-			path = ../../Classes;
-			sourceTree = "<group>";
-		};
-		98841ADE1EA4C96900A0556F /* HWAnimation */ = {
-			isa = PBXGroup;
-			children = (
-				98841ADF1EA4C96900A0556F /* CALayer+HWAnimation.h */,
-				98841AE01EA4C96900A0556F /* CALayer+HWAnimation.m */,
-				98841AE11EA4C96900A0556F /* HWAnimation+Combination.h */,
-				98841AE21EA4C96900A0556F /* HWAnimation+Combination.m */,
-				98841AE31EA4C96900A0556F /* HWAnimation.h */,
-				98841AE41EA4C96900A0556F /* HWAnimation.m */,
-			);
-			path = HWAnimation;
-			sourceTree = "<group>";
-		};
-		98841AE51EA4C96900A0556F /* HWEnum */ = {
-			isa = PBXGroup;
-			children = (
-				98841AE61EA4C96900A0556F /* HWEnum.h */,
-				98841AE71EA4C96900A0556F /* HWEnum.m */,
-			);
-			path = HWEnum;
-			sourceTree = "<group>";
-		};
-		98841AEA1EA4C96900A0556F /* HWPromise */ = {
-			isa = PBXGroup;
-			children = (
-				98841AEB1EA4C96900A0556F /* HWPromise.h */,
-				98841AEC1EA4C96900A0556F /* HWPromise.m */,
-			);
-			path = HWPromise;
-			sourceTree = "<group>";
-		};
-		98841AED1EA4C96900A0556F /* HWRxObserver */ = {
-			isa = PBXGroup;
-			children = (
-				98841AEE1EA4C96900A0556F /* HWRxObserver.h */,
-				98841AEF1EA4C96900A0556F /* HWRxObserver.m */,
-				98841AF01EA4C96900A0556F /* NSNotificationCenter+RxObserver.h */,
-				98841AF11EA4C96900A0556F /* NSNotificationCenter+RxObserver.m */,
-				98841AF21EA4C96900A0556F /* NSObject+RxObserver.h */,
-				98841AF31EA4C96900A0556F /* NSObject+RxObserver.m */,
-				98841AF41EA4C96900A0556F /* UIView+RxObserver.h */,
-				98841AF51EA4C96900A0556F /* UIView+RxObserver.m */,
-			);
-			path = HWRxObserver;
-			sourceTree = "<group>";
-		};
 		98841B111EA4C9CF00A0556F /* HWFunctional */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +182,71 @@
 				98841B131EA4C9CF00A0556F /* Info.plist */,
 			);
 			path = HWFunctional;
+			sourceTree = "<group>";
+		};
+		98948CB61EB825ED006FBD83 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				98948CB71EB825ED006FBD83 /* HWAnimation */,
+				98948CBE1EB825ED006FBD83 /* HWEnum */,
+				98948CC11EB825ED006FBD83 /* HWFunctionalType.h */,
+				98948CC21EB825ED006FBD83 /* HWMacro.h */,
+				98948CC31EB825ED006FBD83 /* HWPromise */,
+				98948CC61EB825ED006FBD83 /* HWRxObserver */,
+				98948CCF1EB825ED006FBD83 /* HWTypeDef.h */,
+				98948CD01EB825ED006FBD83 /* NSArray+FunctionalType.h */,
+				98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */,
+				98948CD21EB825ED006FBD83 /* NSDictionary+FunctionalType.h */,
+				98948CD31EB825ED006FBD83 /* NSDictionary+FunctionalType.m */,
+			);
+			name = Classes;
+			path = ../../Classes;
+			sourceTree = "<group>";
+		};
+		98948CB71EB825ED006FBD83 /* HWAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				98948CB81EB825ED006FBD83 /* CALayer+HWAnimation.h */,
+				98948CB91EB825ED006FBD83 /* CALayer+HWAnimation.m */,
+				98948CBA1EB825ED006FBD83 /* HWAnimation+Combination.h */,
+				98948CBB1EB825ED006FBD83 /* HWAnimation+Combination.m */,
+				98948CBC1EB825ED006FBD83 /* HWAnimation.h */,
+				98948CBD1EB825ED006FBD83 /* HWAnimation.m */,
+			);
+			path = HWAnimation;
+			sourceTree = "<group>";
+		};
+		98948CBE1EB825ED006FBD83 /* HWEnum */ = {
+			isa = PBXGroup;
+			children = (
+				98948CBF1EB825ED006FBD83 /* HWEnum.h */,
+				98948CC01EB825ED006FBD83 /* HWEnum.m */,
+			);
+			path = HWEnum;
+			sourceTree = "<group>";
+		};
+		98948CC31EB825ED006FBD83 /* HWPromise */ = {
+			isa = PBXGroup;
+			children = (
+				98948CC41EB825ED006FBD83 /* HWPromise.h */,
+				98948CC51EB825ED006FBD83 /* HWPromise.m */,
+			);
+			path = HWPromise;
+			sourceTree = "<group>";
+		};
+		98948CC61EB825ED006FBD83 /* HWRxObserver */ = {
+			isa = PBXGroup;
+			children = (
+				98948CC71EB825ED006FBD83 /* HWRxObserver.h */,
+				98948CC81EB825ED006FBD83 /* HWRxObserver.m */,
+				98948CC91EB825ED006FBD83 /* NSNotificationCenter+RxObserver.h */,
+				98948CCA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m */,
+				98948CCB1EB825ED006FBD83 /* NSObject+RxObserver.h */,
+				98948CCC1EB825ED006FBD83 /* NSObject+RxObserver.m */,
+				98948CCD1EB825ED006FBD83 /* UIView+RxObserver.h */,
+				98948CCE1EB825ED006FBD83 /* UIView+RxObserver.m */,
+			);
+			path = HWRxObserver;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,20 +257,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				98841B141EA4C9CF00A0556F /* HWFunctional.h in Headers */,
-				98841B281EA4CA9500A0556F /* CALayer+HWAnimation.h in Headers */,
-				98841B291EA4CA9500A0556F /* HWAnimation+Combination.h in Headers */,
-				98841B2A1EA4CA9500A0556F /* HWAnimation.h in Headers */,
-				98841B2B1EA4CA9500A0556F /* HWEnum.h in Headers */,
-				98841B2C1EA4CA9500A0556F /* HWFunctionalType.h in Headers */,
-				98841B2D1EA4CA9500A0556F /* HWMacro.h in Headers */,
-				98841B2E1EA4CA9500A0556F /* HWPromise.h in Headers */,
-				98841B2F1EA4CA9500A0556F /* HWRxObserver.h in Headers */,
-				98841B301EA4CA9500A0556F /* NSNotificationCenter+RxObserver.h in Headers */,
-				98841B311EA4CA9500A0556F /* NSObject+RxObserver.h in Headers */,
-				98841B321EA4CA9500A0556F /* UIView+RxObserver.h in Headers */,
-				98841B331EA4CA9500A0556F /* HWTypeDef.h in Headers */,
-				98841B341EA4CA9500A0556F /* NSArray+FunctionalType.h in Headers */,
-				98841B351EA4CA9500A0556F /* NSDictionary+FunctionalType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,21 +386,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98841AFB1EA4C96900A0556F /* CALayer+HWAnimation.m in Sources */,
-				98841B021EA4C96900A0556F /* NSObject+RxObserver.m in Sources */,
-				98841AFC1EA4C96900A0556F /* HWAnimation+Combination.m in Sources */,
+				98948CD41EB825ED006FBD83 /* CALayer+HWAnimation.m in Sources */,
+				98948CDB1EB825ED006FBD83 /* NSObject+RxObserver.m in Sources */,
+				98948CD51EB825ED006FBD83 /* HWAnimation+Combination.m in Sources */,
 				98743B271DDC607D005B394F /* SViewController.m in Sources */,
-				98841B011EA4C96900A0556F /* NSNotificationCenter+RxObserver.m in Sources */,
-				98841B041EA4C96900A0556F /* NSArray+FunctionalType.m in Sources */,
-				98841B031EA4C96900A0556F /* UIView+RxObserver.m in Sources */,
-				98841AFD1EA4C96900A0556F /* HWAnimation.m in Sources */,
+				98948CDA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m in Sources */,
+				98948CDD1EB825ED006FBD83 /* NSArray+FunctionalType.m in Sources */,
+				98948CDC1EB825ED006FBD83 /* UIView+RxObserver.m in Sources */,
+				98948CD61EB825ED006FBD83 /* HWAnimation.m in Sources */,
 				98743AFD1DDC53B3005B394F /* ViewController.m in Sources */,
 				98743AFA1DDC53B3005B394F /* AppDelegate.m in Sources */,
 				98743AF71DDC53B3005B394F /* main.m in Sources */,
-				98841B051EA4C96900A0556F /* NSDictionary+FunctionalType.m in Sources */,
-				98841AFF1EA4C96900A0556F /* HWPromise.m in Sources */,
-				98841B001EA4C96900A0556F /* HWRxObserver.m in Sources */,
-				98841AFE1EA4C96900A0556F /* HWEnum.m in Sources */,
+				98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */,
+				98948CD81EB825ED006FBD83 /* HWPromise.m in Sources */,
+				98948CD91EB825ED006FBD83 /* HWRxObserver.m in Sources */,
+				98948CD71EB825ED006FBD83 /* HWEnum.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,17 +408,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98841B1D1EA4CA7E00A0556F /* CALayer+HWAnimation.m in Sources */,
-				98841B1E1EA4CA7E00A0556F /* HWAnimation+Combination.m in Sources */,
-				98841B1F1EA4CA7E00A0556F /* HWAnimation.m in Sources */,
-				98841B201EA4CA7E00A0556F /* HWEnum.m in Sources */,
-				98841B211EA4CA7E00A0556F /* HWPromise.m in Sources */,
-				98841B221EA4CA7E00A0556F /* HWRxObserver.m in Sources */,
-				98841B231EA4CA7E00A0556F /* NSNotificationCenter+RxObserver.m in Sources */,
-				98841B241EA4CA7E00A0556F /* NSObject+RxObserver.m in Sources */,
-				98841B251EA4CA7E00A0556F /* UIView+RxObserver.m in Sources */,
-				98841B261EA4CA7E00A0556F /* NSArray+FunctionalType.m in Sources */,
-				98841B271EA4CA7E00A0556F /* NSDictionary+FunctionalType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

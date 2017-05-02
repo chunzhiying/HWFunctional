@@ -9,6 +9,14 @@
 #import "ViewController.h"
 #import "HWPromise.h"
 #import "NSArray+FunctionalType.h"
+#import "HWAnimation+Combination.h"
+#import "UIView+RxObserver.h"
+
+@interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet UIButton *testBtn;
+
+@end
 
 @implementation ViewController
 
@@ -21,6 +29,10 @@
         return @($0.intValue / 2 == 1);
     }).forEach(HW_BLOCK(NSNumber *) {
         NSLog(@"filter %@", $0);
+    });
+    
+    _testBtn.rx_tap.response(^{
+        HWAnimInstance.scaleBounce(0.1, 2, 1, 1).addTo(_testBtn.layer).run();
     });
     
 //        @[[self after:1 result:YES flag:@"一"],
