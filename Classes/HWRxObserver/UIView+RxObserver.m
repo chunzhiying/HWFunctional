@@ -29,28 +29,6 @@
     }
 }
 
-
-#pragma mark - Method Swizzling
-+ (void)load {
-    Method originalMethod = class_getInstanceMethod([self class], @selector(removeFromSuperview));
-    Method swizzledMethod = class_getInstanceMethod([self class], @selector(RxObserver_removeFromSuperview));
-    method_exchangeImplementations(originalMethod, swizzledMethod);
-}
-
-- (void)RxObserver_removeFromSuperview {
-    if (self.rx_observers.count != 0) {
-        [RxLock lock];
-        self.rx_observers = (NSMutableArray *)self.rx_observers
-        .filter(^(HWRxObserver *observer) {
-            return @(![observer.keyPath isEqualToString:@"RxObserver_tap"]);
-        });
-        [self removeAllRxObserver];
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [RxLock unlock];
-    }
-    [self RxObserver_removeFromSuperview];
-}
-
 @end
 
 

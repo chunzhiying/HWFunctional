@@ -37,6 +37,10 @@
         self.view.backgroundColor = [UIColor redColor];
     });
     
+    _aaa.rx_tap.response(^{ Strongify(self)
+        self.view.backgroundColor = [UIColor grayColor];
+    });
+    
     HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
         self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
     });
