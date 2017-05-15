@@ -42,6 +42,31 @@
 		98948CDC1EB825ED006FBD83 /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCE1EB825ED006FBD83 /* UIView+RxObserver.m */; };
 		98948CDD1EB825ED006FBD83 /* NSArray+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */; };
 		98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD31EB825ED006FBD83 /* NSDictionary+FunctionalType.m */; };
+		9899E2491EC97F370055908D /* HWAnimation+Combination.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CBB1EB825ED006FBD83 /* HWAnimation+Combination.m */; };
+		9899E24A1EC97F3B0055908D /* CALayer+HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CB91EB825ED006FBD83 /* CALayer+HWAnimation.m */; };
+		9899E24B1EC97F3E0055908D /* HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CBD1EB825ED006FBD83 /* HWAnimation.m */; };
+		9899E24C1EC97F450055908D /* HWEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC01EB825ED006FBD83 /* HWEnum.m */; };
+		9899E24D1EC97F4A0055908D /* HWPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC51EB825ED006FBD83 /* HWPromise.m */; };
+		9899E24E1EC97F500055908D /* HWRxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CC81EB825ED006FBD83 /* HWRxObserver.m */; };
+		9899E24F1EC97F520055908D /* NSNotificationCenter+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCA1EB825ED006FBD83 /* NSNotificationCenter+RxObserver.m */; };
+		9899E2501EC97F550055908D /* NSObject+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCC1EB825ED006FBD83 /* NSObject+RxObserver.m */; };
+		9899E2511EC97F590055908D /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CCE1EB825ED006FBD83 /* UIView+RxObserver.m */; };
+		9899E2521EC97F5E0055908D /* NSArray+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */; };
+		9899E2531EC97F610055908D /* NSDictionary+FunctionalType.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CD31EB825ED006FBD83 /* NSDictionary+FunctionalType.m */; };
+		9899E2561EC980C80055908D /* CALayer+HWAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CB81EB825ED006FBD83 /* CALayer+HWAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2571EC980C80055908D /* HWAnimation+Combination.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CBA1EB825ED006FBD83 /* HWAnimation+Combination.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2581EC980C80055908D /* HWAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CBC1EB825ED006FBD83 /* HWAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2591EC980C80055908D /* HWEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CBF1EB825ED006FBD83 /* HWEnum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25A1EC980C80055908D /* HWFunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CC11EB825ED006FBD83 /* HWFunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25B1EC980C80055908D /* HWMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CC21EB825ED006FBD83 /* HWMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25C1EC980C80055908D /* HWPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CC41EB825ED006FBD83 /* HWPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25D1EC980C80055908D /* HWRxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CC71EB825ED006FBD83 /* HWRxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25E1EC980C80055908D /* NSNotificationCenter+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CC91EB825ED006FBD83 /* NSNotificationCenter+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E25F1EC980C80055908D /* NSObject+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CCB1EB825ED006FBD83 /* NSObject+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2601EC980C80055908D /* UIView+RxObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CCD1EB825ED006FBD83 /* UIView+RxObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2611EC980C80055908D /* HWTypeDef.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CCF1EB825ED006FBD83 /* HWTypeDef.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2621EC980C80055908D /* NSArray+FunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CD01EB825ED006FBD83 /* NSArray+FunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9899E2631EC980C80055908D /* NSDictionary+FunctionalType.h in Headers */ = {isa = PBXBuildFile; fileRef = 98948CD21EB825ED006FBD83 /* NSDictionary+FunctionalType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -257,6 +282,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				98841B141EA4C9CF00A0556F /* HWFunctional.h in Headers */,
+				9899E2561EC980C80055908D /* CALayer+HWAnimation.h in Headers */,
+				9899E2571EC980C80055908D /* HWAnimation+Combination.h in Headers */,
+				9899E2581EC980C80055908D /* HWAnimation.h in Headers */,
+				9899E2591EC980C80055908D /* HWEnum.h in Headers */,
+				9899E25A1EC980C80055908D /* HWFunctionalType.h in Headers */,
+				9899E25B1EC980C80055908D /* HWMacro.h in Headers */,
+				9899E25C1EC980C80055908D /* HWPromise.h in Headers */,
+				9899E25D1EC980C80055908D /* HWRxObserver.h in Headers */,
+				9899E25E1EC980C80055908D /* NSNotificationCenter+RxObserver.h in Headers */,
+				9899E25F1EC980C80055908D /* NSObject+RxObserver.h in Headers */,
+				9899E2601EC980C80055908D /* UIView+RxObserver.h in Headers */,
+				9899E2611EC980C80055908D /* HWTypeDef.h in Headers */,
+				9899E2621EC980C80055908D /* NSArray+FunctionalType.h in Headers */,
+				9899E2631EC980C80055908D /* NSDictionary+FunctionalType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +447,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9899E2531EC97F610055908D /* NSDictionary+FunctionalType.m in Sources */,
+				9899E2511EC97F590055908D /* UIView+RxObserver.m in Sources */,
+				9899E24B1EC97F3E0055908D /* HWAnimation.m in Sources */,
+				9899E2491EC97F370055908D /* HWAnimation+Combination.m in Sources */,
+				9899E24E1EC97F500055908D /* HWRxObserver.m in Sources */,
+				9899E24A1EC97F3B0055908D /* CALayer+HWAnimation.m in Sources */,
+				9899E24F1EC97F520055908D /* NSNotificationCenter+RxObserver.m in Sources */,
+				9899E2501EC97F550055908D /* NSObject+RxObserver.m in Sources */,
+				9899E24C1EC97F450055908D /* HWEnum.m in Sources */,
+				9899E24D1EC97F4A0055908D /* HWPromise.m in Sources */,
+				9899E2521EC97F5E0055908D /* NSArray+FunctionalType.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

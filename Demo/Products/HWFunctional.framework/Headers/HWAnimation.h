@@ -12,6 +12,11 @@
 
 #define HWAnimInstance [HWAnimation new]
 
+#define HWAnimation_Opacity         @"opacity"
+#define HWAnimation_Scale           @"transform.scale"
+#define HWAnimation_Rotation        @"transform.rotation"
+#define HWAnimation_Translation     @"transform.translation"
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void(^FinishedBlock)(BOOL);
@@ -66,6 +71,7 @@ typedef NS_ENUM(NSUInteger, HWTimingFunctionType) {
 @property (nonatomic, readonly) HWAnimation *(^autoRemoved)(BOOL); //default: YES
 @property (nonatomic, readonly) HWAnimation *(^timingFunction)(HWTimingFunctionType);
 @property (nonatomic, readonly) HWAnimation *(^fillMode)(HWFillMode);
+@property (nonatomic, readonly) HWAnimation *(^autoreverses)(BOOL);
 
 @end
 

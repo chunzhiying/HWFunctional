@@ -15,7 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HWAnimation (Combination)
 
 @property (nonatomic, readonly) HWAnimation *(^frameTo)(CGRect);
-@property (nonatomic, readonly) HWAnimation *(^scaleBounce)(CGFloat, CGFloat, CGFloat, CGFloat); //start, middle, end, duration
+
+//start, middle, end, start - middle duration, middle - end duration
+@property (nonatomic, readonly) HWAnimation *(^scale)(CGFloat, CGFloat, CGFloat, CGFloat, CGFloat);
+
+//start, middle, end, duration
+@property (nonatomic, readonly) HWAnimation *(^scaleBounce)(CGFloat, CGFloat, CGFloat, CGFloat);
 
 @end
 
