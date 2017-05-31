@@ -98,6 +98,19 @@
     };
 }
 
+- (HWRxObserver * _Nonnull (^)(NSString * _Nonnull))RxOnce {
+    return ^(NSString *keyPath) {
+        HWRxObserver *existObserver = self.rx_observers
+        .find(HW_BLOCK(HWRxObserver *) {
+            return [$0.keyPath isEqualToString:keyPath];
+        });
+        if (!existObserver) {
+            existObserver = self.Rx(keyPath);
+        }
+        return existObserver;
+    };
+}
+
 - (void (^)(NSString *))rx_repost {
     return ^(NSString *keyPath) {
         [self willChangeValueForKey:keyPath];
