@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 
 - (void)dealloc {
-
+    
 }
 
 - (void)onTap {
@@ -359,11 +359,17 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     });
     observers.forEachWithIndex(^(HWRxObserver *observable, NSUInteger index) {
         observable.subscribe(^(id obj) {
-            [results replaceObjectAtIndex:index withObject:obj];
+            
+            if (obj == nil || [obj isKindOfClass:[NSNull class]]) {
+                [results replaceObjectAtIndex:index withObject:[NSNull null]];
+            } else {
+                [results replaceObjectAtIndex:index withObject:obj];
+            }
             
             NSArray *filtered = results.filter(^(id result) {
                 return @([result isKindOfClass:[NSString class]] && [result isEqualToString:@"combineLatest"]);
             });
+            
             if (filtered.count == 0) {
                 observer.rxObj = results;
             }

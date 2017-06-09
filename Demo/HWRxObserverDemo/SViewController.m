@@ -32,27 +32,28 @@
     })];
     
     
-    Weakify(self)
-    _aaa.Rx(@"text").response(^{ Strongify(self)
-        self.view.backgroundColor = [UIColor redColor];
+//    Weakify(self)
+//    _aaa.Rx(@"text").response(^{ Strongify(self)
+//        self.view.backgroundColor = [UIColor redColor];
+//    });
+//    
+    
+    _aaa.rx_dealloc.response(^{
+        NSLog(@"_aaa dealloc");
     });
     
-    _aaa.rx_tap.response(^{ Strongify(self)
-        self.view.backgroundColor = [UIColor grayColor];
-    });
-    
-    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
-        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
-    });
-    
-    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
-        self.view.backgroundColor = [UIColor yellowColor];
-    });
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
-        observer.connect();
-    });
+//    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
+//        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
+//    });
+//    
+//    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
+//        self.view.backgroundColor = [UIColor yellowColor];
+//    });
+//    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
+//        observer.connect();
+//    });
 
 }
 
