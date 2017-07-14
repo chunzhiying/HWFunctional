@@ -14,6 +14,7 @@
 @interface SViewController ()
 
 @property (nonatomic, strong) UILabel *aaa;
+@property (nonatomic, strong) HWRxObserver *customObser;
 
 @end
 
@@ -37,6 +38,22 @@
 //        self.view.backgroundColor = [UIColor redColor];
 //    });
 //    
+    
+    _customObser = HWRxInstance.asObservable();
+    
+    _customObser.next(^{
+        return @"aa";
+    });
+    
+    _customObser.behavior().subscribe(HW_BLOCK(NSObject *) {
+         NSLog(@"customObser: %@", $0);
+    }).connect();
+    
+    
+    
+    _customObser.next(^{
+        return @"bb";
+    });
     
     _aaa.rx_dealloc.response(^{
         NSLog(@"_aaa dealloc");

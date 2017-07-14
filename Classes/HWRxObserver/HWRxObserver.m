@@ -12,11 +12,12 @@
 #import "NSObject+RxObserver.h"
 
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
+    HWRxObserverType_UnKonwn, // no such property, observe failed
     HWRxObserverType_UnOwned, // created during Operating. AotuReleased when block over.
     HWRxObserverType_KVO,
     HWRxObserverType_Notification,
+    HWRxObserverType_UserDefined,
     HWRxObserverType_Special, //RxObserver_dealloc、RxObserver_tap
-    HWRxObserverType_UnKonwn // no such property, observe failed
 };
 
 @interface HWRxObserver ()
@@ -52,6 +53,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         _connect = YES;
         _debounceValue = 0;
         _throttleValue = 0;
+        _type = HWRxObserverType_UnKonwn;
     }
     return self;
 }
@@ -130,8 +132,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 #pragma mark - Register
 - (void)registeredToObserve:(NSObject *)object {
     
-    _type = HWRxObserverType_UnKonwn;
-    
     if ([_keyPath isEqualToString:@"RxObserver_dealloc"]
         || [_keyPath isEqualToString:@"RxObserver_tap"])
     {
@@ -171,6 +171,31 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     }
     _latestData = change[@"new"];
     self.rxObj = change[@"new"];
+}
+
+@end
+
+@implementation HWRxObserver (Create_Extension)
+
+- (HWRxObserver * _Nonnull (^)())asObservable {
+    return ^{
+        if (_type == HWRxObserverType_UnKonwn) {
+            _type = HWRxObserverType_UserDefined;
+            _keyPath = @"UserDefined";
+        }
+        return self;
+    };
+}
+
+- (HWRxObserver * _Nonnull (^)(nextSendType _Nonnull))next {
+    return ^(nextSendType block) {
+        NSObject *next = block();
+        if (next) {
+            _latestData = next;
+            self.rxObj = next;
+        }
+        return self;
+    };
 }
 
 @end

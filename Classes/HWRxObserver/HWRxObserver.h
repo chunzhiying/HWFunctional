@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "HWFunctionalType.h"
 
+#define HWRxInstance [HWRxObserver new]
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class HWRxObserver;
@@ -17,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^nextBlankType)();
 typedef void(^nextType)(id obj);
 
+typedef NSObject *(^nextSendType)();
 
 @interface HWRxObserver : NSObject <HWFunctionalType>
 
@@ -25,8 +28,15 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, strong) NSString *keyPath;
 @property (nonatomic) SEL tapAction;
 
-
 - (void)registeredToObserve:(NSObject *)object;
+
+@end
+
+
+@interface HWRxObserver (Create_Extension)
+
+@property (nonatomic, readonly) HWRxObserver *(^asObservable)();
+@property (nonatomic, readonly) HWRxObserver *(^next)(nextSendType);
 
 @end
 
@@ -68,5 +78,6 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *combineLatest;
 
 @end
+
 
 NS_ASSUME_NONNULL_END

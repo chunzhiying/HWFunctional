@@ -25,6 +25,15 @@
     Strongify(obj)
 
 
+// String
+
+#define ConstStringExtern(atName) \
+    extern NSString * const atName;
+
+#define ConstStringDefine(atName) \
+    NSString * const atName = @#atName;
+
+
 // Parameter
 
 #define HW_CONECT(x, y)     x, y
