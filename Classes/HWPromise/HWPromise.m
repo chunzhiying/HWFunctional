@@ -6,8 +6,6 @@
 //  Copyright © 2016年 YY. All rights reserved.
 //
 
-
-
 #import "HWPromise.h"
 #import "NSArray+FunctionalType.h"
 
