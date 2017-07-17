@@ -45,7 +45,9 @@
         return @"aa";
     });
     
-    _customObser.behavior().subscribe(HW_BLOCK(NSObject *) {
+    _customObser
+    .behavior()
+    .subscribe(HW_BLOCK(NSObject *) {
          NSLog(@"customObser: %@", $0);
     }).connect();
     

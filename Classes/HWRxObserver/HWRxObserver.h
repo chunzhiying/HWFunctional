@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^nextBlankType)();
 typedef void(^nextType)(id obj);
 
-typedef NSObject *(^nextSendType)();
+typedef NSObject * _Nonnull (^nextSendType)();
 
 @interface HWRxObserver : NSObject <HWFunctionalType>
 
