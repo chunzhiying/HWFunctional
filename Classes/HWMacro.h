@@ -14,6 +14,9 @@
 #define SafeBlock(atBlock, ...) \
     if(atBlock) { atBlock(__VA_ARGS__); }
 
+#define SafeBlockDefault(default, atBlock, ...)\
+    (atBlock ? (atBlock(__VA_ARGS__)) : (default))
+
 #define Weakify(obj) \
     __weak __typeof__(obj) obj##_weak_ = obj;
 
