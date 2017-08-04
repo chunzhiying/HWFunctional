@@ -177,11 +177,11 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 @implementation HWRxObserver (Create_Extension)
 
-- (HWRxObserver * _Nonnull (^)())asObservable {
-    return ^{
+- (HWRxObserver * _Nonnull (^)(NSString *))create {
+    return ^(NSString *desc) {
         if (_type == HWRxObserverType_UnKonwn) {
             _type = HWRxObserverType_UserDefined;
-            _keyPath = @"UserDefined";
+            _keyPath = desc;
         }
         return self;
     };

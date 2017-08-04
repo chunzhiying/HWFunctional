@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		981538261F32C4C400EB3DC7 /* TestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 981538241F32C4C400EB3DC7 /* TestTableViewCell.m */; };
 		981538271F32C4C400EB3DC7 /* TestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981538251F32C4C400EB3DC7 /* TestTableViewCell.xib */; };
+		9848B34C1F34AEF60001028A /* UITableView+RxDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9848B34B1F34AEF60001028A /* UITableView+RxDataSource.m */; };
 		98743AF71DDC53B3005B394F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98743AF61DDC53B3005B394F /* main.m */; };
 		98743AFA1DDC53B3005B394F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 98743AF91DDC53B3005B394F /* AppDelegate.m */; };
 		98743AFD1DDC53B3005B394F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98743AFC1DDC53B3005B394F /* ViewController.m */; };
@@ -59,7 +60,6 @@
 		98B7857F1F3176800061DC92 /* NSNotificationCenter+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B785731F3176800061DC92 /* NSNotificationCenter+RxObserver.m */; };
 		98B785801F3176800061DC92 /* NSObject+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B785751F3176800061DC92 /* NSObject+RxObserver.m */; };
 		98B785811F3176800061DC92 /* UIView+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B785771F3176800061DC92 /* UIView+RxObserver.m */; };
-		98B785821F3176800061DC92 /* HWRxTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B7857A1F3176800061DC92 /* HWRxTableDataSource.m */; };
 		98B785831F3176800061DC92 /* HWRxVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 98B7857C1F3176800061DC92 /* HWRxVariable.m */; };
 		98B785841F3176800061DC92 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 98B7857D1F3176800061DC92 /* README.md */; };
 /* End PBXBuildFile section */
@@ -81,6 +81,8 @@
 		981538231F32C4C400EB3DC7 /* TestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewCell.h; sourceTree = "<group>"; };
 		981538241F32C4C400EB3DC7 /* TestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewCell.m; sourceTree = "<group>"; };
 		981538251F32C4C400EB3DC7 /* TestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestTableViewCell.xib; sourceTree = "<group>"; };
+		9848B34A1F34AEF60001028A /* UITableView+RxDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+RxDataSource.h"; sourceTree = "<group>"; };
+		9848B34B1F34AEF60001028A /* UITableView+RxDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+RxDataSource.m"; sourceTree = "<group>"; };
 		98743AF21DDC53B3005B394F /* HWRxObserverDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HWRxObserverDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98743AF61DDC53B3005B394F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		98743AF81DDC53B3005B394F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -121,8 +123,6 @@
 		98B785751F3176800061DC92 /* NSObject+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RxObserver.m"; sourceTree = "<group>"; };
 		98B785761F3176800061DC92 /* UIView+RxObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RxObserver.h"; sourceTree = "<group>"; };
 		98B785771F3176800061DC92 /* UIView+RxObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RxObserver.m"; sourceTree = "<group>"; };
-		98B785791F3176800061DC92 /* HWRxTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWRxTableDataSource.h; sourceTree = "<group>"; };
-		98B7857A1F3176800061DC92 /* HWRxTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWRxTableDataSource.m; sourceTree = "<group>"; };
 		98B7857B1F3176800061DC92 /* HWRxVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HWRxVariable.h; sourceTree = "<group>"; };
 		98B7857C1F3176800061DC92 /* HWRxVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HWRxVariable.m; sourceTree = "<group>"; };
 		98B7857D1F3176800061DC92 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -281,10 +281,10 @@
 		98B785781F3176800061DC92 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
-				98B785791F3176800061DC92 /* HWRxTableDataSource.h */,
-				98B7857A1F3176800061DC92 /* HWRxTableDataSource.m */,
 				98B7857B1F3176800061DC92 /* HWRxVariable.h */,
 				98B7857C1F3176800061DC92 /* HWRxVariable.m */,
+				9848B34A1F34AEF60001028A /* UITableView+RxDataSource.h */,
+				9848B34B1F34AEF60001028A /* UITableView+RxDataSource.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -438,6 +438,7 @@
 			files = (
 				98B785831F3176800061DC92 /* HWRxVariable.m in Sources */,
 				98948CD41EB825ED006FBD83 /* CALayer+HWAnimation.m in Sources */,
+				9848B34C1F34AEF60001028A /* UITableView+RxDataSource.m in Sources */,
 				98B7857F1F3176800061DC92 /* NSNotificationCenter+RxObserver.m in Sources */,
 				98948CD51EB825ED006FBD83 /* HWAnimation+Combination.m in Sources */,
 				98B7857E1F3176800061DC92 /* HWRxObserver.m in Sources */,
@@ -451,7 +452,6 @@
 				981538261F32C4C400EB3DC7 /* TestTableViewCell.m in Sources */,
 				98743AF71DDC53B3005B394F /* main.m in Sources */,
 				98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */,
-				98B785821F3176800061DC92 /* HWRxTableDataSource.m in Sources */,
 				98B785801F3176800061DC92 /* NSObject+RxObserver.m in Sources */,
 				98948CD81EB825ED006FBD83 /* HWPromise.m in Sources */,
 				98948CD71EB825ED006FBD83 /* HWEnum.m in Sources */,

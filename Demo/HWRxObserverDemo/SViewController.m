@@ -10,7 +10,7 @@
 #import "NSNotificationCenter+RxObserver.h"
 #import "UIView+RxObserver.h"
 #import "HWRxObserver.h"
-#import "HWRxTableDataSource.h"
+#import "UITableView+RxDataSource.h"
 #import "TestTableViewCell.h"
 
 @interface SViewController ()
@@ -85,6 +85,8 @@
     _tableView.backgroundColor = [UIColor grayColor];
     
     
+    
+    Weakify(self)
     _tableView.RxDataSource()
     .configureCell(@"TestTableViewCell", ^{
         return [TestTableViewCell initFromNib];
@@ -95,9 +97,33 @@
     .bindTo(@[_variable1, _variable2]);
     
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_variable1 reloadObject:[_variable2 convert]];
+    _tableView.RxDelegate()
+    .heightForRow(HW_BLOCK(NSIndexPath *) {
+        return 80.f;
+    })
+    .viewForHeader(HW_BLOCK(NSUInteger) {
+        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
+        header.backgroundColor = [UIColor purpleColor];
+        return header;
+    })
+    .viewForFooter(HW_BLOCK(NSUInteger) {
+        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+        footer.backgroundColor = [UIColor greenColor];
+        return footer;
+    })
+    .cellSelected(HW_BLOCK(NSIndexPath *) { Strongify(self)
+        if ($0.section == 0) {
+            [self.variable1 removeObjectAtIndex:$0.row];
+        } else {
+            [self.variable2 removeObjectAtIndex:$0.row];
+        }
     });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_variable1 removeObjectAtIndex:3];
+        [_variable2 removeObjectAtIndex:0];
+    });
+    
     
     [self.view addSubview:_tableView];
     

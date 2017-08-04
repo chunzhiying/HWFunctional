@@ -24,8 +24,8 @@ typedef NSObject * _Nonnull (^nextSendType)();
 @interface HWRxObserver : NSObject <HWFunctionalType>
 
 @property (nonatomic, weak) NSObject *target;
-@property (nonatomic, strong) NSString *disposer;
-@property (nonatomic, strong) NSString *keyPath;
+@property (nonatomic, copy) NSString *disposer;
+@property (nonatomic, copy) NSString *keyPath;
 @property (nonatomic) SEL tapAction;
 
 - (void)registeredToObserve:(NSObject *)object;
@@ -35,7 +35,7 @@ typedef NSObject * _Nonnull (^nextSendType)();
 
 @interface HWRxObserver (Create_Extension)
 
-@property (nonatomic, readonly) HWRxObserver *(^asObservable)();
+@property (nonatomic, readonly) HWRxObserver *(^create)(NSString *desc); // show in keyPath for description
 @property (nonatomic, readonly) HWRxObserver *(^next)(nextSendType);
 
 @end

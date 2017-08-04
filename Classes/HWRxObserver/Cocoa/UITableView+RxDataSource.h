@@ -1,8 +1,8 @@
 //
-//  HWRxTableDataSource.h
+//  UITableView+RxDataSource.h
 //  HWRxObserverDemo
 //
-//  Created by 陈智颖 on 2017/7/29.
+//  Created by 陈智颖 on 2017/8/4.
 //  Copyright © 2017年 YY. All rights reserved.
 //
 
@@ -13,17 +13,23 @@ typedef UITableViewCell *(^ConfigureCellCallBack)();
 typedef void (^CellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 
-@interface HWRxTableDataSource : NSObject <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, weak) UITableView *tableView;
+@interface HWRxTableDataSource : NSObject <UITableViewDataSource>
 
 @property (nonatomic, readonly) HWRxTableDataSource *(^bindTo)(NSArray<HWRxVariable *> *);
-
 @property (nonatomic, readonly) HWRxTableDataSource *(^configureCell)(NSString *reusableId, ConfigureCellCallBack);
 @property (nonatomic, readonly) HWRxTableDataSource *(^cellForItem)(CellForRowCallBack);
-@property (nonatomic, readonly) HWRxTableDataSource *(^cellSelected)(void(^)(NSIndexPath *));
 
 @property (nonatomic, readonly) HWRxTableDataSource *(^error)(void(^)(NSString *));
+
+@end
+
+
+@interface HWRxTableDelegate : NSObject <UITableViewDelegate>
+
+@property (nonatomic, readonly) HWRxTableDelegate *(^heightForRow)(float(^)(NSIndexPath *));
+@property (nonatomic, readonly) HWRxTableDelegate *(^viewForHeader)(UIView *(^)(NSUInteger)); //frame.height for heightForHeader
+@property (nonatomic, readonly) HWRxTableDelegate *(^viewForFooter)(UIView *(^)(NSUInteger)); //frame.height for heightForFooter
+@property (nonatomic, readonly) HWRxTableDelegate *(^cellSelected)(void(^)(NSIndexPath *));
 
 @end
 
@@ -31,5 +37,6 @@ typedef void (^CellForRowCallBack)(id cell, id data, NSIndexPath *);
 @interface UITableView (HWRxTableDataSource)
 
 @property (nonatomic, readonly) HWRxTableDataSource *(^RxDataSource)();
+@property (nonatomic, readonly) HWRxTableDelegate *(^RxDelegate)();
 
 @end

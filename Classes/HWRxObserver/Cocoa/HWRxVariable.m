@@ -36,7 +36,7 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     self = [super init];
     if (self) {
         _content = @[].mutableCopy;
-        _observer = HWRxInstance.asObservable();
+        _observer = HWRxInstance.create(NSStringFromClass([self class]));
     }
     return self;
 }
