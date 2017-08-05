@@ -45,6 +45,13 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     return _content;
 }
 
+#pragma mark - Private
+- (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {Weakify(self)
+    _observer.next(^{ Strongify(self)
+        return HWVariableSquenceInit(self.content, location, type);
+    });
+}
+
 #pragma mark - Public
 - (id)objectAtIndex:(NSUInteger)index {
     if (index < _content.count) {
@@ -57,58 +64,47 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     return _content.count;
 }
 
-- (void)addObject:(id)object { Weakify(self)
+- (void)addObject:(id)object {
     if (!object) {
         return;
     }
     [_content addObject:object];
-    _observer.next(^{ Strongify(self)
-         return HWVariableSquenceInit(self.content, (self.content.count - 1), HWVariableChangeType_Add);
-    });
+    [self postNextWithLocation:(self.content.count - 1) type:HWVariableChangeType_Add];
 }
 
-- (void)removeObject:(id)object { Weakify(self)
+- (void)removeObject:(id)object {
     if (!object || ![_content containsObject:object]) {
         return;
     }
     NSUInteger index = [_content indexOfObject:object];
     [_content removeObject:object];
-    _observer.next(^{ Strongify(self)
-        return HWVariableSquenceInit(self.content, index, HWVariableChangeType_Remove);
-    });
+    [self postNextWithLocation:index type:HWVariableChangeType_Remove];
 }
 
-- (void)reloadObject:(NSArray *)objects { Weakify(self)
+- (void)reloadObject:(NSArray *)objects {
     if (!objects) {
         objects = @[];
     }
     _content = objects.mutableCopy;
-    _observer.next(^{ Strongify(self)
-        return HWVariableSquenceInit(self.content, NSUIntegerMax, HWVariableChangeType_Reload);
-    });
+    [self postNextWithLocation:NSUIntegerMax type:HWVariableChangeType_Reload];
 }
 
 #pragma mark - 
-- (void)insertObject:(id)object atIndex:(NSUInteger)index { Weakify(self)
+- (void)insertObject:(id)object atIndex:(NSUInteger)index {
     if (!object) {
         return;
     }
     index = MAX(0, MIN(index, _content.count));
     [_content insertObject:object atIndex:index];
-    _observer.next(^{ Strongify(self)
-        return HWVariableSquenceInit(self.content, index, HWVariableChangeType_Add);
-    });
+    [self postNextWithLocation:index type:HWVariableChangeType_Add];
 }
 
-- (void)removeObjectAtIndex:(NSUInteger)index { Weakify(self)
+- (void)removeObjectAtIndex:(NSUInteger)index {
     if (_content.count <= index) {
         return;
     }
     [_content removeObjectAtIndex:index];
-    _observer.next(^{ Strongify(self)
-        return HWVariableSquenceInit(self.content, index, HWVariableChangeType_Remove);
-    });
-    
+    [self postNextWithLocation:index type:HWVariableChangeType_Remove];
 }
 
 @end

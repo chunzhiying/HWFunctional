@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "HWRxObserver.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface HWRxVariable : NSObject
 
 @property (nonatomic, readonly) NSUInteger count;
@@ -42,3 +44,5 @@ typedef NS_ENUM(NSUInteger, HWVariableChangeType) {
 @property (nonatomic, strong) NSArray *content;
 
 @end
+
+NS_ASSUME_NONNULL_END

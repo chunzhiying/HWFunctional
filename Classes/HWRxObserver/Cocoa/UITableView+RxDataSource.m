@@ -11,18 +11,19 @@
 #import "HWMacro.h"
 #import <objc/runtime.h>
 
-#define ErrorCallBack SafeBlock(self.errorBlock, [NSString stringWithFormat:@"%s error", __PRETTY_FUNCTION__]);
+#define HWError(error) [NSString stringWithFormat:@"HWRxDataSource Error: %@ ", error]
+#define ErrorCallBack SafeBlock(self.warningBlock, HWError(([NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__])));
 
 @interface HWRxTableDataSource ()
 
-@property (nonatomic, strong) NSMutableArray<NSArray *> *content;
 @property (nonatomic, weak) UITableView *tableView;
-@property (nonatomic, copy) NSString *dequeueReusableIdentifier;
+@property (nonatomic, strong) NSMutableArray<NSArray *> *content;
+@property (nonatomic, strong) NSArray<NSString *> *dequeueReusableIds;
 
 @property (nonatomic, copy) CellForRowCallBack cellForRowBlock;
 @property (nonatomic, copy) ConfigureCellCallBack configureCellBlock;
 
-@property (nonatomic, copy) void(^errorBlock)(NSString *);
+@property (nonatomic, copy) void(^warningBlock)(NSString *);
 
 @end
 
@@ -34,7 +35,7 @@
 
 #pragma mark - Private
 - (void)reloadData:(HWVariableSequence *)sequence effectSection:(NSUInteger)section {
-    self.content[section] = sequence.content;
+    _content[section] = sequence.content;
     switch (sequence.type) {
         case HWVariableChangeType_Add:
             [_tableView beginUpdates];
@@ -55,6 +56,7 @@
 #pragma mark - Public
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
+        NSAssert(variable.count == self.dequeueReusableIds.count, HWError(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 convert];
@@ -77,17 +79,17 @@
     };
 }
 
-- (HWRxTableDataSource *(^)(NSString *, ConfigureCellCallBack))configureCell {
-    return ^(NSString *reusableId, ConfigureCellCallBack callBack) {
-        self.dequeueReusableIdentifier = reusableId;
+- (HWRxTableDataSource *(^)(NSArray<NSString *> *, ConfigureCellCallBack))configureCell {
+    return ^(NSArray<NSString *> *reusableIds, ConfigureCellCallBack callBack) {
+        self.dequeueReusableIds = reusableIds;
         self.configureCellBlock = callBack;
         return self;
     };
 }
 
-- (HWRxTableDataSource *(^)(void (^)(NSString *)))error {
+- (HWRxTableDataSource *(^)(void (^)(NSString *)))warnings {
     return ^(void (^callBack)(NSString *)) {
-        self.errorBlock = callBack;
+        self.warningBlock = callBack;
         return self;
     };
 }
@@ -108,12 +110,14 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section >= self.content.count || indexPath.row >= self.content[indexPath.section].count) { ErrorCallBack
+    if (indexPath.section >= self.content.count
+        || indexPath.row >= self.content[indexPath.section].count) { ErrorCallBack
         return [UITableViewCell new];
     }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIdentifier];
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIds[indexPath.section]];
     if (!cell) {
-        cell = SafeBlockDefault([UITableViewCell new], self.configureCellBlock);
+        cell = SafeBlockDefault([UITableViewCell new], self.configureCellBlock, indexPath.section);
     }
     SafeBlock(self.cellForRowBlock, cell, self.content[indexPath.section][indexPath.row], indexPath);
     return cell;
@@ -127,8 +131,8 @@
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, copy) void(^cellSelectedBlock)(NSIndexPath *);
-@property (nonatomic, copy) float(^heightForRowBlock)(NSIndexPath *);
+@property (nonatomic, copy) void(^cellSelectedBlock)(id, NSIndexPath *);
+@property (nonatomic, copy) float(^heightForRowBlock)(id, NSIndexPath *);
 
 @property (nonatomic, copy) UIView *(^viewForHeaderBlock)(NSUInteger);
 @property (nonatomic, copy) UIView *(^viewForFooterBlock)(NSUInteger);
@@ -138,15 +142,15 @@
 @implementation HWRxTableDelegate
 
 #pragma mark - Public
-- (HWRxTableDelegate *(^)(void (^)(NSIndexPath *)))cellSelected {
-    return ^(void (^callBack)(NSIndexPath *)) {
+- (HWRxTableDelegate *(^)(void (^)(id, NSIndexPath *)))cellSelected {
+    return ^(void (^callBack)(id, NSIndexPath *)) {
         self.cellSelectedBlock = callBack;
         return self;
     };
 }
 
-- (HWRxTableDelegate *(^)(float (^)(NSIndexPath *)))heightForRow {
-    return ^(float (^callBack)(NSIndexPath *)) {
+- (HWRxTableDelegate *(^)(float (^)(id, NSIndexPath *)))heightForRow {
+    return ^(float (^callBack)(id, NSIndexPath *)) {
         self.heightForRowBlock = callBack;
         return self;
     };
@@ -166,22 +170,36 @@
     };
 }
 
+
+#pragma mark - Helper
+- (id)getRowDataFor:(NSIndexPath *)indexPath {
+    NSArray<NSArray *> *array = _tableView.RxDataSource().content;
+    if (array.count > indexPath.section && array[indexPath.section].count > indexPath.row) {
+        return array[indexPath.section][indexPath.row];
+    }
+    return nil;
+}
+
 #pragma mark - UITableViewDelegate
+#define RowsEnsure \
+if ([tableView.dataSource tableView:tableView numberOfRowsInSection:section] == 0) {return CGFLOAT_MIN;}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SafeBlock(self.cellSelectedBlock, indexPath);
+    SafeBlock(self.cellSelectedBlock, [self getRowDataFor:indexPath], indexPath);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return SafeBlockDefault(50.f, self.heightForRowBlock, indexPath);
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    return SafeBlockDefault(50.f, self.heightForRowBlock, [self getRowDataFor:indexPath], indexPath);
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section { RowsEnsure
     UIView *header = SafeBlockDefault([UIView new], self.viewForHeaderBlock, section);
     return header.bounds.size.height;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section { RowsEnsure
     UIView *header = SafeBlockDefault([UIView new], self.viewForFooterBlock, section);
     return header.bounds.size.height;
 }

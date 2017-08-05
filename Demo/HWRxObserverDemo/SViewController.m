@@ -12,6 +12,7 @@
 #import "HWRxObserver.h"
 #import "UITableView+RxDataSource.h"
 #import "TestTableViewCell.h"
+#import "STestTableViewCell.h"
 
 @interface SViewController ()
 
@@ -67,38 +68,46 @@
     //        NSLog(@"_aaa dealloc");
     //    });
     
-    UIColor *myColor = [UIColor redColor];
+    _variable1 = [HWRxVariable variable:@[@"1",
+                                          @"2",
+                                          @"3",
+                                          @"4",
+                                          @"5",
+                                          @"6",
+                                          ]];
     
-    _variable1 = [HWRxVariable variable:@[[UIColor yellowColor],
-                                          [UIColor yellowColor],
-                                          [UIColor yellowColor],
-                                          [UIColor redColor],
-                                          [UIColor yellowColor],
-                                          [UIColor yellowColor]]];
+    _variable2 = [HWRxVariable variable:@[@"11",
+                                          @"12",
+                                          @"13",
+                                          @"14",
+                                          @"15",
+                                          @"16",]];
     
-    _variable2 = [HWRxVariable variable:@[[UIColor redColor],
-                                          [UIColor redColor],
-                                          [UIColor redColor],
-                                          [UIColor redColor]]];
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 400)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 400) style:UITableViewStyleGrouped];
     _tableView.backgroundColor = [UIColor grayColor];
-    
     
     
     Weakify(self)
     _tableView.RxDataSource()
-    .configureCell(@"TestTableViewCell", ^{
-        return [TestTableViewCell initFromNib];
+    .configureCell(@[@"TestTableViewCell",@"STestTableViewCell"], HW_BLOCK(NSUInteger) {
+        return $0 == 0 ? [TestTableViewCell initFromNib] : [STestTableViewCell initFromNib];
     })
-    .cellForItem(HW_BLOCK(TestTableViewCell *, UIColor *, id) {
-        $0.label.textColor = $1;
+    .cellForItem(HW_BLOCK(UITableViewCell *, NSString *, NSIndexPath *) {
+        if ($2.section == 0) {
+            TestTableViewCell *cell = (TestTableViewCell *)$0;
+            cell.label.textColor = [UIColor redColor];
+            cell.label.text = $1;
+        } else {
+            STestTableViewCell *cell = (STestTableViewCell *)$0;
+            cell.label.textColor = [UIColor yellowColor];
+            cell.label.text = $1;
+        }
     })
     .bindTo(@[_variable1, _variable2]);
     
     
     _tableView.RxDelegate()
-    .heightForRow(HW_BLOCK(NSIndexPath *) {
+    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
         return 80.f;
     })
     .viewForHeader(HW_BLOCK(NSUInteger) {
@@ -111,11 +120,12 @@
         footer.backgroundColor = [UIColor greenColor];
         return footer;
     })
-    .cellSelected(HW_BLOCK(NSIndexPath *) { Strongify(self)
-        if ($0.section == 0) {
-            [self.variable1 removeObjectAtIndex:$0.row];
+    .cellSelected(HW_BLOCK(NSString *, NSIndexPath *) { Strongify(self)
+        NSLog(@"%@", $0);
+        if ($1.section == 0) {
+            [self.variable1 removeObjectAtIndex:$1.row];
         } else {
-            [self.variable2 removeObjectAtIndex:$0.row];
+            [self.variable2 removeObjectAtIndex:$1.row];
         }
     });
     

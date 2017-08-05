@@ -66,7 +66,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 
 - (void)dealloc {
-    NSLog(@"dealloc, [key : %@]", _keyPath);
+    NSLog(@"dealloc, [key : %@]", _type == HWRxObserverType_UnOwned ? @"UnOwned" :  _keyPath);
 }
 
 - (void)onTap {
