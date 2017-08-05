@@ -18,7 +18,7 @@ typedef void (^CellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @property (nonatomic, strong, readonly) NSArray<NSArray *> *content;
 
-@property (nonatomic, readonly) HWRxTableDataSource *(^bindTo)(NSArray<HWRxVariable *> *); // bind at last
+@property (nonatomic, readonly) HWRxTableDataSource *(^bindTo)(NSArray<HWRxVariable *> *); // the last step should be bind
 @property (nonatomic, readonly) HWRxTableDataSource *(^configureCell)(NSArray<NSString *> *reusableIds, ConfigureCellCallBack);
 @property (nonatomic, readonly) HWRxTableDataSource *(^cellForItem)(CellForRowCallBack);
 

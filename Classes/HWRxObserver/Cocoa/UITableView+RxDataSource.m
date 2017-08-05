@@ -39,7 +39,7 @@
     switch (sequence.type) {
         case HWVariableChangeType_Add:
             [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:sequence.location inSection:section]] withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:sequence.location inSection:section]]withRowAnimation:UITableViewRowAnimationFade];
             [_tableView endUpdates];
             break;
         case HWVariableChangeType_Remove:
