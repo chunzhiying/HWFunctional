@@ -40,34 +40,36 @@
     })];
     
     
-    //    Weakify(self)
-    //    _aaa.Rx(@"text").response(^{ Strongify(self)
-    //        self.view.backgroundColor = [UIColor redColor];
-    //    });
-    //
+    Weakify(self)
+    _aaa.Rx(@"text").response(^{ Strongify(self)
+        self.view.backgroundColor = [UIColor redColor];
+    });
     
-    //    _customObser = HWRxInstance.asObservable();
-    //
-    //    _customObser.next(^{
-    //        return @"aa";
-    //    });
-    //
-    //    _customObser
-    //    .behavior()
-    //    .subscribe(HW_BLOCK(NSObject *) {
-    //         NSLog(@"customObser: %@", $0);
-    //    }).connect();
-    //
-    //
-    //
-    //    _customObser.next(^{
-    //        return @"bb";
-    //    });
-    //
-    //    _aaa.rx_dealloc.response(^{
-    //        NSLog(@"_aaa dealloc");
-    //    });
     
+    _customObser = HWRxInstance.create(@"custom");
+    
+    _customObser.next(^{
+        return @"aa";
+    });
+    
+    _customObser
+    .behavior()
+    .subscribe(HW_BLOCK(NSObject *) {
+        NSLog(@"customObser: %@", $0);
+    }).connect();
+    
+    
+    
+    _customObser.next(^{
+        return @"bb";
+    });
+    
+    _aaa.rx_dealloc.response(^{
+        NSLog(@"_aaa dealloc");
+    });
+    
+    
+    //////////////////////////////
     _variable1 = [HWRxVariable variable:@[@"1",
                                           @"2",
                                           @"3",
@@ -87,7 +89,6 @@
     _tableView.backgroundColor = [UIColor grayColor];
     
     
-    Weakify(self)
     _tableView.RxDataSource()
     .configureCell(@[@"TestTableViewCell",@"STestTableViewCell"], HW_BLOCK(NSUInteger) {
         return $0 == 0 ? [TestTableViewCell initFromNib] : [STestTableViewCell initFromNib];
@@ -137,18 +138,20 @@
     
     [self.view addSubview:_tableView];
     
-    //    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
-    //        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
-    //    });
-    //
-    //    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
-    //        self.view.backgroundColor = [UIColor yellowColor];
-    //    });
-    //
-    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
-    //        observer.connect();
-    //    });
+    
+    ////////////////////////////////////////
+    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
+        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
+    });
+    
+    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
+        self.view.backgroundColor = [UIColor yellowColor];
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
+        observer.connect();
+    });
     
 }
 
