@@ -11,12 +11,6 @@
 #import "NSArray+FunctionalType.h"
 #import "NSObject+RxObserver.h"
 
-#ifdef DEBUG
-#define NSLog(fmt, ...) NSLog((@"[HWRxObserver]: " fmt), ##__VA_ARGS__)
-#else
-#define NSLog(...)
-#endif
-
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     HWRxObserverType_UnKonwn, // no such property, observe failed
     HWRxObserverType_UnOwned, // created during Operating. AotuReleased when block over.
@@ -66,7 +60,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 
 - (void)dealloc {
-    NSLog(@"dealloc, [key : %@]", _type == HWRxObserverType_UnOwned ? @"UnOwned" :  _keyPath);
+    HWLog([HWRxObserver class], @"dealloc, [key : %@]", _type == HWRxObserverType_UnOwned ? @"UnOwned" :  _keyPath);
 }
 
 - (void)onTap {

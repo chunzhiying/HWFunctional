@@ -27,6 +27,12 @@
     if (!obj##_weak_) { return; } \
     Strongify(obj)
 
+// Log
+#ifdef DEBUG
+#define HWLog(class, fmt, ...) NSLog((@"[%@]: " fmt), NSStringFromClass(class), ##__VA_ARGS__)
+#else
+#define HWLog(...)
+#endif
 
 // String
 

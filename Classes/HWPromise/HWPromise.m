@@ -37,6 +37,10 @@
 
 @implementation HWPromise
 
+- (void)dealloc {
+    HWLog([HWPromise class], @"dealloc, [successObj : %@], [failObj : %@]", _successObj, _failObj);
+}
+
 - (void)setSuccessObj:(id)successObj {
     _successObj = successObj;
     if (!successObj) {
