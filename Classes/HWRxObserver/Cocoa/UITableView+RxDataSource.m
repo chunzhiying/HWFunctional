@@ -20,9 +20,7 @@
 @property (nonatomic, strong) NSMutableArray<NSArray *> *content;
 @property (nonatomic, strong) NSArray<NSString *> *dequeueReusableIds;
 
-@property (nonatomic, copy) CellForRowCallBack cellForRowBlock;
-@property (nonatomic, copy) ConfigureCellCallBack configureCellBlock;
-
+@property (nonatomic, copy) TableCellForRowCallBack cellForRowBlock;
 @property (nonatomic, copy) void(^warningBlock)(NSString *);
 
 @end
@@ -54,6 +52,13 @@
 }
 
 #pragma mark - Public
+- (HWRxTableDataSource *(^)(void (^)(NSString *)))warnings {
+    return ^(void (^callBack)(NSString *)) {
+        self.warningBlock = callBack;
+        return self;
+    };
+}
+
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
         NSAssert(variable.count == self.dequeueReusableIds.count, HWError(@"dataSource.count not equal to cell reusableIDs.count"));
@@ -72,24 +77,41 @@
     };
 }
 
-- (HWRxTableDataSource *(^)(CellForRowCallBack))cellForItem {
-    return ^(CellForRowCallBack callBack) {
+- (HWRxTableDataSource *(^)(TableCellForRowCallBack))cellForItem {
+    return ^(TableCellForRowCallBack callBack) {
         self.cellForRowBlock = callBack;
         return self;
     };
 }
 
-- (HWRxTableDataSource *(^)(NSArray<NSString *> *, ConfigureCellCallBack))configureCell {
-    return ^(NSArray<NSString *> *reusableIds, ConfigureCellCallBack callBack) {
+- (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull))registerClass {
+    return ^(NSArray<NSString *> *reusableIds) {
         self.dequeueReusableIds = reusableIds;
-        self.configureCellBlock = callBack;
+        for (NSString *reusableId in reusableIds) {
+            [_tableView registerClass:NSClassFromString(reusableId) forCellReuseIdentifier:reusableId];
+        }
         return self;
     };
 }
 
-- (HWRxTableDataSource *(^)(void (^)(NSString *)))warnings {
-    return ^(void (^callBack)(NSString *)) {
-        self.warningBlock = callBack;
+- (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull))registerNibDefault {
+    return ^(NSArray<NSString *> *reusableIds) {
+        self.dequeueReusableIds = reusableIds;
+        for (NSString *reusableId in reusableIds) {
+            [_tableView registerNib:[UINib nibWithNibName:reusableId bundle:nil] forCellReuseIdentifier:reusableId];
+        }
+        return self;
+    };
+}
+
+- (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull, NSArray<UINib *> * _Nonnull))registerNib {
+    return ^(NSArray<NSString *> *reusableIds,  NSArray<UINib *> *nibs) {
+        NSAssert(reusableIds.count == nibs.count, HWError(@"reusableIds.count not equal to nibs.count"));
+        
+        self.dequeueReusableIds = reusableIds;
+        for (NSInteger i = 0; i < reusableIds.count; i++) {
+            [_tableView registerNib:nibs[i] forCellReuseIdentifier:reusableIds[i]];
+        }
         return self;
     };
 }
@@ -114,11 +136,7 @@
         || indexPath.row >= self.content[indexPath.section].count) { ErrorCallBack
         return [UITableViewCell new];
     }
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIds[indexPath.section]];
-    if (!cell) {
-        cell = SafeBlockDefault([UITableViewCell new], self.configureCellBlock, indexPath.section);
-    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIds[indexPath.section] forIndexPath:indexPath];
     SafeBlock(self.cellForRowBlock, cell, self.content[indexPath.section][indexPath.row], indexPath);
     return cell;
 }

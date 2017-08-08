@@ -23,6 +23,11 @@
 /* Begin PBXBuildFile section */
 		981538261F32C4C400EB3DC7 /* TestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 981538241F32C4C400EB3DC7 /* TestTableViewCell.m */; };
 		981538271F32C4C400EB3DC7 /* TestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981538251F32C4C400EB3DC7 /* TestTableViewCell.xib */; };
+		9819A7C01F3956BB00DE46E0 /* UICollectionView+RxDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819A7BF1F3956BB00DE46E0 /* UICollectionView+RxDataSource.m */; };
+		9819A7C91F39A6E800DE46E0 /* TestCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819A7C71F39A6E800DE46E0 /* TestCollectionViewCell.m */; };
+		9819A7CA1F39A6E800DE46E0 /* TestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9819A7C81F39A6E800DE46E0 /* TestCollectionViewCell.xib */; };
+		9819A7CE1F39A6FF00DE46E0 /* STestCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9819A7CC1F39A6FF00DE46E0 /* STestCollectionViewCell.m */; };
+		9819A7CF1F39A6FF00DE46E0 /* STestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9819A7CD1F39A6FF00DE46E0 /* STestCollectionViewCell.xib */; };
 		9828EA211F35782F00BF2224 /* STestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9828EA1F1F35782F00BF2224 /* STestTableViewCell.m */; };
 		9828EA221F35782F00BF2224 /* STestTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9828EA201F35782F00BF2224 /* STestTableViewCell.xib */; };
 		9848B34C1F34AEF60001028A /* UITableView+RxDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9848B34B1F34AEF60001028A /* UITableView+RxDataSource.m */; };
@@ -83,6 +88,14 @@
 		981538231F32C4C400EB3DC7 /* TestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewCell.h; sourceTree = "<group>"; };
 		981538241F32C4C400EB3DC7 /* TestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewCell.m; sourceTree = "<group>"; };
 		981538251F32C4C400EB3DC7 /* TestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestTableViewCell.xib; sourceTree = "<group>"; };
+		9819A7BE1F3956BB00DE46E0 /* UICollectionView+RxDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+RxDataSource.h"; sourceTree = "<group>"; };
+		9819A7BF1F3956BB00DE46E0 /* UICollectionView+RxDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+RxDataSource.m"; sourceTree = "<group>"; };
+		9819A7C61F39A6E800DE46E0 /* TestCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestCollectionViewCell.h; sourceTree = "<group>"; };
+		9819A7C71F39A6E800DE46E0 /* TestCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestCollectionViewCell.m; sourceTree = "<group>"; };
+		9819A7C81F39A6E800DE46E0 /* TestCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestCollectionViewCell.xib; sourceTree = "<group>"; };
+		9819A7CB1F39A6FF00DE46E0 /* STestCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STestCollectionViewCell.h; sourceTree = "<group>"; };
+		9819A7CC1F39A6FF00DE46E0 /* STestCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STestCollectionViewCell.m; sourceTree = "<group>"; };
+		9819A7CD1F39A6FF00DE46E0 /* STestCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STestCollectionViewCell.xib; sourceTree = "<group>"; };
 		9828EA1E1F35782F00BF2224 /* STestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STestTableViewCell.h; sourceTree = "<group>"; };
 		9828EA1F1F35782F00BF2224 /* STestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STestTableViewCell.m; sourceTree = "<group>"; };
 		9828EA201F35782F00BF2224 /* STestTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STestTableViewCell.xib; sourceTree = "<group>"; };
@@ -160,6 +173,12 @@
 				981538231F32C4C400EB3DC7 /* TestTableViewCell.h */,
 				981538241F32C4C400EB3DC7 /* TestTableViewCell.m */,
 				981538251F32C4C400EB3DC7 /* TestTableViewCell.xib */,
+				9819A7C61F39A6E800DE46E0 /* TestCollectionViewCell.h */,
+				9819A7C71F39A6E800DE46E0 /* TestCollectionViewCell.m */,
+				9819A7C81F39A6E800DE46E0 /* TestCollectionViewCell.xib */,
+				9819A7CB1F39A6FF00DE46E0 /* STestCollectionViewCell.h */,
+				9819A7CC1F39A6FF00DE46E0 /* STestCollectionViewCell.m */,
+				9819A7CD1F39A6FF00DE46E0 /* STestCollectionViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -301,6 +320,8 @@
 				98B7857C1F3176800061DC92 /* HWRxVariable.m */,
 				9848B34A1F34AEF60001028A /* UITableView+RxDataSource.h */,
 				9848B34B1F34AEF60001028A /* UITableView+RxDataSource.m */,
+				9819A7BE1F3956BB00DE46E0 /* UICollectionView+RxDataSource.h */,
+				9819A7BF1F3956BB00DE46E0 /* UICollectionView+RxDataSource.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -417,9 +438,11 @@
 			files = (
 				98743B051DDC53B3005B394F /* LaunchScreen.storyboard in Resources */,
 				981538271F32C4C400EB3DC7 /* TestTableViewCell.xib in Resources */,
+				9819A7CA1F39A6E800DE46E0 /* TestCollectionViewCell.xib in Resources */,
 				9828EA221F35782F00BF2224 /* STestTableViewCell.xib in Resources */,
 				98743B021DDC53B3005B394F /* Assets.xcassets in Resources */,
 				98743B001DDC53B3005B394F /* Main.storyboard in Resources */,
+				9819A7CF1F39A6FF00DE46E0 /* STestCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +483,8 @@
 				98948CD51EB825ED006FBD83 /* HWAnimation+Combination.m in Sources */,
 				98B7857E1F3176800061DC92 /* HWRxObserver.m in Sources */,
 				98743B271DDC607D005B394F /* SViewController.m in Sources */,
+				9819A7CE1F39A6FF00DE46E0 /* STestCollectionViewCell.m in Sources */,
+				9819A7C01F3956BB00DE46E0 /* UICollectionView+RxDataSource.m in Sources */,
 				98B785841F3176800061DC92 /* README.md in Sources */,
 				98948CDD1EB825ED006FBD83 /* NSArray+FunctionalType.m in Sources */,
 				9828EA211F35782F00BF2224 /* STestTableViewCell.m in Sources */,
@@ -472,6 +497,7 @@
 				98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */,
 				98B785801F3176800061DC92 /* NSObject+RxObserver.m in Sources */,
 				98948CD81EB825ED006FBD83 /* HWPromise.m in Sources */,
+				9819A7C91F39A6E800DE46E0 /* TestCollectionViewCell.m in Sources */,
 				98948CD71EB825ED006FBD83 /* HWEnum.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

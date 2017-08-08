@@ -11,8 +11,11 @@
 #import "UIView+RxObserver.h"
 #import "HWRxObserver.h"
 #import "UITableView+RxDataSource.h"
+#import "UICollectionView+RxDataSource.h"
 #import "TestTableViewCell.h"
 #import "STestTableViewCell.h"
+#import "TestCollectionViewCell.h"
+#import "STestCollectionViewCell.h"
 
 @interface SViewController ()
 
@@ -20,6 +23,8 @@
 @property (nonatomic, strong) HWRxObserver *customObser;
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UICollectionView *collectionView;
+
 @property (nonatomic, strong) HWRxVariable *variable1;
 @property (nonatomic, strong) HWRxVariable *variable2;
 
@@ -85,14 +90,17 @@
                                           @"15",
                                           @"16",]];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 400) style:UITableViewStyleGrouped];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_variable1 removeObjectAtIndex:3];
+        [_variable2 removeObjectAtIndex:0];
+    });
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 250) style:UITableViewStyleGrouped];
     _tableView.backgroundColor = [UIColor grayColor];
     
     
     _tableView.RxDataSource()
-    .configureCell(@[@"TestTableViewCell",@"STestTableViewCell"], HW_BLOCK(NSUInteger) {
-        return $0 == 0 ? [TestTableViewCell initFromNib] : [STestTableViewCell initFromNib];
-    })
+    .registerNibDefault(@[@"TestTableViewCell", @"STestTableViewCell"])
     .cellForItem(HW_BLOCK(UITableViewCell *, NSString *, NSIndexPath *) {
         if ($2.section == 0) {
             TestTableViewCell *cell = (TestTableViewCell *)$0;
@@ -130,13 +138,30 @@
         }
     });
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_variable1 removeObjectAtIndex:3];
-        [_variable2 removeObjectAtIndex:0];
-    });
-    
-    
     [self.view addSubview:_tableView];
+    
+    ////////////////////////////////////////
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(60, 60);
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 380, 320, 250) collectionViewLayout:layout];
+    _collectionView.backgroundColor = [UIColor brownColor];
+    
+    _collectionView.RxDataSource()
+    .registerNibDefault(@[@"TestCollectionViewCell", @"STestCollectionViewCell"])
+    .cellForItem(HW_BLOCK(UICollectionViewCell *, NSString *, NSIndexPath *) {
+        if ($2.section == 0) {
+            TestCollectionViewCell *cell = (TestCollectionViewCell *)$0;
+            cell.label.textColor = [UIColor redColor];
+            cell.label.text = $1;
+        } else {
+            STestCollectionViewCell *cell = (STestCollectionViewCell *)$0;
+            cell.label.textColor = [UIColor yellowColor];
+            cell.label.text = $1;
+        }
+    }).bindTo(@[_variable1, _variable2]);
+    
+     [self.view addSubview:_collectionView];
     
     
     ////////////////////////////////////////

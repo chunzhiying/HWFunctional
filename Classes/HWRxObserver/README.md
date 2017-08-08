@@ -29,11 +29,11 @@
 #### UIView+RxObserver
 - ```rx_tap```点击事件的处理
 
-#### UITableView+RxObserver
-通过把tableView与variable绑定，实现只需要改变variable的内容，tableview自动变化。
+#### UITableView & UICollectionView + RxObserver
+通过把tableView、collectionView与variable绑定，实现只需要改变variable的内容，对应控件的数据自动变化。
 
 - **HWRxVariable**：内部是一个```MutableArray```，在容器变化的时候，通过一个自建的```observer```往外发信号。
-- **RxDataSource**：```cell```与绑定的```variable```数据量一致，一个```variable```为一个```section```。目前只实现在一个```section```中只有一个```cell```类。```configureCell```用来初始化```cell```，设置```reusableIDs```(数量要跟```variable```数量一样)后，在```cellForItem```可以直接套数据。
+- **RxDataSource**：```cell```与绑定的```variable```数据量一致，一个```variable```为一个```section```。目前只实现在一个```section```中只有一个```cell```类。```register```用来注册```cell```（nib 或 class），设置```reusableIDs```(数量要跟```variable```数量一样)后，在```cellForItem```可以直接套数据。
 - **RxDelegate**：与```DataSource```分开的原因是，```delegate```方法比较多，```RxDelegate```只提供常用的，若使用未覆盖到的代理，可以舍弃```RxDelegate```，只用```RxDataSource```。
 
 ### 详见Demo
