@@ -12,7 +12,7 @@
 #import "NSObject+RxObserver.h"
 
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
-    HWRxObserverType_UnKonwn, // no such property, observe failed
+    HWRxObserverType_UnKnown, // no such property, observe failed
     HWRxObserverType_UnOwned, // created during Operating. AotuReleased when block over.
     HWRxObserverType_KVO,
     HWRxObserverType_Notification,
@@ -26,7 +26,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     BOOL _connect;
     
     NSObject *_latestData;
-    NSObject *_startWithData;
+    NSMutableArray *_startWithDataAry;
+    
     NSMutableArray<nextType> *_nextBlockAry;
     NSMutableArray<nextBlankType> *_nextBlankBlockAry;
     
@@ -37,6 +38,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 @property (nonatomic, strong) NSObject *rxObj;
+@property (nonatomic, copy) NSString *targetDesc;
 
 @end
 
@@ -46,25 +48,44 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     self = [super init];
     if (self) {
         self.tapAction = @selector(onTap);
-        _nextBlockAry = [NSMutableArray new];
-        _nextBlankBlockAry = [NSMutableArray new];
         _debounceEnable = YES;
         _throttleEnable = YES;
-        _connect = YES;
+        _connect        = YES;
         _debounceValue = 0;
         _throttleValue = 0;
-        _type = HWRxObserverType_UnKonwn;
+        _nextBlockAry       = @[].mutableCopy;
+        _nextBlankBlockAry  = @[].mutableCopy;
+        _startWithDataAry   = @[].mutableCopy;
+        _type = HWRxObserverType_UnKnown;
     }
     return self;
 }
 
 
 - (void)dealloc {
-    HWLog([HWRxObserver class], @"dealloc, [key : %@]", _type == HWRxObserverType_UnOwned ? @"UnOwned" :  _keyPath);
+    NSString *key = @"";
+    switch (_type) {
+        case HWRxObserverType_KVO:
+        case HWRxObserverType_Notification:
+            key = [NSString stringWithFormat:@"%@.%@", _targetDesc, _keyPath]; break;
+        case HWRxObserverType_Special:
+        case HWRxObserverType_UserDefined:
+            key = [NSString stringWithFormat:@"%@", _keyPath]; break;
+        case HWRxObserverType_UnOwned:
+            key = @"UnOwned"; break;
+        case HWRxObserverType_UnKnown:
+            key = @"UnKnown error"; break;
+    }
+    HWLog([HWRxObserver class], @"dealloc, [key : %@]", key);
 }
 
 - (void)onTap {
     self.rxObj = @"onTap";
+}
+
+- (void)setTarget:(NSObject *)target {
+    _target = target;
+    self.targetDesc = NSStringFromClass([target class]);
 }
 
 - (void)setKeyPath:(NSString *)keyPath {
@@ -104,13 +125,13 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 #pragma mark - Post
 - (void)postTo:(nextType)block with:(NSObject *)data {
-    if (!data || !_connect) {
-        return;
+    if (!data || [data isKindOfClass:[NSNull class]]) {
+        data = nil;
     }
-    if ([data isEqual:_startWithData]) {
-        _startWithData = nil;
+    BOOL isStartData = [_startWithDataAry containsObject:data];
+    if (isStartData || _connect) {
+        SafeBlock(block, data);
     }
-    SafeBlock(block, data);
 }
 
 - (void)postTo:(nextBlankType)block {
@@ -179,7 +200,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 - (HWRxObserver * _Nonnull (^)(NSString *))create {
     return ^(NSString *desc) {
-        if (_type == HWRxObserverType_UnKonwn) {
+        if (_type == HWRxObserverType_UnKnown) {
             _type = HWRxObserverType_UserDefined;
             _keyPath = desc;
         }
@@ -187,14 +208,24 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     };
 }
 
-- (HWRxObserver * _Nonnull (^)(nextSendType _Nonnull))next {
-    return ^(nextSendType block) {
-        NSObject *next = block();
-        if (next) {
-            _latestData = next;
-            self.rxObj = next;
+- (HWRxObserver * _Nonnull (^)(id))next {
+    return ^(id nextObj) {
+        if ([nextObj isKindOfClass:NSClassFromString(@"NSBlock")]) {
+            NSAssert(NO, @"next obj can't be a block");
+        }
+        if (nextObj) {
+            _latestData = nextObj;
+            self.rxObj = nextObj;
         }
         return self;
+    };
+}
+
+- (HWRxObserver * _Nonnull (^)(NSArray * _Nonnull))of {
+    return ^(NSArray *signals) {
+        return self
+        .create(@"create by [of]")
+        .startWith(signals);
     };
 }
 
@@ -205,7 +236,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (HWRxObserver *(^)(nextType))subscribe {
     return ^(nextType block) {
         [_nextBlockAry addObject:block];
-        [self postTo:block with:_startWithData];
+        _startWithDataAry.forEach(HW_BLOCK(id) {
+            [self postTo:block with:$0];
+        });
         return self;
     };
 }
@@ -254,9 +287,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     };
 }
 
-- (HWRxObserver *(^)(id))startWith {
-    return ^(NSObject *data) {
-        _startWithData = data;
+- (HWRxObserver *(^)(NSArray *))startWith {
+    return ^(NSArray *data) {
+        _startWithDataAry = [[NSMutableArray alloc] initWithArray:data];
         return self;
     };
 }
@@ -272,7 +305,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     return ^() {
         if (!_connect) {
             _connect = YES;
-            !_startWithData ?: [self postAllWith:_startWithData];
             !_latestData ?: [self postAllWith:_latestData];
         }
         _connect = YES;
@@ -283,7 +315,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (HWRxObserver *(^)())disconnect {
     return ^() {
         _connect = NO;
-        _startWithData = nil;
         return self;
     };
 }

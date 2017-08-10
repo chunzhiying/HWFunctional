@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^nextBlankType)();
 typedef void(^nextType)(id obj);
 
-typedef NSObject * _Nonnull (^nextSendType)();
-
 @interface HWRxObserver : NSObject <HWFunctionalType>
 
 @property (nonatomic, weak) NSObject *target;
@@ -36,7 +34,8 @@ typedef NSObject * _Nonnull (^nextSendType)();
 @interface HWRxObserver (Create_Extension)
 
 @property (nonatomic, readonly) HWRxObserver *(^create)(NSString *desc); // show in keyPath for description
-@property (nonatomic, readonly) HWRxObserver *(^next)(nextSendType);
+@property (nonatomic, readonly) HWRxObserver *(^next)(id);
+@property (nonatomic, readonly) HWRxObserver *(^of)(NSArray *);
 
 @end
 
@@ -51,7 +50,7 @@ typedef NSObject * _Nonnull (^nextSendType)();
 
 @property (nonatomic, readonly) HWRxObserver *(^debounce)(CGFloat value); // received, then wait value seconds.
 @property (nonatomic, readonly) HWRxObserver *(^throttle)(CGFloat value); // after value seconds, then received.
-@property (nonatomic, readonly) HWRxObserver *(^startWith)(id object);
+@property (nonatomic, readonly) HWRxObserver *(^startWith)(NSArray *);
 
 @property (nonatomic, readonly) HWRxObserver *(^behavior)(); // receive data until connect()
 @property (nonatomic, readonly) HWRxObserver *(^connect)();

@@ -46,10 +46,8 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 }
 
 #pragma mark - Private
-- (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {Weakify(self)
-    _observer.next(^{ Strongify(self)
-        return HWVariableSquenceInit(self.content, location, type);
-    });
+- (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {
+    _observer.next(HWVariableSquenceInit(self.content, location, type));
 }
 
 #pragma mark - Public

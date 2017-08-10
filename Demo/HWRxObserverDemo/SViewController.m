@@ -38,24 +38,33 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:[UILabel new].then(HW_BLOCK(UILabel *) {
-        $0.frame = CGRectMake(20, 100, 300, 50);
+        $0.frame = CGRectMake(350, 100, 300, 50);
         $0.text = @"aaa.text";
         $0.textColor = [UIColor blackColor];
         _aaa = $0;
     })];
     
-    
     Weakify(self)
-    _aaa.Rx(@"text").response(^{ Strongify(self)
+    _aaa.Rx(@"text").subscribe(HW_BLOCK(id){ Strongify(self)
         self.view.backgroundColor = [UIColor redColor];
+        if ($0 == nil) {
+            NSLog(@"nil");
+        }
+        NSLog(@"text: %@", $0);
     });
     
     
     _customObser = HWRxInstance.create(@"custom");
     
-    _customObser.next(^{
-        return @"aa";
+    HWRxObserver *ofObser =
+    HWRxInstance.of(@[@(1),@(2)]);
+    
+    ofObser.subscribe(HW_BLOCK(id) {
+        NSLog(@"of: %@", $0);
     });
+    
+    
+    _customObser.next(@"aa");
     
     _customObser
     .behavior()
@@ -63,15 +72,20 @@
         NSLog(@"customObser: %@", $0);
     }).connect();
     
-    
-    
-    _customObser.next(^{
-        return @"bb";
-    });
+    _customObser.next(@"bb");
     
     _aaa.rx_dealloc.response(^{
         NSLog(@"_aaa dealloc");
     });
+    
+    ofObser.subscribe(HW_BLOCK(id) {
+        NSLog(@"of: %@", $0);
+    });
+    
+    ofObser.response(^ {
+        NSLog(@"of");
+    });
+
     
     
     //////////////////////////////
@@ -166,7 +180,8 @@
     
     ////////////////////////////////////////
     HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
-        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
+//        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
+        self.aaa.text = nil;
     });
     
     HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
