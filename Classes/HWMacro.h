@@ -28,11 +28,13 @@
     Strongify(obj)
 
 // Log
+
 #ifdef DEBUG
 #define HWLog(class, fmt, ...) NSLog((@"[%@]: " fmt), NSStringFromClass(class), ##__VA_ARGS__)
 #else
 #define HWLog(...)
 #endif
+
 
 // String
 
@@ -41,6 +43,11 @@
 
 #define ConstStringDefine(atName) \
     NSString * const atName = @#atName;
+
+
+// Queue
+
+#define HWMainQueue dispatch_get_main_queue()
 
 
 // Parameter

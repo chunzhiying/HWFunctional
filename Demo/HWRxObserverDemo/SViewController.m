@@ -44,8 +44,16 @@
         _aaa = $0;
     })];
     
+    
+    dispatch_queue_t queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
+    
+    
+    
+    /////////////////////////////////////////
+    
     Weakify(self)
-    _aaa.Rx(@"text").subscribe(HW_BLOCK(id){ Strongify(self)
+    _aaa.Rx(@"text").observeOn(HWMainQueue)
+    .subscribe(HW_BLOCK(id){ Strongify(self)
         self.view.backgroundColor = [UIColor redColor];
         if ($0 == nil) {
             NSLog(@"nil");
@@ -53,15 +61,10 @@
         NSLog(@"text: %@", $0);
     });
     
-    
     _customObser = HWRxInstance.create(@"custom");
     
     HWRxObserver *ofObser =
-    HWRxInstance.of(@[@(1),@(2)]);
-    
-    ofObser.subscribe(HW_BLOCK(id) {
-        NSLog(@"of: %@", $0);
-    });
+    HWRxInstance.of(@[@(1),@(2)]).observeOn(queue);
     
     
     _customObser.next(@"aa");
@@ -180,12 +183,16 @@
     
     ////////////////////////////////////////
     HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
-//        self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
-        self.aaa.text = nil;
+//        dispatch_async(queue, ^{
+            self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
+//        });
     });
     
     HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
         self.view.backgroundColor = [UIColor yellowColor];
+        ofObser.subscribe(HW_BLOCK(id) {
+            NSLog(@"of: %@", $0);
+        });
     });
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

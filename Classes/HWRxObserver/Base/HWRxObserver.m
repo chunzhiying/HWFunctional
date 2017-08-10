@@ -35,6 +35,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     BOOL _throttleEnable;
     CGFloat _debounceValue;
     CGFloat _throttleValue;
+    
+    __weak dispatch_queue_t _queue;
 }
 
 @property (nonatomic, strong) NSObject *rxObj;
@@ -124,13 +126,15 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 #pragma mark - Post
+#define PostToQueue(...) if (_queue) { dispatch_async(_queue, ^{SafeBlock(__VA_ARGS__)}); } else { SafeBlock(__VA_ARGS__) }
+
 - (void)postTo:(nextType)block with:(NSObject *)data {
     if (!data || [data isKindOfClass:[NSNull class]]) {
         data = nil;
     }
     BOOL isStartData = [_startWithDataAry containsObject:data];
     if (isStartData || _connect) {
-        SafeBlock(block, data);
+        PostToQueue(block, data)
     }
 }
 
@@ -138,7 +142,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     if (!_connect) {
         return;
     }
-    SafeBlock(block);
+    PostToQueue(block)
 }
 
 - (void)postAllWith:(NSObject *)data {
@@ -232,6 +236,13 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 @end
 
 @implementation HWRxObserver (Base_Extension)
+
+- (HWRxObserver * _Nonnull (^)(dispatch_queue_t _Nonnull))observeOn {
+    return ^(dispatch_queue_t queue) {
+        _queue = queue;
+        return self;
+    };
+}
 
 - (HWRxObserver *(^)(nextType))subscribe {
     return ^(nextType block) {

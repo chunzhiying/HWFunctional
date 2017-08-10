@@ -42,6 +42,7 @@ typedef void(^nextType)(id obj);
 
 @interface HWRxObserver (Base_Extension)
 
+@property (nonatomic, readonly) HWRxObserver *(^observeOn)(dispatch_queue_t);
 @property (nonatomic, readonly) HWRxObserver *(^subscribe)(nextType);
 @property (nonatomic, readonly) HWRxObserver *(^response)(nextBlankType); //not response to startWith
 
