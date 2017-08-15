@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HWFunctional"
-  s.version      = "0.3.8"
+  s.version      = "0.4.2"
   s.summary      = "Functional tools for Objective-C."
 
   s.description  = <<-DESC
