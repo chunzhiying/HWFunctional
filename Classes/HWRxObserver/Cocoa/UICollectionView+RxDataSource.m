@@ -31,6 +31,12 @@
     
 }
 
+#pragma mark - Private
+- (void)reloadData:(HWVariableSequence *)sequence effectSection:(NSUInteger)section {
+    _content[section] = sequence.content;
+    [self.collectionView reloadData];
+}
+
 #pragma mark - Public
 - (HWRxCollectionDataSource *(^)(void (^)(NSString *)))warnings {
     return ^(void (^callBack)(NSString *)) {
@@ -44,12 +50,12 @@
         NSAssert(variable.count == self.dequeueReusableIds.count, HWError(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
-            return [$0 convert];
+            return [$0 content];
         }).mutate();
         
         variable.forEachWithIndex(HW_BLOCK(HWRxVariable *, NSUInteger) {
             $0.observer.subscribe(^(HWVariableSequence *sequence) { Strongify(self)
-                [self.collectionView reloadData];
+                [self reloadData:sequence effectSection:$1];
             });
         });
         [self.collectionView reloadData];

@@ -11,13 +11,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef BOOL(^refreshCallBack)(id object, NSInteger index);
+
 @interface HWRxVariable : NSObject
 
 @property (nonatomic, readonly) NSUInteger count;
 @property (nonatomic, strong, readonly) HWRxObserver *observer; //HWVariableSquence
 
 + (instancetype)variable:(NSArray *)array;
-- (NSArray *)convert;
+
+- (NSArray *)content;
 
 - (id)objectAtIndex:(NSUInteger)index;
 
@@ -26,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addObject:(id)object;
 - (void)removeObject:(id)object;
+
+- (void)replaceByObject:(id)object select:(refreshCallBack)callBack;
 - (void)reloadObject:(NSArray *)objects;
 
 @end

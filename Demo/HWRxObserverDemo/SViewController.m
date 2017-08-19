@@ -128,6 +128,8 @@
             cell.label.textColor = [UIColor yellowColor];
             cell.label.text = $1;
         }
+//        $0.label.textColor = [UIColor redColor];
+//        $0.label.text = $1;
     })
     .bindTo(@[_variable1, _variable2]);
     
@@ -198,6 +200,12 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
         observer.connect();
+        
+        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
+//            return [$0 isEqualToString:@"1"];
+            BOOL result = $1 == 3;
+            return result;
+        }];
     });
     
 }

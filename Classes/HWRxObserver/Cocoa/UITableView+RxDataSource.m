@@ -64,7 +64,7 @@
         NSAssert(variable.count == self.dequeueReusableIds.count, HWError(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
-            return [$0 convert];
+            return [$0 content];
         }).mutate();
         
         variable.forEachWithIndex(HW_BLOCK(HWRxVariable *, NSUInteger) {

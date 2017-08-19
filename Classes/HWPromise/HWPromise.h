@@ -7,9 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HWTypeDef.h"
+#import "HWFunctionalType.h"
 
 #define HWPromiseNetworkFail promise.failObj = @"网络异常";
+
+#define HWPromiseFailInstance(obj) \
+(HWPromise *)[HWPromise new].then(HW_BLOCK(HWPromise *) {$0.failObj = obj;})
+
+#define HWPromiseSuccessInstance(obj) \
+(HWPromise *)[HWPromise new].then(HW_BLOCK(HWPromise *) {$0.successObj = obj;})
+
 
 NS_ASSUME_NONNULL_BEGIN
 

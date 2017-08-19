@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^TableCellForRowCallBack)(UITableViewCell *cell, id data, NSIndexPath *);
+typedef void (^TableCellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @interface HWRxTableDataSource : NSObject <UITableViewDataSource>
 

@@ -8,6 +8,7 @@
 
 #import "HWRxVariable.h"
 #import "HWMacro.h"
+#import "NSArray+FunctionalType.h"
 
 static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger index, HWVariableChangeType type) {
     return [HWVariableSequence new].then(HW_BLOCK(HWVariableSequence *) {
@@ -44,6 +45,7 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 - (NSArray *)convert {
     return _content;
 }
+
 
 #pragma mark - Private
 - (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {
@@ -85,6 +87,17 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     }
     _content = objects.mutableCopy;
     [self postNextWithLocation:NSUIntegerMax type:HWVariableChangeType_Reload];
+}
+
+- (void)replaceByObject:(id)object select:(refreshCallBack)callBack {
+    NSMutableArray *newContent = _content.mutableCopy;
+    _content.forEachWithIndex(HW_BLOCK(id, NSUInteger) {
+        if (callBack($0, $1)) {
+            [newContent removeObjectAtIndex:$1];
+            [newContent insertObject:object atIndex:$1];
+        }
+    });
+    [self reloadObject:newContent];
 }
 
 #pragma mark - 

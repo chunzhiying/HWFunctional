@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^CollectionCellForRowCallBack)(UICollectionViewCell *cell, id data, NSIndexPath *);
+typedef void (^CollectionCellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @interface HWRxCollectionDataSource : NSObject <UICollectionViewDataSource>
 
