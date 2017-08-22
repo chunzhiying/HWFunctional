@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         _nextBlockAry       = @[].mutableCopy;
         _nextBlankBlockAry  = @[].mutableCopy;
         _startWithDataAry   = @[].mutableCopy;
-        _type = HWRxObserverType_UnKnown;
+        _type = HWRxObserverType_UnOwned;
     }
     return self;
 }
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         case HWRxObserverType_UnOwned:
             key = @"UnOwned"; break;
         case HWRxObserverType_UnKnown:
-            key = @"UnKnown error"; break;
+            key = [NSString stringWithFormat:@"UnKonwn Error [key : %@]", _keyPath]; break;
     }
     HWLog([HWRxObserver class], @"dealloc, [key : %@]", key);
 }
@@ -157,6 +157,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 #pragma mark - Register
 - (void)registeredToObserve:(NSObject *)object {
     
+    _type = HWRxObserverType_UnKnown;
+    
     if ([_keyPath isEqualToString:@"RxObserver_dealloc"]
         || [_keyPath isEqualToString:@"RxObserver_tap"])
     {
@@ -204,7 +206,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 - (HWRxObserver * _Nonnull (^)(NSString *))create {
     return ^(NSString *desc) {
-        if (_type == HWRxObserverType_UnKnown) {
+        if (_type == HWRxObserverType_UnOwned) {
             _type = HWRxObserverType_UserDefined;
             _keyPath = desc;
         }

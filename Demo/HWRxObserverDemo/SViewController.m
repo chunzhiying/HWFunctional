@@ -61,6 +61,10 @@
         NSLog(@"text: %@", $0);
     });
     
+    _aaa.Rx(@"bbb").response(^{
+    
+    });
+    
     _customObser = HWRxInstance.create(@"custom");
     
     HWRxObserver *ofObser =
@@ -70,7 +74,9 @@
     _customObser.next(@"aa");
     
     _customObser
-    .behavior()
+    .behavior().map(HW_BLOCK(id) {
+        return $0;
+    })
     .subscribe(HW_BLOCK(NSObject *) {
         NSLog(@"customObser: %@", $0);
     }).connect();
