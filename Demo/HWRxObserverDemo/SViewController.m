@@ -21,6 +21,9 @@
 
 @property (nonatomic, strong) UILabel *aaa;
 @property (nonatomic, strong) HWRxObserver *customObser;
+@property (nonatomic, strong) HWRxObserver *observer1;
+@property (nonatomic, strong) HWRxObserver *observer2;
+@property (nonatomic, strong) HWRxObserver *observer3;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -45,11 +48,50 @@
     })];
     
     
-    dispatch_queue_t queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
+    /////////////////////////////////////////////
+    // rx_dealloc
+    
+    _aaa.rx_dealloc.response(^{
+        NSLog(@"_aaa dealloc");
+    });
+    
+    
+    //////////////////////////////////////////////
+    // switchLatest
+    
+    _customObser = HWRxInstance.create(@"switchLatest custom");
+    _observer1 = HWRxInstance.create(@"switchLatest test1");
+    _observer2 = HWRxInstance.create(@"switchLatest test2");
+    _observer3 = HWRxInstance.create(@"switchLatest test3");
+    
+    HWRxObserver *switchObserver = _customObser.switchLatest();
+    switchObserver
+    .subscribe(HW_BLOCK(id) {
+        NSLog(@"switchLatest %@", $0);
+    });
+    
+    _customObser.next(_observer1);
+    _observer1.next(@(11));
+    _observer1.next(@(12));
+    
+    _customObser.next(_observer2);
+    _observer1.next(@(13));
+    _observer2.next(@(21));
+    _observer2.next(@(22));
+    
+    _customObser.next(_observer3);
+    _observer1.next(@(14));
+    _observer2.next(@(23));
+    _observer3.next(@(31));
+    
+    NSLog(@"switchObserver retainCount: %@", @(CFGetRetainCount((__bridge CFTypeRef)switchObserver)));
     
     
     
     /////////////////////////////////////////
+    // observeOn
+    
+    dispatch_queue_t queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
     Weakify(self)
     _aaa.Rx(@"text").observeOn(HWMainQueue)
@@ -65,11 +107,13 @@
     
     });
     
+    
+    
+    
+    /////////////////////////////////////////
+    // behavior + connect
+    
     _customObser = HWRxInstance.create(@"custom");
-    
-    HWRxObserver *ofObser =
-    HWRxInstance.of(@[@(1),@(2)]).observeOn(queue);
-    
     
     _customObser.next(@"aa");
     
@@ -82,10 +126,15 @@
     }).connect();
     
     _customObser.next(@"bb");
+
     
-    _aaa.rx_dealloc.response(^{
-        NSLog(@"_aaa dealloc");
-    });
+    
+    
+    /////////////////////////////////////////
+    // of
+    
+    HWRxObserver *ofObser =
+    HWRxInstance.of(@[@(1),@(2)]).observeOn(queue);
     
     ofObser.subscribe(HW_BLOCK(id) {
         NSLog(@"of: %@", $0);
@@ -94,10 +143,13 @@
     ofObser.response(^ {
         NSLog(@"of");
     });
-
     
     
-    //////////////////////////////
+    
+    
+    /////////////////////////////////////////
+    // HWRxVariable + UITableView
+    
     _variable1 = [HWRxVariable variable:@[@"1",
                                           @"2",
                                           @"3",
@@ -165,7 +217,13 @@
     
     [self.view addSubview:_tableView];
     
-    ////////////////////////////////////////
+    
+    
+    
+    
+    /////////////////////////////////////////
+    // HWRxVariable + UICollectionView
+    
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(60, 60);
     
@@ -189,17 +247,16 @@
      [self.view addSubview:_collectionView];
     
     
-    ////////////////////////////////////////
-    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
-//        dispatch_async(queue, ^{
-            self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
-//        });
-    });
     
-    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
-        self.view.backgroundColor = [UIColor yellowColor];
-        ofObser.subscribe(HW_BLOCK(id) {
-            NSLog(@"of: %@", $0);
+    
+    
+    
+    /////////////////////////////////////////
+    // HWRxVariable + UICollectionView
+    
+    HWRxObserver *observer = _aaa.rx_tap.debounce(0.5).behavior().response(^{ Strongify(self)
+        dispatch_async(queue, ^{
+            self.aaa.text = [NSString stringWithFormat:@"%@,click", self.aaa.text];
         });
     });
     
@@ -208,10 +265,24 @@
         observer.connect();
         
         [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
-//            return [$0 isEqualToString:@"1"];
+            //            return [$0 isEqualToString:@"1"];
             BOOL result = $1 == 3;
             return result;
         }];
+    });
+    
+    
+    
+    
+    
+    
+    ////////////////////////////////////////
+    // Notification
+    HWRxNoCenter.Rx(@"bbaNotification").disposeBy(self).subscribe(^(NSDictionary *userInfo) { Strongify(self)
+        self.view.backgroundColor = [UIColor yellowColor];
+        ofObser.subscribe(HW_BLOCK(id) {
+            NSLog(@"of: %@", $0);
+        });
     });
     
 }

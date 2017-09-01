@@ -25,9 +25,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     HWRxObserverType _type;
     BOOL _connect;
     
-    NSObject *_latestData;
     NSMutableArray *_startWithDataAry;
-    
     NSMutableArray<nextType> *_nextBlockAry;
     NSMutableArray<nextBlankType> *_nextBlankBlockAry;
     
@@ -76,13 +74,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         case HWRxObserverType_UnOwned:
             key = @"UnOwned"; break;
         case HWRxObserverType_UnKnown:
-            key = [NSString stringWithFormat:@"UnKonwn Error [key : %@]", _keyPath]; break;
+            key = [NSString stringWithFormat:@"UnKnown Error [key : %@]", _keyPath]; break;
     }
     HWLog([HWRxObserver class], @"dealloc, [key : %@]", key);
-}
-
-- (void)onTap {
-    self.rxObj = @"onTap";
 }
 
 - (void)setTarget:(NSObject *)target {
@@ -93,11 +87,17 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (void)setKeyPath:(NSString *)keyPath {
     _keyPath = keyPath;
     if (_target && class_getProperty([_target class], [keyPath cStringUsingEncoding:NSASCIIStringEncoding])) {
-        _latestData = [_target valueForKey:keyPath];
+        _rxObj = [_target valueForKey:keyPath];
     }
 }
 
 - (void)setRxObj:(NSObject *)rxObj {
+    
+    if ([_rxObj isKindOfClass:[HWRxObserver class]]) {
+        ((HWRxObserver *)_rxObj).disconnect();
+    }
+    
+    _rxObj = rxObj;
     
     if (!(_debounceEnable && _throttleEnable && _connect)) {
         return;
@@ -117,7 +117,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_throttleValue * NSEC_PER_SEC)),
                        dispatch_get_main_queue(), ^{
                            _throttleEnable = YES;
-                           [self postAllWith:_latestData];
+                           [self postAllWith:_rxObj];
                        });
         return;
     }
@@ -185,7 +185,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (void)onNofication:(NSNotification *)notification
 {
     NSDictionary *userInfo = notification.userInfo ? notification.userInfo : [NSDictionary new];
-    _latestData = userInfo;
     self.rxObj = userInfo;
 }
 
@@ -196,8 +195,12 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     if (![keyPath isEqualToString:_keyPath]) {
         return;
     }
-    _latestData = change[@"new"];
     self.rxObj = change[@"new"];
+}
+
+#pragma mark - Tap
+- (void)onTap {
+    self.rxObj = @"onTap";
 }
 
 @end
@@ -220,7 +223,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
             NSAssert(NO, @"next obj can't be a block");
         }
         if (nextObj) {
-            _latestData = nextObj;
             self.rxObj = nextObj;
         }
         return self;
@@ -232,6 +234,24 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         return self
         .create(@"create by [of]")
         .startWith(signals);
+    };
+}
+
+- (HWRxObserver * _Nonnull (^)())switchLatest {
+    return ^{
+        HWRxObserver *observer = HWRxInstance.create(@"creat by [switchLatest]");
+        self.subscribe(HW_BLOCK(HWRxObserver *) {
+            if (![$0 isKindOfClass:[HWRxObserver class]]) {
+                HWError([HWRxObserver class], @"switchLatest require HWRxObserver signal");
+                return;
+            }
+            Weakify(observer)
+            $0.subscribe(HW_BLOCK(id) {
+                StrongifyEnsure(observer)
+                observer.next($0);
+            });
+        });
+        return observer;
     };
 }
 
@@ -318,7 +338,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     return ^() {
         if (!_connect) {
             _connect = YES;
-            !_latestData ?: [self postAllWith:_latestData];
+            !_rxObj ?: [self postAllWith:_rxObj];
         }
         _connect = YES;
         return self;

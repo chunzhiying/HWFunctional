@@ -31,8 +31,10 @@
 
 #ifdef DEBUG
 #define HWLog(class, fmt, ...) NSLog((@"[%@]: " fmt), NSStringFromClass(class), ##__VA_ARGS__)
+#define HWError(class, fmt, ...) NSLog((@"[%@] error: " fmt), NSStringFromClass(class), ##__VA_ARGS__)
 #else
 #define HWLog(...)
+#define HWError(...)
 #endif
 
 

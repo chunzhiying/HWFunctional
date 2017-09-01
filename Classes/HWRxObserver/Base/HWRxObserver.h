@@ -37,6 +37,8 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^next)(id);
 @property (nonatomic, readonly) HWRxObserver *(^of)(NSArray *);
 
+@property (nonatomic, readonly) HWRxObserver *(^switchLatest)(); // next: HWRxObserver, always subscribe the new one
+
 @end
 
 
