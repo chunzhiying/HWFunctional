@@ -7,30 +7,34 @@
 //
 
 #import "HWRxObserver.h"
+#import "HWWeakTimer.h"
 #import <objc/runtime.h>
 #import "NSArray+FunctionalType.h"
 #import "NSObject+RxObserver.h"
 
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
-    HWRxObserverType_UnKnown, // no such property, observe failed
-    HWRxObserverType_UnOwned, // created during Operating. AotuReleased when block over.
+    HWRxObserverType_UnOwned, // Default. created during Operating. AotuReleased when block over.
     HWRxObserverType_KVO,
     HWRxObserverType_Notification,
     HWRxObserverType_UserDefined,
+    HWRxObserverType_Schedule,
     HWRxObserverType_Special, //RxObserver_dealloc、RxObserver_tap
+    HWRxObserverType_UnKnown, // no such property, observe failed
 };
 
 @interface HWRxObserver ()
 {
     HWRxObserverType _type;
-    BOOL _connect;
     
+    NSTimer *_timer;
     NSMutableArray *_startWithDataAry;
     NSMutableArray<nextType> *_nextBlockAry;
     NSMutableArray<nextBlankType> *_nextBlankBlockAry;
     
+    BOOL _connect;
     BOOL _debounceEnable;
     BOOL _throttleEnable;
+    
     CGFloat _debounceValue;
     CGFloat _throttleValue;
     
@@ -71,6 +75,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         case HWRxObserverType_Special:
         case HWRxObserverType_UserDefined:
             key = [NSString stringWithFormat:@"%@", _keyPath]; break;
+        case HWRxObserverType_Schedule:
+            key = @"Schedule"; break;
         case HWRxObserverType_UnOwned:
             key = @"UnOwned"; break;
         case HWRxObserverType_UnKnown:
@@ -157,7 +163,10 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 #pragma mark - Register
 - (void)registeredToObserve:(NSObject *)object {
     
-    _type = HWRxObserverType_UnKnown;
+    if (_type == HWRxObserverType_UserDefined
+        || _type == HWRxObserverType_Schedule) {
+        return;
+    }
     
     if ([_keyPath isEqualToString:@"RxObserver_dealloc"]
         || [_keyPath isEqualToString:@"RxObserver_tap"])
@@ -179,6 +188,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
                     options:NSKeyValueObservingOptionNew context:NULL];
         return;
     }
+    
+    _type = HWRxObserverType_UnKnown;
 }
 
 #pragma mark - Notification
@@ -237,22 +248,50 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     };
 }
 
-- (HWRxObserver * _Nonnull (^)())switchLatest {
-    return ^{
-        HWRxObserver *observer = HWRxInstance.create(@"creat by [switchLatest]");
-        self.subscribe(HW_BLOCK(HWRxObserver *) {
-            if (![$0 isKindOfClass:[HWRxObserver class]]) {
-                HWError([HWRxObserver class], @"switchLatest require HWRxObserver signal");
-                return;
-            }
-            Weakify(observer)
-            $0.subscribe(HW_BLOCK(id) {
-                StrongifyEnsure(observer)
-                observer.next($0);
-            });
-        });
-        return observer;
+@end
+
+@implementation HWRxObserver (Schedule_Extension)
+
+- (HWRxObserver *(^)(NSUInteger, BOOL))schedule {
+    return ^(NSUInteger interval, BOOL repeat) {
+        if (_type != HWRxObserverType_UnOwned) {
+            HWError([HWRxObserver class], @"type error! cannot 'schedule'");
+            return self;
+        }
+        _type = HWRxObserverType_Schedule;
+        [self runTimer:interval repeat:repeat];
+        return self;
     };
+}
+
+- (HWRxObserver * _Nonnull (^)())stop {
+    return ^{
+        if (_type != HWRxObserverType_Schedule) {
+            HWError([HWRxObserver class], @"type error! cannot 'stop'");
+            return self;
+        }
+        if (_timer) {
+            [_timer invalidate];
+            _timer = nil;
+        }
+        return self;
+    };
+}
+
+- (void)handleSchedule:(NSUInteger)interval repeat:(BOOL)repeat {
+    self.next(@(interval));
+    if (repeat) {
+        [self runTimer:interval repeat:repeat];
+    }
+}
+
+- (void)runTimer:(NSUInteger)interval repeat:(BOOL)repeat { Weakify(self)
+    _timer = [HWWeakTimer
+              timerWithTimeInterval:interval target:self
+              userInfo:nil repeats:NO runloop:[NSRunLoop mainRunLoop] mode:NSRunLoopCommonModes
+              callBack:HW_BLOCK(id){ Strongify(self)
+                  [self handleSchedule:interval repeat:repeat];
+              }];
 }
 
 @end
@@ -312,8 +351,14 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     return ^(NSObject *obj) {
         self.disposer = [NSString stringWithFormat:@"%p", obj];
         
+        if (_type == HWRxObserverType_UserDefined ||
+            _type == HWRxObserverType_Schedule) {
+            [obj addRxObserver:self];
+            return self;
+        }
+        
         if (!obj.rx_delegateTo_disposers) {
-            obj.rx_delegateTo_disposers = [NSMutableArray new];
+            obj.rx_delegateTo_disposers = @[].mutableCopy;
         }
         [obj.rx_delegateTo_disposers addObject:_target];
         return self;
@@ -360,6 +405,24 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
             self.disconnect();
         });
         return self;
+    };
+}
+
+- (HWRxObserver * _Nonnull (^)())switchLatest {
+    return ^{
+        HWRxObserver *observer = HWRxInstance.create(@"creat by [switchLatest]");
+        self.subscribe(HW_BLOCK(HWRxObserver *) {
+            if (![$0 isKindOfClass:[HWRxObserver class]]) {
+                HWError([HWRxObserver class], @"switchLatest require HWRxObserver signal");
+                return;
+            }
+            Weakify(observer)
+            $0.subscribe(HW_BLOCK(id) {
+                StrongifyEnsure(observer)
+                observer.next($0);
+            });
+        });
+        return observer;
     };
 }
 

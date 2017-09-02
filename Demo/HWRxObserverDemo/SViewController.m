@@ -20,16 +20,14 @@
 @interface SViewController ()
 
 @property (nonatomic) dispatch_queue_t queue;
-@property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @property (nonatomic, strong) HWRxObserver *customObser;
-@property (nonatomic, strong) HWRxObserver *observer1;
-@property (nonatomic, strong) HWRxObserver *observer2;
-@property (nonatomic, strong) HWRxObserver *observer3;
+
+@property (nonatomic, strong) HWRxObserver *schedule;
 
 @property (nonatomic, strong) HWRxVariable *variable1;
 @property (nonatomic, strong) HWRxVariable *variable2;
@@ -53,62 +51,21 @@
     
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
-    _variable1 = [HWRxVariable variable:@[@"1",
-                                          @"2",
-                                          @"3",
-                                          @"4",
-                                          @"5",
-                                          @"6",
-                                          ]];
     
-    _variable2 = [HWRxVariable variable:@[@"11",
-                                          @"12",
-                                          @"13",
-                                          @"14",
-                                          @"15",
-                                          @"16",]];
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 250) style:UITableViewStyleGrouped];
-    _tableView.backgroundColor = [UIColor grayColor];
-    
-    [self test_TableView_RxDataSource];
-    [self.view addSubview:_tableView];
-    
-    
-    
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(60, 60);
-    
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 380, 320, 250) collectionViewLayout:layout];
-    _collectionView.backgroundColor = [UIColor brownColor];
-    
-    [self test_CollectionView_RxDataSource];
-    [self.view addSubview:_collectionView];
-    
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_variable1 removeObjectAtIndex:3];
-        [_variable2 removeObjectAtIndex:0];
-        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
-            return (BOOL)($1 == 3);
-        }];
-        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
-    });
-    
-    [self test_debounce];
-    [self test_throttle];
-    [self test_takeUtil];
+//    [self test_debounce];
+//    [self test_throttle];
+//    [self test_takeUtil];
 //    [self test_of];
 //    [self test_dealloc];
 //    [self test_behavior];
 //    [self test_Notification];
-//    [self test_switchLatest];
+    [self test_switchLatest];
+//    [self test_TableView_CollectionView];
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_timer invalidate];
 }
 
 - (void)dealloc {
@@ -135,26 +92,21 @@
     });
 }
 
-#pragma mark - takeUtil
+#pragma mark - schedule & takeUtil
 - (void)test_takeUtil {
     static int takeUtilNum = 0;
-    HWRxObserver *observer = HWRxInstance.create(@"test takeUtil");
-    observer.subscribe(HW_BLOCK(HWIntNumber *) {
-        NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", $0]);
+    HWRxInstance.schedule(1, YES).disposeBy(self)
+    .response(^{
+        NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", @(takeUtilNum++)]);
     }).takeUntil(_label.RxOnce(@"text"));
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:HW_BLOCK(id) {
-        takeUtilNum++;
-        observer.next(@(takeUtilNum));
-    }];
 }
 
 #pragma mark - switchLatest
 - (void)test_switchLatest {
     _customObser = HWRxInstance.create(@"switchLatest custom");
-    _observer1 = HWRxInstance.create(@"switchLatest test1");
-    _observer2 = HWRxInstance.create(@"switchLatest test2");
-    _observer3 = HWRxInstance.create(@"switchLatest test3");
+    HWRxObserver *observer1 = HWRxInstance.create(@"switchLatest test1").disposeBy(self);
+    HWRxObserver *observer2 = HWRxInstance.create(@"switchLatest test2").disposeBy(self);
+    HWRxObserver *observer3 = HWRxInstance.create(@"switchLatest test3").disposeBy(self);
     
     HWRxObserver *switchObserver = _customObser.switchLatest();
     switchObserver
@@ -162,19 +114,19 @@
         NSLog(@"switchLatest %@", $0);
     });
     
-    _customObser.next(_observer1);
-    _observer1.next(@(11));
-    _observer1.next(@(12));
+    _customObser.next(observer1);
+    observer1.next(@(11));
+    observer1.next(@(12));
     
-    _customObser.next(_observer2);
-    _observer1.next(@(13));
-    _observer2.next(@(21));
-    _observer2.next(@(22));
+    _customObser.next(observer2);
+    observer1.next(@(13));
+    observer2.next(@(21));
+    observer2.next(@(22));
     
-    _customObser.next(_observer3);
-    _observer1.next(@(14));
-    _observer2.next(@(23));
-    _observer3.next(@(31));
+    _customObser.next(observer3);
+    observer1.next(@(14));
+    observer2.next(@(23));
+    observer3.next(@(31));
     
     NSLog(@"switchObserver retainCount: %@", @(CFGetRetainCount((__bridge CFTypeRef)switchObserver)));
 }
@@ -228,6 +180,52 @@
     .subscribe(^(NSDictionary *userInfo) { Strongify(self)
         self.view.backgroundColor = [UIColor yellowColor];
     });
+}
+
+#pragma mark - TableView & CollectionView
+- (void)test_TableView_CollectionView {
+    _variable1 = [HWRxVariable variable:@[@"1",
+                                          @"2",
+                                          @"3",
+                                          @"4",
+                                          @"5",
+                                          @"6",
+                                          ]];
+
+    _variable2 = [HWRxVariable variable:@[@"11",
+                                          @"12",
+                                          @"13",
+                                          @"14",
+                                          @"15",
+                                          @"16",]];
+
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 100, 320, 250) style:UITableViewStyleGrouped];
+    _tableView.backgroundColor = [UIColor grayColor];
+
+    [self test_TableView_RxDataSource];
+    [self.view addSubview:_tableView];
+
+
+
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(60, 60);
+
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 380, 320, 250) collectionViewLayout:layout];
+    _collectionView.backgroundColor = [UIColor brownColor];
+
+    [self test_CollectionView_RxDataSource];
+    [self.view addSubview:_collectionView];
+
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_variable1 removeObjectAtIndex:3];
+        [_variable2 removeObjectAtIndex:0];
+        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
+            return (BOOL)($1 == 3);
+        }];
+        [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
+    });
+
 }
 
 #pragma mark - TableView RxDataSource RxDelegate

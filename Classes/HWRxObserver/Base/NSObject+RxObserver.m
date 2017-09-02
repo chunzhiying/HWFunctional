@@ -17,6 +17,9 @@
 - (void)addRxObserver:(HWRxObserver *)observer {
     [observer registeredToObserve:self];
     [RxLock lock];
+    if (!self.rx_observers) {
+        self.rx_observers = @[].mutableCopy;
+    }
     [self.rx_observers addObject:observer];
     [RxLock unlock];
 }

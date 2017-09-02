@@ -37,8 +37,6 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^next)(id);
 @property (nonatomic, readonly) HWRxObserver *(^of)(NSArray *);
 
-@property (nonatomic, readonly) HWRxObserver *(^switchLatest)(); // next: HWRxObserver, always subscribe the new one
-
 @end
 
 
@@ -60,6 +58,7 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^disconnect)();
 
 @property (nonatomic, readonly) HWRxObserver *(^takeUntil)(HWRxObserver *);
+@property (nonatomic, readonly) HWRxObserver *(^switchLatest)(); // next: HWRxObserver, always subscribe the new one
 
 @end
 
@@ -70,6 +69,14 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^filter)(filterType);
 @property (nonatomic, readonly) HWRxObserver *(^reduce)(id, reduceType);
 @property (nonatomic, readonly) HWRxObserver *(^distinctUntilChanged)();
+
+@end
+
+
+@interface HWRxObserver (Schedule_Extension)
+
+@property (nonatomic, readonly) HWRxObserver *(^schedule)(NSUInteger interval, BOOL repeat);
+@property (nonatomic, readonly) HWRxObserver *(^stop)();
 
 @end
 
