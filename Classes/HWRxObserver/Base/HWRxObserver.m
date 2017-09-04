@@ -286,6 +286,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 - (void)runTimer:(NSUInteger)interval repeat:(BOOL)repeat { Weakify(self)
+    self.stop();
     _timer = [HWWeakTimer
               timerWithTimeInterval:interval target:self
               userInfo:nil repeats:NO runloop:[NSRunLoop mainRunLoop] mode:NSRunLoopCommonModes

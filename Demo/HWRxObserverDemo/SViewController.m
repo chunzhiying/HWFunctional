@@ -54,12 +54,12 @@
     
 //    [self test_debounce];
 //    [self test_throttle];
-//    [self test_takeUtil];
+    [self test_takeUtil];
 //    [self test_of];
 //    [self test_dealloc];
 //    [self test_behavior];
 //    [self test_Notification];
-    [self test_switchLatest];
+//    [self test_switchLatest];
 //    [self test_TableView_CollectionView];
 }
 
@@ -95,7 +95,8 @@
 #pragma mark - schedule & takeUtil
 - (void)test_takeUtil {
     static int takeUtilNum = 0;
-    HWRxInstance.schedule(1, YES).disposeBy(self)
+    HWRxObserver *observer = HWRxInstance;
+    observer.schedule(1, YES).disposeBy(self)
     .response(^{
         NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", @(takeUtilNum++)]);
     }).takeUntil(_label.RxOnce(@"text"));
