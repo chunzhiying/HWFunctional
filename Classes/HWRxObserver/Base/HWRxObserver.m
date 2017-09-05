@@ -27,6 +27,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     HWRxObserverType _type;
     
     NSTimer *_timer;
+    NSUInteger _timerValue;
+    
     NSMutableArray *_startWithDataAry;
     NSMutableArray<nextType> *_nextBlockAry;
     NSMutableArray<nextBlankType> *_nextBlankBlockAry;
@@ -55,8 +57,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         _debounceEnable = YES;
         _throttleEnable = YES;
         _connect        = YES;
-        _debounceValue = 0;
-        _throttleValue = 0;
+        _timerValue     = 0;
+        _debounceValue  = 0;
+        _throttleValue  = 0;
         _nextBlockAry       = @[].mutableCopy;
         _nextBlankBlockAry  = @[].mutableCopy;
         _startWithDataAry   = @[].mutableCopy;
@@ -254,10 +257,11 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 - (HWRxObserver *(^)(NSUInteger, BOOL))schedule {
     return ^(NSUInteger interval, BOOL repeat) {
-        if (_type != HWRxObserverType_UnOwned) {
+        if (!(_type == HWRxObserverType_UnOwned || _type == HWRxObserverType_Schedule)) {
             HWError([HWRxObserver class], @"type error! cannot 'schedule'");
             return self;
         }
+        _timerValue = 0;
         _type = HWRxObserverType_Schedule;
         [self runTimer:interval repeat:repeat];
         return self;
@@ -279,7 +283,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 - (void)handleSchedule:(NSUInteger)interval repeat:(BOOL)repeat {
-    self.next(@(interval));
+    self.next(@(++_timerValue));
     if (repeat) {
         [self runTimer:interval repeat:repeat];
     }

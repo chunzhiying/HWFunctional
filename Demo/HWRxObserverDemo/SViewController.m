@@ -52,7 +52,7 @@
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
     
-//    [self test_debounce];
+    [self test_debounce];
 //    [self test_throttle];
     [self test_takeUtil];
 //    [self test_of];
@@ -94,12 +94,15 @@
 
 #pragma mark - schedule & takeUtil
 - (void)test_takeUtil {
-    static int takeUtilNum = 0;
     HWRxObserver *observer = HWRxInstance;
-    observer.schedule(1, YES).disposeBy(self)
-    .response(^{
-        NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", @(takeUtilNum++)]);
+    observer.schedule(1, NO).disposeBy(self)
+    .subscribe(HW_BLOCK(HWIntegerNumber *) {
+        NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", @($0.integerValue)]);
     }).takeUntil(_label.RxOnce(@"text"));
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        observer.schedule(2, YES);
+    });
 }
 
 #pragma mark - switchLatest
