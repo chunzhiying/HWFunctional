@@ -11,6 +11,7 @@
 - **Base_Extension**: 主要的操作符，链式调用时返回的是同一个```observer```，使用```disposeBy```可以指定负责销毁该```observer```的对象
 - **Create_Extension**: ```0.4.0```新加的功能，用于创建自定义的```observer```，使用```next```来发送数据。使用```HWRxInstance.asObservable()```创建的```observer```，没有加入任何对象中，由创建者负责销毁。
 - **Functional_Extension**: 一些信号处理的操作符，返回的是新的```observer```（```type```为```HWRxObserverType_UnOwned```，这种```observer```由被操作的```observer```的```block```所持有，当上级```observer```被销毁时自动销毁）
+- **Schedule_Extension**: 计时器功能，```subscribe```的内容是累计的超时触发，```stop```可以```invalidate```计时器.同一个```observer```只有再次调用```schedule```才会重置累计的触发次数。
 - **NSArray RxObserver_Extension**: 多个```observer```的集合操作，返回的也是```HWRxObserverType_UnOwned```的```observer```
 
 #### NSObject+RxObserver

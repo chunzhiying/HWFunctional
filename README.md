@@ -24,7 +24,7 @@
 
 
 #### 版本说明
-**```0.0.2```**：```包含NSArray&NSDictionary类别，HWRxObserver，HWAnimation，HWPromise等基本功能。```
+**```0.0.2```**：```包含NSArray&NSDictionary类别，HWRxObservdder，HWAnimation，HWPromise等基本功能。```
 
 **```0.1.0```**：```添加HWEnum。``` 
 
@@ -34,4 +34,5 @@
 
 **```0.4.0```**：```HWRxObserver能创建自定义信号，Cocoa上的应用```
 
+**```0.5.0```**：```集成HWWeakTimer，提供计时器相关操作符```
 
