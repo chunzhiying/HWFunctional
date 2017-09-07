@@ -50,7 +50,7 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 #pragma mark - Private
 - (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {
     _cacheData = _data.copy;
-    _observer.next(HWVariableSquenceInit(self.data, location, type));
+    _observer.next(HWVariableSquenceInit(self.cacheData, location, type));
 }
 
 #pragma mark - Public
