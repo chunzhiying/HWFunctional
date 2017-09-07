@@ -11,8 +11,8 @@
 #import "HWMacro.h"
 #import <objc/runtime.h>
 
-#define HWError(error) [NSString stringWithFormat:@"HWRxDataSource Error: %@ ", error]
-#define ErrorCallBack SafeBlock(self.warningBlock, HWError(([NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__])));
+#define Error(error) [NSString stringWithFormat:@"HWRxDataSource Error: %@ ", error]
+#define ErrorCallBack SafeBlock(self.warningBlock, Error(([NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__])));
 
 @interface HWRxTableDataSource ()
 
@@ -61,7 +61,7 @@
 
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
-        NSAssert(variable.count == self.dequeueReusableIds.count, HWError(@"dataSource.count not equal to cell reusableIDs.count"));
+        NSAssert(variable.count == self.dequeueReusableIds.count, Error(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 content];
@@ -106,7 +106,7 @@
 
 - (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull, NSArray<UINib *> * _Nonnull))registerNib {
     return ^(NSArray<NSString *> *reusableIds,  NSArray<UINib *> *nibs) {
-        NSAssert(reusableIds.count == nibs.count, HWError(@"reusableIds.count not equal to nibs.count"));
+        NSAssert(reusableIds.count == nibs.count, Error(@"reusableIds.count not equal to nibs.count"));
         
         self.dequeueReusableIds = reusableIds;
         for (NSInteger i = 0; i < reusableIds.count; i++) {

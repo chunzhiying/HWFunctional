@@ -52,15 +52,15 @@
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
     
-    [self test_debounce];
+//    [self test_debounce];
 //    [self test_throttle];
-    [self test_takeUtil];
+//    [self test_takeUtil];
 //    [self test_of];
 //    [self test_dealloc];
 //    [self test_behavior];
 //    [self test_Notification];
 //    [self test_switchLatest];
-//    [self test_TableView_CollectionView];
+    [self test_TableView_CollectionView];
 }
 
 
@@ -222,6 +222,7 @@
 
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
         [_variable1 removeObjectAtIndex:3];
         [_variable2 removeObjectAtIndex:0];
         [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
