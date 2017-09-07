@@ -20,7 +20,8 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 
 @interface HWRxVariable ()
 
-@property (nonatomic, strong) NSMutableArray *content;
+@property (nonatomic, strong) NSArray *cacheData;
+@property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, strong) HWRxObserver *observer;
 
 @end
@@ -36,48 +37,48 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _content = @[].mutableCopy;
-        _observer = HWRxInstance.create(NSStringFromClass([self class]));
+        _data = @[].mutableCopy;
+        _observer = HWRxInstance.create(NSStringFromClass([self class])).observeOn(HWMainQueue);
     }
     return self;
 }
 
-- (NSArray *)convert {
-    return _content;
+- (NSArray *)content {
+    return _cacheData;
 }
-
 
 #pragma mark - Private
 - (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {
-    _observer.next(HWVariableSquenceInit(self.content, location, type));
+    _cacheData = _data.copy;
+    _observer.next(HWVariableSquenceInit(self.data, location, type));
 }
 
 #pragma mark - Public
 - (id)objectAtIndex:(NSUInteger)index {
-    if (index < _content.count) {
-        return [_content objectAtIndex:index];
+    if (index < _data.count) {
+        return [_data objectAtIndex:index];
     }
     return nil;
 }
 
 - (NSUInteger)count {
-    return _content.count;
+    return _data.count;
 }
 
 - (void)addObject:(id)object {
     if (!object) {
         return;
     }
-    [_content addObject:object];
-    [self postNextWithLocation:(self.content.count - 1) type:HWVariableChangeType_Add];
+    [_data addObject:object];
+    [self postNextWithLocation:(self.data.count - 1) type:HWVariableChangeType_Add];
 }
 
 - (void)removeObject:(id)object {
-    if (!object || ![_content containsObject:object]) {
+    if (!object || ![_data containsObject:object]) {
         return;
     }
-    NSUInteger index = [_content indexOfObject:object];
-    [_content removeObject:object];
+    NSUInteger index = [_data indexOfObject:object];
+    [_data removeObject:object];
     [self postNextWithLocation:index type:HWVariableChangeType_Remove];
 }
 
@@ -85,13 +86,13 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     if (!objects) {
         objects = @[];
     }
-    _content = objects.mutableCopy;
+    _data = objects.mutableCopy;
     [self postNextWithLocation:NSUIntegerMax type:HWVariableChangeType_Reload];
 }
 
 - (void)replaceByObject:(id)object select:(refreshCallBack)callBack {
-    NSMutableArray *newContent = _content.mutableCopy;
-    _content.forEachWithIndex(HW_BLOCK(id, NSUInteger) {
+    NSMutableArray *newContent = _data.mutableCopy;
+    _data.forEachWithIndex(HW_BLOCK(id, NSUInteger) {
         if (callBack($0, $1)) {
             [newContent removeObjectAtIndex:$1];
             [newContent insertObject:object atIndex:$1];
@@ -105,16 +106,16 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     if (!object) {
         return;
     }
-    index = MAX(0, MIN(index, _content.count));
-    [_content insertObject:object atIndex:index];
+    index = MAX(0, MIN(index, _data.count));
+    [_data insertObject:object atIndex:index];
     [self postNextWithLocation:index type:HWVariableChangeType_Add];
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
-    if (_content.count <= index) {
+    if (_data.count <= index) {
         return;
     }
-    [_content removeObjectAtIndex:index];
+    [_data removeObjectAtIndex:index];
     [self postNextWithLocation:index type:HWVariableChangeType_Remove];
 }
 

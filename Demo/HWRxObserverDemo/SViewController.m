@@ -48,7 +48,6 @@
         _label = $0;
     })];
     
-    
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
     
@@ -221,7 +220,7 @@
     [self.view addSubview:_collectionView];
 
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), _queue, ^{
         
         [_variable1 removeObjectAtIndex:3];
         [_variable2 removeObjectAtIndex:0];
