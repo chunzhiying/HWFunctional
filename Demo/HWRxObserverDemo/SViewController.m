@@ -51,8 +51,8 @@
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
     
     
-//    [self test_debounce];
-//    [self test_throttle];
+    [self test_debounce];
+    [self test_throttle];
 //    [self test_takeUtil];
 //    [self test_of];
 //    [self test_dealloc];

@@ -15,6 +15,8 @@
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *testBtn;
+@property (weak, nonatomic) IBOutlet UILabel *testLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *testImg;
 
 @end
 
@@ -33,6 +35,14 @@
     
     _testBtn.rx_tap.response(^{
         HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
+    });
+    
+    _testLabel.rx_tap.response(^{
+        NSLog(@"label tap");
+    });
+    
+    _testImg.rx_tap.response(^{
+        NSLog(@"img tap");
     });
     
 //        @[[self after:1 result:YES flag:@"一"],

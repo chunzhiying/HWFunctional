@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.tapAction = @selector(onTap);
+        self.tapAction = @selector(onTap:);
         _debounceEnable = YES;
         _throttleEnable = YES;
         _connect        = YES;
@@ -213,8 +213,15 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 #pragma mark - Tap
-- (void)onTap {
-    self.rxObj = @"onTap";
+- (void)onTap:(UILongPressGestureRecognizer *)press {
+    if (![press isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return;
+    }
+    if (press.state == UIGestureRecognizerStateEnded) {
+        if (CGRectContainsPoint(press.view.bounds, [press locationInView:press.view])) {
+            self.rxObj = @"onTap";
+        }
+    }
 }
 
 @end

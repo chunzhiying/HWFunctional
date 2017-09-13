@@ -7,8 +7,9 @@
 //
 
 #import "UIView+RxObserver.h"
-#import "HWFunctionalType.h"
 #import "NSArray+FunctionalType.h"
+#import "HWFunctionalType.h"
+#import "HWRxObserver.h"
 #import <objc/runtime.h>
 
 @implementation UIView (RxObserver_Base)
@@ -23,9 +24,35 @@
 - (void)addGestureObserver:(HWRxObserver *)observer {
     if ([self isKindOfClass:[UIButton class]]) {
         [(UIButton *)self addTarget:observer action:observer.tapAction forControlEvents:UIControlEventTouchUpInside];
+        
     } else {
-        self.userInteractionEnabled = YES;
-        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:observer action:observer.tapAction]];
+        UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:observer action:observer.tapAction];
+        press.minimumPressDuration = 0;
+        
+        CGFloat alpha = self.alpha;
+        Weakify(self)
+        press.Rx(@"state").disposeBy(self).subscribe(HW_BLOCK(HWIntegerNumber *) { Strongify(self)
+            UIGestureRecognizerState state = $0.integerValue;
+            switch (state) {
+                case UIGestureRecognizerStateBegan:
+                {
+                    self.alpha = alpha / 5;
+                    break;
+                }
+                case UIGestureRecognizerStateCancelled:
+                case UIGestureRecognizerStateEnded:
+                {
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.alpha = alpha;
+                    }];
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+        [self setUserInteractionEnabled:YES];
+        [self addGestureRecognizer:press];
     }
 }
 
