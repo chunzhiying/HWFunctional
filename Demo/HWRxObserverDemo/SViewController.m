@@ -49,7 +49,9 @@
     })];
     
     _queue = dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL);
-    
+    _label.rx_dealloc.subscribe(HW_BLOCK(UILabel *) {
+        $0.text = @"dealloc";
+    });
     
     [self test_debounce];
     [self test_throttle];
@@ -59,7 +61,7 @@
 //    [self test_behavior];
 //    [self test_Notification];
 //    [self test_switchLatest];
-    [self test_TableView_CollectionView];
+//    [self test_TableView_CollectionView];
 }
 
 
@@ -71,14 +73,13 @@
     NSLog(@"sviewcontroller dealloc");
 }
 
-
 #pragma mark - rx_tap & debounce
-- (void)test_debounce { Weakify(self)
+- (void)test_debounce {
     static int a = 0;
-    _label.rx_tap.debounce(0.3).response(^{ Strongify(self)
+    _label.rx_tap.debounce(0.3).subscribe(HW_BLOCK(UILabel *) {
         a++;
-        self.label.text = [NSString stringWithFormat:@"%@", @(a)];
-        NSLog(@"aaa text: %@", self.label.text);
+        $0.text = [NSString stringWithFormat:@"%@", @(a)];
+        NSLog(@"aaa text: %@", @(a));
     });
 }
 

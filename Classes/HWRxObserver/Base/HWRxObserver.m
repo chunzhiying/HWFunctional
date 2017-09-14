@@ -106,7 +106,10 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         ((HWRxObserver *)_rxObj).disconnect();
     }
     
-    _rxObj = rxObj;
+    // HWRxObserverType_Special rxObj = self.target
+    if (_type != HWRxObserverType_Special) {
+        _rxObj = rxObj;
+    }
     
     if (!(_debounceEnable && _throttleEnable && _connect)) {
         return;
@@ -138,6 +141,10 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 #define PostToQueue(...) if (_queue) { dispatch_async(_queue, ^{SafeBlock(__VA_ARGS__)}); } else { SafeBlock(__VA_ARGS__) }
 
 - (void)postTo:(nextType)block with:(NSObject *)data {
+    if (_type == HWRxObserverType_Special) {
+        // RxObserver_dealloc, _target = nil
+        data = _target;
+    }
     if (!data || [data isKindOfClass:[NSNull class]]) {
         data = nil;
     }
@@ -219,7 +226,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     }
     if (press.state == UIGestureRecognizerStateEnded) {
         if (CGRectContainsPoint(press.view.bounds, [press locationInView:press.view])) {
-            self.rxObj = @"onTap";
+            self.rxObj = press.view;
         }
     }
 }
