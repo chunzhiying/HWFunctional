@@ -10,7 +10,10 @@
 #import "NSArray+FunctionalType.h"
 #import "HWFunctionalType.h"
 #import "HWRxObserver.h"
+#import "HWAnimation.h"
 #import <objc/runtime.h>
+
+#define PressAlpha(alpha) (alpha / 5)
 
 @implementation UIView (RxObserver_Base)
 
@@ -30,21 +33,26 @@
         press.minimumPressDuration = 0;
         
         CGFloat alpha = self.alpha;
+        CABasicAnimation *resetAni = [CABasicAnimation animationWithKeyPath:HWAnimation_Opacity];
+        resetAni.fromValue = @(PressAlpha(alpha));
+        resetAni.toValue = @(alpha);
+        resetAni.duration = 0.3;
+        
         Weakify(self)
         press.Rx(@"state").disposeBy(self).subscribe(HW_BLOCK(HWIntegerNumber *) { Strongify(self)
             UIGestureRecognizerState state = $0.integerValue;
             switch (state) {
                 case UIGestureRecognizerStateBegan:
                 {
-                    self.alpha = alpha / 5;
+                    self.alpha = PressAlpha(alpha);
+                    [self.layer removeAllAnimations];
                     break;
                 }
                 case UIGestureRecognizerStateCancelled:
                 case UIGestureRecognizerStateEnded:
                 {
-                    [UIView animateWithDuration:0.3 animations:^{
-                        self.alpha = alpha;
-                    }];
+                    self.alpha = alpha;
+                    [self.layer addAnimation:resetAni forKey:nil];
                     break;
                 }
                 default:

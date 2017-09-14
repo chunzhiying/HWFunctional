@@ -226,7 +226,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     }
     if (press.state == UIGestureRecognizerStateEnded) {
         if (CGRectContainsPoint(press.view.bounds, [press locationInView:press.view])) {
-            self.rxObj = press.view;
+            self.rxObj = @"RxObserver_tap";
         }
     }
 }
