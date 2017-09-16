@@ -41,8 +41,8 @@
         NSLog(@"label tap");
     });
     
-    _testImg.rx_tap.response(^{
-        NSLog(@"img tap");
+    _testImg.rx_dynamicTap.response(^{
+        NSLog(@"img AnimTap");
     });
     
 //        @[[self after:1 result:YES flag:@"一"],

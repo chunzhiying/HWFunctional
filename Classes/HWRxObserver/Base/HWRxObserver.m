@@ -220,14 +220,18 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 #pragma mark - Tap
-- (void)onTap:(UILongPressGestureRecognizer *)press {
-    if (![press isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        return;
-    }
-    if (press.state == UIGestureRecognizerStateEnded) {
-        if (CGRectContainsPoint(press.view.bounds, [press locationInView:press.view])) {
-            self.rxObj = @"RxObserver_tap";
+- (void)onTap:(id)obj {
+    if ([obj isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        UILongPressGestureRecognizer *press = (UILongPressGestureRecognizer *)obj;
+        if (press.state == UIGestureRecognizerStateEnded) {
+            if (CGRectContainsPoint(press.view.bounds, [press locationInView:press.view])) {
+                self.rxObj = @"RxObserver_tap";
+            }
         }
+    }
+    
+    if ([obj isKindOfClass:[UIButton class]]) {
+        self.rxObj = @"RxObserver_tap";
     }
 }
 

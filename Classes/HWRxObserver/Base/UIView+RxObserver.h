@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (RxObserver)
 
-@property (nonatomic, readonly) HWRxObserver *rx_tap;
+@property (nonatomic, readonly) HWRxObserver *rx_tap; // Without animation except UIButton
+@property (nonatomic, readonly) HWRxObserver *rx_dynamicTap; // Animate just like what UIButton do
 
 @end
 
