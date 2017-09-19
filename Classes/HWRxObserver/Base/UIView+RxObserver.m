@@ -13,27 +13,30 @@
 #import "HWAnimation.h"
 #import <objc/runtime.h>
 
-#define PressAlpha(alpha) (alpha / 5)
-
 @implementation UIView (RxObserver)
 
 - (HWRxObserver *)rx_tap {
-    [self setRx_tapAni:NO];
-    return self.Rx(@"RxObserver_tap");
+    return self.rx_dynamicAlphaTap(self.alpha);
 }
 
 - (HWRxObserver *)rx_dynamicTap {
-    [self setRx_tapAni:YES];
-    return self.Rx(@"RxObserver_tap");
+    return self.rx_dynamicAlphaTap(self.alpha * 0.6);
+}
+
+- (HWRxObserver * _Nonnull (^)(CGFloat))rx_dynamicAlphaTap {
+    return ^(CGFloat pressAlpha) {
+        [self setRx_tapAlpha:pressAlpha];
+        return self.Rx(@"RxObserver_tap");
+    };
 }
 
 #pragma mark - Property
-- (void)setRx_tapAni:(BOOL)tapAni {
-    objc_setAssociatedObject(self, @selector(rx_tapAni), @(tapAni), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setRx_tapAlpha:(CGFloat)tapAlpha {
+    objc_setAssociatedObject(self, @selector(rx_tapAlpha), @(tapAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)rx_tapAni {
-    return [objc_getAssociatedObject(self, @selector(rx_tapAni)) boolValue];
+- (CGFloat)rx_tapAlpha {
+    return [objc_getAssociatedObject(self, @selector(rx_tapAlpha)) floatValue];
 }
 
 #pragma mark - Add Observer & Gesture
@@ -55,15 +58,15 @@
         [self setUserInteractionEnabled:YES];
         [self addGestureRecognizer:press];
         
-        if (![self rx_tapAni]) {
+        if ([self rx_tapAlpha] == self.alpha) {
             return;
         }
         
         CGFloat alpha = self.alpha;
         CABasicAnimation *resetAni = [CABasicAnimation animationWithKeyPath:HWAnimation_Opacity];
-        resetAni.fromValue = @(PressAlpha(alpha));
+        resetAni.fromValue = @([self rx_tapAlpha]);
         resetAni.toValue = @(alpha);
-        resetAni.duration = 0.3;
+        resetAni.duration = 0.3 * (1 - [self rx_tapAlpha]);
         
         Weakify(self)
         press.Rx(@"state").disposeBy(self).subscribe(HW_BLOCK(HWIntegerNumber *) { Strongify(self)
@@ -71,7 +74,7 @@
             switch (state) {
                 case UIGestureRecognizerStateBegan:
                 {
-                    self.alpha = PressAlpha(alpha);
+                    self.alpha = [self rx_tapAlpha];
                     [self.layer removeAllAnimations];
                     break;
                 }

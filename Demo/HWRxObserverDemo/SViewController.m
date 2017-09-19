@@ -54,7 +54,7 @@
     });
     
     [self test_debounce];
-    [self test_throttle];
+//    [self test_throttle];
 //    [self test_takeUtil];
 //    [self test_of];
 //    [self test_dealloc];
@@ -76,7 +76,7 @@
 #pragma mark - rx_tap & debounce
 - (void)test_debounce {
     static int a = 0;
-    _label.rx_tap.debounce(0.3).subscribe(HW_BLOCK(UILabel *) {
+    _label.rx_dynamicTap.throttle(0.3).subscribe(HW_BLOCK(UILabel *) {
         a++;
         $0.text = [NSString stringWithFormat:@"%@", @(a)];
         NSLog(@"aaa text: %@", @(a));

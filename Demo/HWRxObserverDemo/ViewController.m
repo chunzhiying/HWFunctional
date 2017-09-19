@@ -33,15 +33,16 @@
         NSLog(@"filter %@", $0);
     });
     
-    _testBtn.rx_tap.response(^{
+    _testBtn.rx_tap.subscribe(^(UIButton *button) {
         HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
     });
     
-    _testLabel.rx_tap.response(^{
+    _testLabel.rx_dynamicTap.debounce(1).subscribe(HW_BLOCK(UILabel *) {
         NSLog(@"label tap");
+        $0.text = @"aa";
     });
     
-    _testImg.rx_dynamicTap.response(^{
+    _testImg.rx_dynamicAlphaTap(0.2).response(^{
         NSLog(@"img AnimTap");
     });
     
