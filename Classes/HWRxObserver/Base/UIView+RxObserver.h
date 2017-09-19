@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIView (RxObserver)
 
 @property (nonatomic, readonly) HWRxObserver *rx_tap; // Without animation except UIButton
-
 @property (nonatomic, readonly) HWRxObserver *rx_dynamicTap; // Animate just like what UIButton do, default: 0.6 * self.alpha
-@property (nonatomic, readonly) HWRxObserver *(^rx_dynamicAlphaTap)(CGFloat pressAlpha); // Custom press alpha
+
+@property (nonatomic, readonly) HWRxObserver *(^rx_dynamicTapToAlpha)(CGFloat pressAlpha); // Custom press alpha
 
 @end
 

@@ -16,14 +16,14 @@
 @implementation UIView (RxObserver)
 
 - (HWRxObserver *)rx_tap {
-    return self.rx_dynamicAlphaTap(self.alpha);
+    return self.rx_dynamicTapToAlpha(self.alpha);
 }
 
 - (HWRxObserver *)rx_dynamicTap {
-    return self.rx_dynamicAlphaTap(self.alpha * 0.6);
+    return self.rx_dynamicTapToAlpha(self.alpha * 0.6);
 }
 
-- (HWRxObserver * _Nonnull (^)(CGFloat))rx_dynamicAlphaTap {
+- (HWRxObserver * _Nonnull (^)(CGFloat))rx_dynamicTapToAlpha {
     return ^(CGFloat pressAlpha) {
         [self setRx_tapAlpha:pressAlpha];
         return self.Rx(@"RxObserver_tap");

@@ -42,7 +42,7 @@
         $0.text = @"aa";
     });
     
-    _testImg.rx_dynamicAlphaTap(0.2).response(^{
+    _testImg.rx_dynamicTapToAlpha(0.2).response(^{
         NSLog(@"img AnimTap");
     });
     
