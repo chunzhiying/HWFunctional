@@ -321,6 +321,13 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 @implementation HWRxObserver (Base_Extension)
 
+- (HWRxObserver * _Nonnull (^)(thenType _Nonnull))then {
+    return ^(thenType block) {
+        block(self);
+        return self;
+    };
+}
+
 - (HWRxObserver * _Nonnull (^)(dispatch_queue_t _Nonnull))observeOn {
     return ^(dispatch_queue_t queue) {
         _queue = queue;
