@@ -203,12 +203,10 @@
 if ([tableView.dataSource tableView:tableView numberOfRowsInSection:section] == 0) {return CGFLOAT_MIN;}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SafeBlock(self.cellSelectedBlock, [self getRowDataFor:indexPath], indexPath);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     return SafeBlockDefault(50.f, self.heightForRowBlock, [self getRowDataFor:indexPath], indexPath);
 }
 
