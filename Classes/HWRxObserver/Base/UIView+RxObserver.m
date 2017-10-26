@@ -26,7 +26,7 @@
 - (HWRxObserver * _Nonnull (^)(CGFloat))rx_dynamicTapToAlpha {
     return ^(CGFloat pressAlpha) {
         [self setRx_tapAlpha:pressAlpha];
-        return self.Rx(@"RxObserver_tap");
+        return self.RxOnce(@"RxObserver_tap");
     };
 }
 
@@ -37,6 +37,14 @@
 
 - (CGFloat)rx_tapAlpha {
     return [objc_getAssociatedObject(self, @selector(rx_tapAlpha)) floatValue];
+}
+
+- (void)setRx_gesture:(UIGestureRecognizer *)gesture {
+    objc_setAssociatedObject(self, @selector(rx_gesture), gesture, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIGestureRecognizer *)rx_gesture {
+    return objc_getAssociatedObject(self, @selector(rx_gesture));
 }
 
 #pragma mark - Add Observer & Gesture
@@ -50,17 +58,27 @@
 - (void)addGestureObserver:(HWRxObserver *)observer {
     if ([self isKindOfClass:[UIButton class]]) {
         [(UIButton *)self addTarget:observer action:observer.tapAction forControlEvents:UIControlEventTouchUpInside];
+        return;
+    }
+    
+    if ([self rx_gesture]) {
+        [self removeGestureRecognizer:[self rx_gesture]];
+    }
+    
+    [self setUserInteractionEnabled:YES];
+    
+    if ([self rx_tapAlpha] == self.alpha) {
+        // normalTap
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:observer action:observer.tapAction];
+        [self addGestureRecognizer:tap];
+        [self setRx_gesture:tap];
         
     } else {
+        // dynamicTap
         UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:observer action:observer.tapAction];
         press.minimumPressDuration = 0;
-        
-        [self setUserInteractionEnabled:YES];
         [self addGestureRecognizer:press];
-        
-        if ([self rx_tapAlpha] == self.alpha) {
-            return;
-        }
+        [self setRx_gesture:press];
         
         CGFloat alpha = self.alpha;
         CABasicAnimation *resetAni = [CABasicAnimation animationWithKeyPath:HWAnimation_Opacity];

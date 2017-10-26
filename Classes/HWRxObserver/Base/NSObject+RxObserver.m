@@ -125,7 +125,7 @@
 }
 
 - (HWRxObserver *)rx_dealloc {
-    return self.Rx(@"RxObserver_dealloc");
+    return self.RxOnce(@"RxObserver_dealloc");
 }
 
 @end

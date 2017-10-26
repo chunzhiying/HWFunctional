@@ -221,6 +221,10 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 #pragma mark - Tap
 - (void)onTap:(id)obj {
+    if ([obj isKindOfClass:[UITapGestureRecognizer class]]) {
+        self.rxObj = @"RxObserver_tap";
+    }
+    
     if ([obj isKindOfClass:[UILongPressGestureRecognizer class]]) {
         UILongPressGestureRecognizer *press = (UILongPressGestureRecognizer *)obj;
         if (press.state == UIGestureRecognizerStateEnded) {
@@ -562,3 +566,4 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 @end
+
