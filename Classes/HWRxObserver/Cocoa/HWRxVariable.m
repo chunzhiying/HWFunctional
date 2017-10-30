@@ -10,10 +10,10 @@
 #import "HWMacro.h"
 #import "NSArray+FunctionalType.h"
 
-static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger index, HWVariableChangeType type) {
+static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSArray<HWUIntegerNumber *> *locations, HWVariableChangeType type) {
     return [HWVariableSequence new].then(HW_BLOCK(HWVariableSequence *) {
         $0.content = array;
-        $0.location = index;
+        $0.locations = locations;
         $0.type = type;
     });
 }
@@ -48,9 +48,9 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
 }
 
 #pragma mark - Private
-- (void)postNextWithLocation:(NSUInteger)location type:(HWVariableChangeType)type {
+- (void)postNextWithLocation:(NSArray<HWUIntegerNumber *> *)locations type:(HWVariableChangeType)type {
     _cacheData = _data.copy;
-    _observer.next(HWVariableSquenceInit(self.cacheData, location, type));
+    _observer.next(HWVariableSquenceInit(self.cacheData, locations, type));
 }
 
 #pragma mark - Public
@@ -70,7 +70,18 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
         return;
     }
     [_data addObject:object];
-    [self postNextWithLocation:(self.data.count - 1) type:HWVariableChangeType_Add];
+    [self postNextWithLocation:@[@(self.data.count - 1)] type:HWVariableChangeType_Add];
+}
+
+- (void)addObjectsFromArray:(NSArray *)objects {
+    if (objects.count == 0) {
+        return;
+    }
+    NSInteger beginIndex = _data.count;
+    [_data addObjectsFromArray:objects];
+    [self postNextWithLocation:objects.mapWithIndex(HW_BLOCK(id, NSUInteger) {
+        return @(beginIndex + $1);
+    }) type:HWVariableChangeType_Add];
 }
 
 - (void)removeObject:(id)object {
@@ -79,15 +90,16 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     }
     NSUInteger index = [_data indexOfObject:object];
     [_data removeObject:object];
-    [self postNextWithLocation:index type:HWVariableChangeType_Remove];
+    [self postNextWithLocation:@[@(index)] type:HWVariableChangeType_Remove];
 }
 
+#pragma mark -
 - (void)reloadObject:(NSArray *)objects {
     if (!objects) {
         objects = @[];
     }
     _data = objects.mutableCopy;
-    [self postNextWithLocation:NSUIntegerMax type:HWVariableChangeType_Reload];
+    [self postNextWithLocation:@[@(NSUIntegerMax)] type:HWVariableChangeType_Reload];
 }
 
 - (void)replaceByObject:(id)object select:(refreshCallBack)callBack {
@@ -108,7 +120,7 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
     }
     index = MAX(0, MIN(index, _data.count));
     [_data insertObject:object atIndex:index];
-    [self postNextWithLocation:index type:HWVariableChangeType_Add];
+    [self postNextWithLocation:@[@(index)] type:HWVariableChangeType_Add];
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
@@ -116,7 +128,7 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSUInteger in
         return;
     }
     [_data removeObjectAtIndex:index];
-    [self postNextWithLocation:index type:HWVariableChangeType_Remove];
+    [self postNextWithLocation:@[@(index)] type:HWVariableChangeType_Remove];
 }
 
 @end

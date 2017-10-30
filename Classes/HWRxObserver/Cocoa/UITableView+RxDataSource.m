@@ -37,12 +37,16 @@
     switch (sequence.type) {
         case HWVariableChangeType_Add:
             [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:sequence.location inSection:section]]withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView insertRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
+                return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
+            }) withRowAnimation:UITableViewRowAnimationFade];
             [_tableView endUpdates];
             break;
         case HWVariableChangeType_Remove:
             [_tableView beginUpdates];
-            [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:sequence.location inSection:section]] withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView deleteRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
+                return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
+            }) withRowAnimation:UITableViewRowAnimationFade];
             [_tableView endUpdates];
             break;
         case HWVariableChangeType_Reload:

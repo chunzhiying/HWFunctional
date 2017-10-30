@@ -30,6 +30,8 @@ typedef BOOL(^refreshCallBack)(id object, NSInteger index);
 - (void)addObject:(id)object;
 - (void)removeObject:(id)object;
 
+- (void)addObjectsFromArray:(NSArray *)objects;
+
 - (void)replaceByObject:(id)object select:(refreshCallBack)callBack;
 - (void)reloadObject:(NSArray *)objects;
 
@@ -45,7 +47,7 @@ typedef NS_ENUM(NSUInteger, HWVariableChangeType) {
 @interface HWVariableSequence : NSObject
 
 @property (nonatomic) HWVariableChangeType type;
-@property (nonatomic) NSUInteger location;
+@property (nonatomic) NSArray<HWUIntegerNumber *> *locations;
 @property (nonatomic, strong) NSArray *content;
 
 @end

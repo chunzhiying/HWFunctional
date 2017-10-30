@@ -53,7 +53,7 @@
         $0.text = @"dealloc";
     });
     
-    [self test_debounce];
+//    [self test_debounce];
 //    [self test_throttle];
 //    [self test_takeUtil];
 //    [self test_of];
@@ -61,7 +61,7 @@
 //    [self test_behavior];
 //    [self test_Notification];
 //    [self test_switchLatest];
-//    [self test_TableView_CollectionView];
+    [self test_TableView_CollectionView];
 }
 
 
@@ -188,7 +188,8 @@
 
 #pragma mark - TableView & CollectionView
 - (void)test_TableView_CollectionView {
-    _variable1 = [HWRxVariable variable:@[@"1",
+    _variable1 = [HWRxVariable variable:@[
+                                          @"1",
                                           @"2",
                                           @"3",
                                           @"4",
@@ -223,11 +224,12 @@
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), _queue, ^{
         
-        [_variable1 removeObjectAtIndex:3];
-        [_variable2 removeObjectAtIndex:0];
-        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
-            return (BOOL)($1 == 3);
-        }];
+        [_variable1 addObjectsFromArray:@[@"111", @"222", @"333"]];
+//        [_variable1 removeObjectAtIndex:3];
+//        [_variable2 removeObjectAtIndex:0];
+//        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
+//            return (BOOL)($1 == 3);
+//        }];
         [HWRxNoCenter postNotificationName:@"bbaNotification" object:nil userInfo:@{@"aa":@"aa"}];
     });
 
