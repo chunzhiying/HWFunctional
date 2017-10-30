@@ -50,7 +50,8 @@
             [_tableView endUpdates];
             break;
         case HWVariableChangeType_Reload:
-            [self.tableView reloadData];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section]
+                          withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
