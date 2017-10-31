@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "HWFunctionalType.h"
+#import "NSNotificationCenter+RxObserver.h"
 
 #define HWRxInstance [HWRxObserver new]
 

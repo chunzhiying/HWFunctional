@@ -16,6 +16,8 @@
 #import "STestTableViewCell.h"
 #import "TestCollectionViewCell.h"
 #import "STestCollectionViewCell.h"
+#import "HWPromise+RxObserver.h"
+#import "NSNotificationCenter+RxObserver.h"
 
 @interface SViewController ()
 
@@ -53,6 +55,7 @@
         $0.text = @"dealloc";
     });
     
+    [self test_promise];
 //    [self test_debounce];
 //    [self test_throttle];
 //    [self test_takeUtil];
@@ -61,7 +64,7 @@
 //    [self test_behavior];
 //    [self test_Notification];
 //    [self test_switchLatest];
-    [self test_TableView_CollectionView];
+//    [self test_TableView_CollectionView];
 }
 
 
@@ -71,6 +74,24 @@
 
 - (void)dealloc {
     NSLog(@"sviewcontroller dealloc");
+}
+
+#pragma mark - promise & observer
+- (void)test_promise {
+    [self notification:2 userInfo:@{@"1":@"1"}]
+    .always(HW_BLOCK(HWPromiseResult *) {
+        NSLog(@"all promise observer finish!");
+    });
+}
+
+- (HWPromise *)notification:(NSUInteger)delayTime userInfo:(NSDictionary *)userInfo {
+    HWPromise *promise = [HWPromise new];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
+    });
+    
+    return promise.observe(HWRxNoCenter.Rx(@"abc").disposeBy(self));
 }
 
 #pragma mark - rx_tap & debounce
@@ -224,7 +245,7 @@
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), _queue, ^{
         
-        [_variable1 addObjectsFromArray:@[@"111", @"222", @"333"]];
+        [_variable1 reloadObject:@[@"111", @"222", @"333"]];
 //        [_variable1 removeObjectAtIndex:3];
 //        [_variable2 removeObjectAtIndex:0];
 //        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
@@ -250,31 +271,32 @@
             cell.label.textColor = [UIColor yellowColor];
             cell.label.text = $1;
         }
+        $0.selectionStyle = UITableViewCellSelectionStyleNone;
     })
     .bindTo(@[_variable1, _variable2]);
     
     
     _tableView.RxDelegate()
-    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
-        return 80.f;
-    })
-    .viewForHeader(HW_BLOCK(NSUInteger) {
-        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
-        header.backgroundColor = [UIColor purpleColor];
-        return header;
-    })
-    .viewForFooter(HW_BLOCK(NSUInteger) {
-        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
-        footer.backgroundColor = [UIColor greenColor];
-        return footer;
-    })
+//    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
+//        return 80.f;
+//    })
+//    .viewForHeader(HW_BLOCK(NSUInteger) {
+//        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
+//        header.backgroundColor = [UIColor purpleColor];
+//        return header;
+//    })
+//    .viewForFooter(HW_BLOCK(NSUInteger) {
+//        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+//        footer.backgroundColor = [UIColor greenColor];
+//        return footer;
+//    })
     .cellSelected(HW_BLOCK(NSString *, NSIndexPath *) { Strongify(self)
         NSLog(@"%@", $0);
-        if ($1.section == 0) {
-            [self.variable1 removeObjectAtIndex:$1.row];
-        } else {
-            [self.variable2 removeObjectAtIndex:$1.row];
-        }
+//        if ($1.section == 0) {
+//            [self.variable1 removeObjectAtIndex:$1.row];
+//        } else {
+//            [self.variable2 removeObjectAtIndex:$1.row];
+//        }
     });
     
 }

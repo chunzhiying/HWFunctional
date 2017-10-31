@@ -38,6 +38,7 @@
 		98743B021DDC53B3005B394F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98743B011DDC53B3005B394F /* Assets.xcassets */; };
 		98743B051DDC53B3005B394F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98743B031DDC53B3005B394F /* LaunchScreen.storyboard */; };
 		98743B271DDC607D005B394F /* SViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98743B261DDC607D005B394F /* SViewController.m */; };
+		987D001F1FA88230002A0D09 /* HWPromise+RxObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 987D001E1FA88230002A0D09 /* HWPromise+RxObserver.m */; };
 		98841B141EA4C9CF00A0556F /* HWFunctional.h in Headers */ = {isa = PBXBuildFile; fileRef = 98841B121EA4C9CF00A0556F /* HWFunctional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98948CD41EB825ED006FBD83 /* CALayer+HWAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CB91EB825ED006FBD83 /* CALayer+HWAnimation.m */; };
 		98948CD51EB825ED006FBD83 /* HWAnimation+Combination.m in Sources */ = {isa = PBXBuildFile; fileRef = 98948CBB1EB825ED006FBD83 /* HWAnimation+Combination.m */; };
@@ -114,6 +115,8 @@
 		98743B061DDC53B3005B394F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98743B251DDC607D005B394F /* SViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SViewController.h; sourceTree = "<group>"; };
 		98743B261DDC607D005B394F /* SViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SViewController.m; sourceTree = "<group>"; };
+		987D001D1FA88230002A0D09 /* HWPromise+RxObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HWPromise+RxObserver.h"; sourceTree = "<group>"; };
+		987D001E1FA88230002A0D09 /* HWPromise+RxObserver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "HWPromise+RxObserver.m"; sourceTree = "<group>"; };
 		98841B101EA4C9CF00A0556F /* HWFunctional.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HWFunctional.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98841B121EA4C9CF00A0556F /* HWFunctional.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HWFunctional.h; sourceTree = "<group>"; };
 		98841B131EA4C9CF00A0556F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -232,6 +235,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		987D001C1FA88203002A0D09 /* Promise */ = {
+			isa = PBXGroup;
+			children = (
+				987D001D1FA88230002A0D09 /* HWPromise+RxObserver.h */,
+				987D001E1FA88230002A0D09 /* HWPromise+RxObserver.m */,
+			);
+			path = Promise;
+			sourceTree = "<group>";
+		};
 		98841B111EA4C9CF00A0556F /* HWFunctional */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,9 +260,9 @@
 				98B7856E1F3176800061DC92 /* HWRxObserver */,
 				98948CB71EB825ED006FBD83 /* HWAnimation */,
 				98948CBE1EB825ED006FBD83 /* HWEnum */,
+				98948CC31EB825ED006FBD83 /* HWPromise */,
 				98948CC11EB825ED006FBD83 /* HWFunctionalType.h */,
 				98948CC21EB825ED006FBD83 /* HWMacro.h */,
-				98948CC31EB825ED006FBD83 /* HWPromise */,
 				98948CCF1EB825ED006FBD83 /* HWTypeDef.h */,
 				98948CD01EB825ED006FBD83 /* NSArray+FunctionalType.h */,
 				98948CD11EB825ED006FBD83 /* NSArray+FunctionalType.m */,
@@ -297,6 +309,7 @@
 			children = (
 				98B7856F1F3176800061DC92 /* Base */,
 				98B785781F3176800061DC92 /* Cocoa */,
+				987D001C1FA88203002A0D09 /* Promise */,
 				98B7857D1F3176800061DC92 /* README.md */,
 			);
 			path = HWRxObserver;
@@ -510,6 +523,7 @@
 				98743AF71DDC53B3005B394F /* main.m in Sources */,
 				98948CDE1EB825ED006FBD83 /* NSDictionary+FunctionalType.m in Sources */,
 				98B785801F3176800061DC92 /* NSObject+RxObserver.m in Sources */,
+				987D001F1FA88230002A0D09 /* HWPromise+RxObserver.m in Sources */,
 				98948CD81EB825ED006FBD83 /* HWPromise.m in Sources */,
 				9819A7C91F39A6E800DE46E0 /* TestCollectionViewCell.m in Sources */,
 				98948CD71EB825ED006FBD83 /* HWEnum.m in Sources */,
