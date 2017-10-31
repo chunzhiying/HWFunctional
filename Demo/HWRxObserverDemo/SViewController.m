@@ -85,13 +85,11 @@
 }
 
 - (HWPromise *)notification:(NSUInteger)delayTime userInfo:(NSDictionary *)userInfo {
-    HWPromise *promise = [HWPromise new];
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
     });
     
-    return promise.observe(HWRxNoCenter.Rx(@"abc").disposeBy(self));
+    return HWPromise.observe(HWRxNoCenter.Rx(@"abc").disposeBy(self));
 }
 
 #pragma mark - rx_tap & debounce

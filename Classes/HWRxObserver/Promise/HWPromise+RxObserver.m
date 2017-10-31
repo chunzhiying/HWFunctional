@@ -11,16 +11,17 @@
 
 @implementation HWPromise (RxObserver)
 
-- (HWPromise * _Nonnull (^)(HWRxObserver * _Nonnull))observe {
++ (HWPromise * _Nonnull (^)(HWRxObserver * _Nonnull))observe {
     return ^(HWRxObserver *observer) {
+        HWPromise *promise = [HWPromise new];
         observer.subscribe(^(id obj) {
             if (!obj || [obj isKindOfClass:[NSNull class]]) {
-                self.failObj = @(NO);
+                promise.failObj = @(NO);
             } else {
-                self.successObj = obj;
+                promise.successObj = obj;
             }
         });
-        return self;
+        return promise;
     };
 }
 
