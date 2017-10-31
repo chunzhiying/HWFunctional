@@ -15,11 +15,7 @@
     return ^(HWRxObserver *observer) {
         HWPromise *promise = [HWPromise new];
         observer.subscribe(^(id obj) {
-            if (!obj || [obj isKindOfClass:[NSNull class]]) {
-                promise.failObj = @(NO);
-            } else {
-                promise.successObj = obj;
-            }
+            promise.successObj = obj;
         });
         return promise;
     };
