@@ -66,8 +66,7 @@
 
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
-        NSAssert(variable.count == self.dequeueReusableIds.count,
-                 Error(@"dataSource.count not equal to cell reusableIDs.count"));
+        NSAssert(variable.count == self.dequeueReusableIds.count, Error(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 content];
