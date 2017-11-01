@@ -7,6 +7,7 @@
 //
 
 #import "HWPromise+RxObserver.h"
+#import "NSObject+RxObserver.h"
 #import "HWRxObserver.h"
 
 @implementation HWPromise (RxObserver)
@@ -16,6 +17,20 @@
         HWPromise *promise = [HWPromise new];
         observer.subscribe(^(id obj) {
             promise.successObj = obj;
+        });
+        return promise;
+    };
+}
+
++ (HWPromise * _Nonnull (^)(HWRxObserver * _Nonnull))observeOnce {
+    return ^(HWRxObserver *observer) {
+        HWPromise *promise = [HWPromise new];
+        Weakify(observer)
+        observer.subscribe(^(id obj) { Strongify(observer)
+            promise.successObj = obj;
+            if ([observer.target respondsToSelector:@selector(removeRxObserver:)]) {
+                [observer.target removeRxObserver:observer];
+            }
         });
         return promise;
     };

@@ -79,8 +79,14 @@
 #pragma mark - promise & observer
 - (void)test_promise {
     [self notification:2 userInfo:@{@"1":@"1"}]
-    .always(HW_BLOCK(HWPromiseResult *) {
-        NSLog(@"all promise observer finish!");
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"2":@"2"}];
+    })
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"3":@"3"}];
+    })
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"4":@"4"}];
     });
 }
 
@@ -89,7 +95,7 @@
         [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
     });
     
-    return HWPromise.observe(HWRxNoCenter.Rx(@"abc").disposeBy(self));
+    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self));
 }
 
 #pragma mark - rx_tap & debounce

@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HWPromise (RxObserver)
 
 @property (nonatomic, readonly, class) HWPromise *(^observe)(HWRxObserver *);
+@property (nonatomic, readonly, class) HWPromise *(^observeOnce)(HWRxObserver *);
 
 @end
 
