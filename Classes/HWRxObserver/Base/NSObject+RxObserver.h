@@ -13,11 +13,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef id _Nullable (^WeakReference)(void);
+
 @interface NSObject (RxObserver_Base)
 
 @property (nonatomic, strong, readonly) NSRecursiveLock *rx_lock;
 @property (nonatomic, strong) NSMutableArray<HWRxObserver *> *rx_observers;
-@property (nonatomic, strong) NSMutableArray<NSObject *> *rx_delegateTo_disposers; //when self dealloc, [obj executeDisposalBy:self]
+@property (nonatomic, strong) NSMutableArray<WeakReference> *rx_delegateTo_disposers; //when self dealloc, [obj executeDisposalBy:self]
 
 - (void)addRxObserver:(HWRxObserver *)observer;
 - (void)removeRxObserver:(HWRxObserver *)observer;

@@ -19,6 +19,7 @@
 #import "HWPromise+RxObserver.h"
 #import "NSNotificationCenter+RxObserver.h"
 
+
 @interface SViewController ()
 
 @property (nonatomic) dispatch_queue_t queue;
@@ -55,7 +56,8 @@
         $0.text = @"dealloc";
     });
     
-    [self test_promise];
+    [self test_weakDisposer];
+//    [self test_promise];
 //    [self test_debounce];
 //    [self test_throttle];
 //    [self test_takeUtil];
@@ -74,6 +76,14 @@
 
 - (void)dealloc {
     NSLog(@"sviewcontroller dealloc");
+}
+
+#pragma mark - weak disposer
+- (void)test_weakDisposer {
+    UITextField *a = [UITextField new];
+    a.rx_text.disposeBy(self).response(^{
+        
+    });
 }
 
 #pragma mark - promise & observer

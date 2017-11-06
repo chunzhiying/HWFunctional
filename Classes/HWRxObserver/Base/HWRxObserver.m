@@ -12,6 +12,13 @@
 #import "NSArray+FunctionalType.h"
 #import "NSObject+RxObserver.h"
 
+WeakReference MakeWeakReference(id obj) {
+    __weak id weakObj = obj;
+    return ^{
+        return weakObj;
+    };
+}
+
 typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     HWRxObserverType_UnOwned, // Default. created during Operating. AotuReleased when block over.
     HWRxObserverType_KVO,
@@ -394,7 +401,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         if (!obj.rx_delegateTo_disposers) {
             obj.rx_delegateTo_disposers = @[].mutableCopy;
         }
-        [obj.rx_delegateTo_disposers addObject:_target];
+        [obj.rx_delegateTo_disposers addObject:MakeWeakReference(_target)];
         return self;
     };
 }

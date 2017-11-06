@@ -169,8 +169,8 @@
     }
     
     if (self.rx_delegateTo_disposers.count != 0) {
-        self.rx_delegateTo_disposers.forEach(HW_BLOCK(NSObject *) {
-            [$0 executeDisposalBy:self];
+        self.rx_delegateTo_disposers.forEach(HW_BLOCK(WeakReference) {
+            [$0() executeDisposalBy:self];
         });
         [self.rx_delegateTo_disposers removeAllObjects];
     }
