@@ -34,7 +34,7 @@ typedef id _Nullable (^WeakReference)(void);
 @property (nonatomic, readonly) HWRxObserver *(^RxOnce)(NSString *keyPath);
 
 @property (nonatomic, readonly) HWRxObserver *rx_dealloc;
-@property (nonatomic, readonly) void(^rx_repost)(NSString *keyPath); //repost with lastest data, prepare for property without KVC
+@property (nonatomic, readonly) void(^rx_repost)(NSString *keyPath); //repost with lastest data
 
 @end
 

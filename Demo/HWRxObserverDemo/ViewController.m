@@ -89,7 +89,7 @@
     HWPromise *promise = [HWPromise new];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"%lu, %@, %@", (unsigned long)time, @(result), flag);
+//        NSLog(@"%lu, %@, %@", (unsigned long)time, @(result), flag);
         if (result) {
             promise.successObj = [NSString stringWithFormat:@"成功,%@" ,flag];
         } else {

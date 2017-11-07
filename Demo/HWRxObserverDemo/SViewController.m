@@ -56,8 +56,9 @@
         $0.text = @"dealloc";
     });
     
-    [self test_weakDisposer];
-//    [self test_promise];
+//    [self test_base];
+//    [self test_weakDisposer];
+    [self test_promise];
 //    [self test_debounce];
 //    [self test_throttle];
 //    [self test_takeUtil];
@@ -78,6 +79,19 @@
     NSLog(@"sviewcontroller dealloc");
 }
 
+#pragma mark - base
+- (void)test_base {
+    _label.Rx(@"text")
+    .map(HW_BLOCK(NSString *) {
+        return [NSString stringWithFormat:@"%@，猜你个头", $0];
+    })
+    .subscribe(HW_BLOCK(NSString *) {
+        NSLog(@"%@", $0);
+    });
+
+    _label.text = @"你猜";
+}
+
 #pragma mark - weak disposer
 - (void)test_weakDisposer {
     UITextField *a = [UITextField new];
@@ -88,6 +102,11 @@
 
 #pragma mark - promise & observer
 - (void)test_promise {
+    
+    HWRxInstance.schedule(1, YES).disposeBy(self).response(^{
+        [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:@{@"d":@"d"}];
+    });
+    
     [self notification:2 userInfo:@{@"1":@"1"}]
     .next(HW_BLOCK(NSDictionary *) {
         return [self notification:2 userInfo:@{@"2":@"2"}];
@@ -105,13 +124,15 @@
         [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
     });
     
-    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self));
+    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self), HW_BLOCK(NSDictionary *) {
+                                     return (BOOL)![$0.allKeys.firstObject isEqualToString:@"d"];
+                                 });
 }
 
 #pragma mark - rx_tap & debounce
 - (void)test_debounce {
     static int a = 0;
-    _label.rx_dynamicTap.throttle(0.3).subscribe(HW_BLOCK(UILabel *) {
+    _label.rx_dynamicTap.debounce(0.3).subscribe(HW_BLOCK(UILabel *) {
         a++;
         $0.text = [NSString stringWithFormat:@"%@", @(a)];
         NSLog(@"aaa text: %@", @(a));
@@ -130,14 +151,10 @@
 #pragma mark - schedule & takeUtil
 - (void)test_takeUtil {
     HWRxObserver *observer = HWRxInstance;
-    observer.schedule(1, NO).disposeBy(self)
+    observer.schedule(1, YES).disposeBy(self)
     .subscribe(HW_BLOCK(HWIntegerNumber *) {
         NSLog(@"%@", [NSString stringWithFormat:@"takeUtil %@", @($0.integerValue)]);
     }).takeUntil(_label.RxOnce(@"text"));
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        observer.schedule(2, YES);
-    });
 }
 
 #pragma mark - switchLatest
@@ -245,8 +262,6 @@
     [self test_TableView_RxDataSource];
     [self.view addSubview:_tableView];
 
-
-
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(60, 60);
 
@@ -259,8 +274,8 @@
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), _queue, ^{
         
-        [_variable1 reloadObject:@[@"111", @"222", @"333"]];
-//        [_variable1 removeObjectAtIndex:3];
+//        [_variable1 reloadObject:@[@"111", @"222", @"333"]];
+        [_variable1 removeObjectAtIndex:3];
 //        [_variable2 removeObjectAtIndex:0];
 //        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
 //            return (BOOL)($1 == 3);
@@ -291,26 +306,26 @@
     
     
     _tableView.RxDelegate()
-//    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
-//        return 80.f;
-//    })
-//    .viewForHeader(HW_BLOCK(NSUInteger) {
-//        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
-//        header.backgroundColor = [UIColor purpleColor];
-//        return header;
-//    })
-//    .viewForFooter(HW_BLOCK(NSUInteger) {
-//        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
-//        footer.backgroundColor = [UIColor greenColor];
-//        return footer;
-//    })
+    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
+        return 80.f;
+    })
+    .viewForHeader(HW_BLOCK(NSUInteger) {
+        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
+        header.backgroundColor = [UIColor purpleColor];
+        return header;
+    })
+    .viewForFooter(HW_BLOCK(NSUInteger) {
+        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+        footer.backgroundColor = [UIColor greenColor];
+        return footer;
+    })
     .cellSelected(HW_BLOCK(NSString *, NSIndexPath *) { Strongify(self)
         NSLog(@"%@", $0);
-//        if ($1.section == 0) {
-//            [self.variable1 removeObjectAtIndex:$1.row];
-//        } else {
-//            [self.variable2 removeObjectAtIndex:$1.row];
-//        }
+        if ($1.section == 0) {
+            [self.variable1 removeObjectAtIndex:$1.row];
+        } else {
+            [self.variable2 removeObjectAtIndex:$1.row];
+        }
     });
     
 }

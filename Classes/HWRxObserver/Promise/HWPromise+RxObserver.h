@@ -10,12 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef BOOL(^FilterBlock)(NSDictionary *);
+
 @class HWRxObserver;
 
 @interface HWPromise (RxObserver)
 
 @property (nonatomic, readonly, class) HWPromise *(^observe)(HWRxObserver *);
-@property (nonatomic, readonly, class) HWPromise *(^observeOnce)(HWRxObserver *);
+@property (nonatomic, readonly, class) HWPromise *(^observeOnce)(HWRxObserver *, FilterBlock);
 
 @end
 

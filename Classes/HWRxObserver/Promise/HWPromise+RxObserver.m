@@ -22,11 +22,14 @@
     };
 }
 
-+ (HWPromise * _Nonnull (^)(HWRxObserver * _Nonnull))observeOnce {
-    return ^(HWRxObserver *observer) {
++ (HWPromise * _Nonnull (^)(HWRxObserver * _Nonnull, FilterBlock _Nonnull))observeOnce {
+    return ^(HWRxObserver *observer, FilterBlock block) {
         HWPromise *promise = [HWPromise new];
         Weakify(observer)
         observer.subscribe(^(id obj) { Strongify(observer)
+            if (!(block && block(obj))) {
+                return;
+            }
             promise.successObj = obj;
             if ([observer.target respondsToSelector:@selector(removeRxObserver:)]) {
                 [observer.target removeRxObserver:observer];
