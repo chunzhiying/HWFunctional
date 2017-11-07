@@ -51,7 +51,7 @@
     });
 ```
 
-#### 上下文依赖 callback hell
+#### 上下文依赖 callback hell （串行调用）
 处理时使用```next```操作符，```next```返回的数据即为这次调用的数据，当链式调用时，中途某次```fail```，会直接在最后一步以该次的```fail```返回
 
 ```
@@ -86,5 +86,34 @@
 2017-07-17 17:55:27.710 HWRxObserverDemo[8950:473736] 1, 1, 二
 2017-07-17 17:55:28.810 HWRxObserverDemo[8950:473736] 1, 0, 三
 2017-07-17 17:55:28.811 HWRxObserverDemo[8950:473736] all finised 失败,三
+```
+
+#### HWPromise+RxObserver
+- 应对通知回调的情况（典型场景sdk接口）
+- observeOnce：接收到一次回调之后，就会去释放observer
+- 此时observer会持有promise对象，当observer销毁时，promise对象会被销毁
+
+```
+#pragma mark - promise & observer
+- (void)test_promise {
+    [self notification:2 userInfo:@{@"1":@"1"}]
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"2":@"2"}];
+    })
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"3":@"3"}];
+    })
+    .next(HW_BLOCK(NSDictionary *) {
+        return [self notification:2 userInfo:@{@"4":@"4"}];
+    });
+}
+
+- (HWPromise *)notification:(NSUInteger)delayTime userInfo:(NSDictionary *)userInfo {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
+    });
+    
+    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self));
+}
 ```
 
