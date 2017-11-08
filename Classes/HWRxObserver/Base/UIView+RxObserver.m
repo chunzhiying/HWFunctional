@@ -7,6 +7,7 @@
 //
 
 #import "UIView+RxObserver.h"
+#import "NSNotificationCenter+RxObserver.h"
 #import "NSArray+FunctionalType.h"
 #import "HWFunctionalType.h"
 #import "HWRxObserver.h"
@@ -115,14 +116,12 @@
 
 @implementation UITextField (RxObserver)
 
-- (HWRxObserver *)rx_text {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFiledEditChanged:)
-                                                 name:UITextFieldTextDidChangeNotification object:self];
+- (HWRxObserver *)rx_text { Weakify(self)
+    HWRxNoCenter.Rx(UITextFieldTextDidChangeNotification).disposeBy(self)
+    .response(^{ Strongify(self)
+        self.rx_repost(@"text");
+    });
     return self.Rx(@"text");
-}
-
-- (void)textFiledEditChanged:(NSNotification *)notification {
-    self.rx_repost(@"text");
 }
 
 @end
