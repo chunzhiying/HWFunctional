@@ -401,7 +401,18 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         if (!obj.rx_delegateTo_disposers) {
             obj.rx_delegateTo_disposers = @[].mutableCopy;
         }
-        [obj.rx_delegateTo_disposers addObject:MakeWeakReference(_target)];
+        
+        BOOL isNewDisposer = YES;
+        for (WeakReference reference in obj.rx_delegateTo_disposers) {
+            if ([reference() isEqual:_target]) {
+                isNewDisposer = NO;
+                break;
+            }
+        }
+        
+        if (isNewDisposer) {
+            [obj.rx_delegateTo_disposers addObject:MakeWeakReference(_target)];
+        }
         return self;
     };
 }
