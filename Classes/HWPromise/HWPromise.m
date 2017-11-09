@@ -178,7 +178,7 @@
 - (HWPromise *)promise {
     return self
     .filter(^(HWPromise *promise){
-        return @([promise isKindOfClass:[HWPromise class]]);
+        return [promise isKindOfClass:[HWPromise class]];
     })
     .reduce([HWPromise new].then(^(HWPromise *promise) {promise.results = @[[NSNull null]];}),
             ^(HWPromise *promise1, HWPromise *promise2)

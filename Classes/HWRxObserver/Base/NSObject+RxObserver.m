@@ -51,7 +51,7 @@
         return;
     }
     self.rx_observers.filter(^(HWRxObserver *observer) {
-        return @([observer.disposer isEqualToString:[NSString stringWithFormat:@"%p", disposer]]);
+        return [observer.disposer isEqualToString:[NSString stringWithFormat:@"%p", disposer]];
     }).forEach(^(HWRxObserver *observer) {
         [self removeRxObserver:observer];
     });

@@ -499,7 +499,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     return ^(filterType block) {
         HWRxObserver *observer = [HWRxObserver new];
         self.subscribe(^(id obj) {
-            if ([block(obj) boolValue]) {
+            if (block(obj)) {
                 observer.rxObj = obj;
             }
         });
@@ -544,7 +544,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (HWRxObserver *)merge {
     HWRxObserver *observer = [HWRxObserver new];
     self.filter(^(id obj) {
-        return @([obj isKindOfClass:[HWRxObserver class]]);
+        return [obj isKindOfClass:[HWRxObserver class]];
     }).forEach(^(HWRxObserver *observable) {
         observable.subscribe(^(id data) {
             observer.rxObj = data;
@@ -556,7 +556,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 - (HWRxObserver *)combineLatest {
     HWRxObserver *observer = [HWRxObserver new];
     NSArray *observers = self.filter(^(id obj) {
-        return @([obj isKindOfClass:[HWRxObserver class]]);
+        return [obj isKindOfClass:[HWRxObserver class]];
     });
     NSMutableArray *results = (NSMutableArray *)observers.map(^(id obj) {
         return @"combineLatest";
@@ -571,7 +571,7 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
             }
             
             NSArray *filtered = results.filter(^(id result) {
-                return @([result isKindOfClass:[NSString class]] && [result isEqualToString:@"combineLatest"]);
+                return (BOOL)([result isKindOfClass:[NSString class]] && [result isEqualToString:@"combineLatest"]);
             });
             
             if (filtered.count == 0) {

@@ -43,7 +43,7 @@
     return ^(filterType block) {
         NSMutableDictionary *result = [NSMutableDictionary new];
         for (id key in self.allKeys) {
-            if ([block(@{@"key":key, @"value":self[key]}) boolValue]) {
+            if (block(@{@"key":key, @"value":self[key]})) {
                 [result setObject:self[key] forKey:key];
             }
         }

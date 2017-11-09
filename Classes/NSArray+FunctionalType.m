@@ -77,7 +77,7 @@
     return ^(filterType block) {
         NSMutableArray *result = [NSMutableArray new];
         for (id element in self) {
-            if ([block(element) boolValue]) {
+            if (block(element)) {
                 [result addObject:element];
             }
         }
@@ -130,14 +130,14 @@
                     result = NO;
                 } else {
                     for (NSUInteger i = 0; i < [obj1 count]; i++) {
-                        result = [block([obj1 objectAtIndex:i], [obj2 objectAtIndex:i]) boolValue];
+                        result = block([obj1 objectAtIndex:i], [obj2 objectAtIndex:i]);
                         if (!result) {
                             break;
                         }
                     }
                 }
             } else if(![obj1 isKindOfClass:[NSArray class]] && ![obj2 isKindOfClass:[NSArray class]]) {
-                result = [block(obj1, obj2) boolValue];
+                result = block(obj1, obj2);
             } else {
                 result = NO;
             }

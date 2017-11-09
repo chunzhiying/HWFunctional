@@ -175,7 +175,7 @@
     NSArray *animations = [self flatmapAnimationGroup:animationGroup];
     NSArray *keyPaths = [_keyPath componentsSeparatedByString:SeparateSymbol];
     keyPaths.filter(^(NSString *keyPath) {
-        return @(![keyPath isEqualToString:@"group"]);
+        return (BOOL)![keyPath isEqualToString:@"group"];
     }).forEachWithIndex(^(NSString *keyPath, NSUInteger index)
     {
         CAAnimation *anim = [animations objectAtIndex:index];
@@ -376,7 +376,7 @@
     return [HWAnimation new]
     .animateGroup()
     .animations(self.filter(^(NSObject *object) {
-        return @([object isKindOfClass:[HWAnimation class]]);
+        return [object isKindOfClass:[HWAnimation class]];
     }));
 }
 

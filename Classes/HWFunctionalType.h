@@ -21,10 +21,11 @@ typedef id _Nonnull (^mapType)(id element);
 typedef id _Nonnull (^mapWithIndexType)(id element, NSUInteger index);
 typedef id _Nonnull (^flatMapType)(id element);
 typedef id _Nonnull (^reduceType)(id result, id element);
-typedef BOOL(^findType)(id element);
 
-typedef NSNumber * _Nonnull (^compareType)(id obj1, id obj2); //bool
-typedef NSNumber * _Nonnull (^filterType)(id obj1); //bool
+typedef BOOL (^filterType)(id obj1);
+typedef BOOL (^findType)(id element);
+typedef BOOL (^compareType)(id obj1, id obj2);
+
 typedef NSComparisonResult(^sortType)(id obj1, id obj2);
 
 
