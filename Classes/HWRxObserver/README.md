@@ -2,6 +2,9 @@
 ### 概要
 对 ```Objective-C``` 中 ```KVO``` 、```Notification``` 的封装，配合函数式操作符，实现轻量级的函数响应式范式。
 
+### 结构
+![](https://raw.githubusercontent.com/chunzhiying/Resource/master/YNote/observer_code_16.png)
+
 ### Demo
 简单用法：
 ```
@@ -32,7 +35,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     HWRxObserverType_UnKnown, // no such property, observe failed
 };
 ```
-
+- **HWRxObserverType_UnOwned**：默认类型，表明该observer是被二次创建的（如map等操作符），此类型被上级observer的block所持有，不加入任何类的rx_observers数组中。当上级observer释放后，自动释放。
+- **HWRxObserverType_UnKnown**：针对KVO所设，当observe的对象不包含对应属性时，observer为此类型。
 
 ### 类文件
 
@@ -95,8 +99,8 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 
 ### 热信号的特殊说明
 - **behavior** + **connect**：由于observer都是热信号，信号发过之后，后面subcribe的就获取不到之前的信号了。而behavior会获取到上一个信号，在connect时进行repost。
-- 
-     ![](https://raw.githubusercontent.com/chunzhiying/Resource/master/YNote/observer_code_14.png)
+
+![](https://raw.githubusercontent.com/chunzhiying/Resource/master/YNote/observer_code_14.png)
 
 ### 详见Demo
 

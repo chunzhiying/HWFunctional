@@ -96,6 +96,11 @@
 ```
 #pragma mark - promise & observer
 - (void)test_promise {
+    
+    HWRxInstance.schedule(1, YES).disposeBy(self).response(^{
+        [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:@{@"d":@"d"}];
+    });
+    
     [self notification:2 userInfo:@{@"1":@"1"}]
     .next(HW_BLOCK(NSDictionary *) {
         return [self notification:2 userInfo:@{@"2":@"2"}];
@@ -113,7 +118,9 @@
         [HWRxNoCenter postNotificationName:@"abc" object:nil userInfo:userInfo];
     });
     
-    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self));
+    return HWPromise.observeOnce(HWRxNoCenter.Rx(@"abc").disposeBy(self), HW_BLOCK(NSDictionary *) {
+                                     return (BOOL)![$0.allKeys.firstObject isEqualToString:@"d"];
+                                 });
 }
 ```
 
