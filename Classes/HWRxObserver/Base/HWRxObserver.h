@@ -59,7 +59,7 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^disconnect)();
 
 @property (nonatomic, readonly) HWRxObserver *(^takeUntil)(HWRxObserver *);
-@property (nonatomic, readonly) HWRxObserver *(^switchLatest)(); // next: HWRxObserver, always subscribe the new one
+@property (nonatomic, readonly) HWRxObserver *(^switchLatest)(); // next: HWRxObserver, always subscribe the latest
 
 @end
 
@@ -69,6 +69,7 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, readonly) HWRxObserver *(^map)(mapType);
 @property (nonatomic, readonly) HWRxObserver *(^filter)(filterType);
 @property (nonatomic, readonly) HWRxObserver *(^reduce)(id, reduceType);
+@property (nonatomic, readonly) HWRxObserver *(^distinct)(compareType); // return YES for distinct
 @property (nonatomic, readonly) HWRxObserver *(^distinctUntilChanged)();
 
 @end

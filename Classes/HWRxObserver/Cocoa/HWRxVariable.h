@@ -22,6 +22,8 @@ typedef BOOL(^refreshCallBack)(id object, NSInteger index);
 + (instancetype)variable:(NSArray *)array;
 - (NSArray *)content;
 
+- (void)clean; // removeAllObjects without trigger signal
+
 - (id)objectAtIndex:(NSUInteger)index;
 
 - (void)insertObject:(id)object atIndex:(NSUInteger)index;

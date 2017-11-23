@@ -34,26 +34,24 @@
 #pragma mark - Private
 - (void)reloadData:(HWVariableSequence *)sequence effectSection:(NSUInteger)section {
     _content[section] = sequence.content;
+    [_tableView beginUpdates];
     switch (sequence.type) {
         case HWVariableChangeType_Add:
-            [_tableView beginUpdates];
             [_tableView insertRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
                 return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
             }) withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView endUpdates];
             break;
         case HWVariableChangeType_Remove:
-            [_tableView beginUpdates];
             [_tableView deleteRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
                 return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
             }) withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView endUpdates];
             break;
         case HWVariableChangeType_Reload:
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section]
-                          withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView reloadSections:[NSIndexSet indexSetWithIndex:section]
+                      withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+    [_tableView endUpdates];
 }
 
 #pragma mark - Public

@@ -145,7 +145,12 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 #pragma mark - Post
-#define PostToQueue(...) if (_queue) { dispatch_async(_queue, ^{SafeBlock(__VA_ARGS__)}); } else { SafeBlock(__VA_ARGS__) }
+#define PostToQueue(...) \
+if (_queue && ![NSThread isMainThread]) {               \
+    dispatch_async(_queue, ^{SafeBlock(__VA_ARGS__)});  \
+} else {                                                \
+    SafeBlock(__VA_ARGS__)                              \
+}                                                       \
 
 - (void)postTo:(nextType)block with:(NSObject *)data {
     if (_type == HWRxObserverType_Special) {
@@ -519,21 +524,29 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
     };
 }
 
-- (HWRxObserver *(^)())distinctUntilChanged {
-    return ^() {
+- (HWRxObserver * _Nonnull (^)(compareType _Nonnull))distinct {
+    return ^(compareType block) {
         HWRxObserver *observer = [HWRxObserver new];
         __block id lastObj = nil;
         self.subscribe(^(id obj) {
-            if ((![obj isKindOfClass:[lastObj class]])
-                ||([obj isKindOfClass:[NSValue class]] && ![obj isEqualToValue:lastObj])
-                ||([obj isKindOfClass:[NSString class]] && ![obj isEqualToString:lastObj]))
-            {
+            if (block(lastObj, obj)) {
                 lastObj = obj;
                 observer.rxObj = obj;
-                return;
             }
         });
         return observer;
+    };
+}
+
+- (HWRxObserver *(^)())distinctUntilChanged {
+    return ^() {
+        return self.distinct(^(id last, id new) {
+            BOOL distinct =
+            ![new isKindOfClass:[last class]]
+            ||([new isKindOfClass:[NSValue class]] && ![new isEqualToValue:last])
+            ||([new isKindOfClass:[NSString class]] && ![new isEqualToString:last]);
+            return distinct;
+        });
     };
 }
 

@@ -28,7 +28,7 @@
     self.view.backgroundColor = [UIColor yellowColor];
     
     @[@1, @2, @3].filter(HW_BLOCK(NSNumber *) {
-        return @($0.intValue / 2 == 1);
+        return (BOOL)($0.intValue / 2 == 1);
     }).forEach(HW_BLOCK(NSNumber *) {
         NSLog(@"filter %@", $0);
     });
@@ -88,8 +88,14 @@
 - (HWPromise *)after:(NSUInteger)time result:(BOOL)result flag:(NSString *)flag {
     HWPromise *promise = [HWPromise new];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//    if ([flag isEqualToString:@"二"]) {
 //        NSLog(@"%lu, %@, %@", (unsigned long)time, @(result), flag);
+//         promise.successObj = [NSString stringWithFormat:@"成功,%@" ,flag];
+//        return promise;
+//    }
+   
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"%lu, %@, %@", (unsigned long)time, @(result), flag);
         if (result) {
             promise.successObj = [NSString stringWithFormat:@"成功,%@" ,flag];
         } else {

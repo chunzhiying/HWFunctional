@@ -47,6 +47,11 @@ static  HWVariableSequence * HWVariableSquenceInit(NSArray *array, NSArray<HWUIn
     return _cacheData;
 }
 
+- (void)clean {
+    _cacheData = @[];
+    [_data removeAllObjects];
+}
+
 #pragma mark - Private
 - (void)postNextWithLocation:(NSArray<HWUIntegerNumber *> *)locations type:(HWVariableChangeType)type {
     _cacheData = _data.copy;
