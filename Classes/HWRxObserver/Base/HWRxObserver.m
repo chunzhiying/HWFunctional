@@ -145,8 +145,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
 }
 
 #pragma mark - Post
+
 #define PostToQueue(...) \
-if (_queue && ![NSThread isMainThread]) {               \
+if (_queue) {                                           \
     dispatch_async(_queue, ^{SafeBlock(__VA_ARGS__)});  \
 } else {                                                \
     SafeBlock(__VA_ARGS__)                              \
