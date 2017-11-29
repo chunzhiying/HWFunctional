@@ -8,11 +8,20 @@
 
 #import "NSArray+FunctionalType.h"
 
+NSArray * NotNilArray(NSArray *ary) {
+    if (ary == nil
+        || [ary isKindOfClass:[NSNull class]]
+        || ![ary isKindOfClass:[NSArray class]]) {
+        return @[];
+    }
+    return ary;
+}
+
 @implementation NSArray (FunctionalType)
 
 - (NSArray *(^)(mapType block))map {
     return ^(mapType block) {
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (id element in self) {
             id newElement = block(element);
             if (newElement) {
@@ -25,7 +34,7 @@
 
 - (NSArray *(^)(mapWithIndexType block))mapWithIndex {
     return ^(mapWithIndexType block) {
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (NSInteger i = 0; i < self.count; i++) {
             id element = [self objectAtIndex:i];
             id newElement = block(element, i);
@@ -39,7 +48,7 @@
 
 - (NSArray *(^)(flatMapType block))flatMap {
     return ^(flatMapType block) {
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (id element in self) {
             if (!element || [element isKindOfClass:[NSNull class]]) {
                 continue;
@@ -60,7 +69,7 @@
 
 - (NSArray *(^)(sortType block))sort {
     return ^(sortType block) {
-        NSMutableArray *mAry;
+        NSMutableArray *mAry = nil;
         if ([self isKindOfClass:[NSMutableArray class]]) {
             mAry = (NSMutableArray *)self;
         } else {
@@ -75,7 +84,7 @@
 
 - (NSArray *(^)(filterType block))filter {
     return ^(filterType block) {
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (id element in self) {
             if (block(element)) {
                 [result addObject:element];
@@ -119,6 +128,17 @@
     };
 }
 
+- (NSInteger (^)(findType _Nonnull))firstIndexOf {
+    return ^(findType block) {
+        for (NSInteger index = 0; index < self.count; index++) {
+            if (block(self[index])) {
+                return index;
+            }
+        }
+        return NSNotFound;
+    };
+}
+
 - (BOOL (^)(compareType block))compare {
     return ^(compareType block) {
         BOOL result = YES;
@@ -158,7 +178,7 @@
         if (count > self.count) {
             return self;
         }
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (NSInteger i = 0; i < count; i++) {
             [result addObject:[self objectAtIndex:i]];
         }
@@ -171,7 +191,7 @@
         if (count > self.count) {
             return self;
         }
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (NSInteger i = self.count - count; i < self.count; i++) {
             [result addObject:[self objectAtIndex:i]];
         }
@@ -184,7 +204,7 @@
         if (count >= self.count) {
             return [NSArray new];
         }
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (NSInteger i = count; i < self.count; i++) {
             [result addObject:[self objectAtIndex:i]];
         }
@@ -197,7 +217,7 @@
         if (count >= self.count) {
             return [NSArray new];
         }
-        NSMutableArray *result = [NSMutableArray new];
+        NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
         for (NSInteger i = 0; i < self.count - count; i++) {
             [result addObject:[self objectAtIndex:i]];
         }
@@ -237,16 +257,26 @@
     };
 }
 
-@end
-
-@implementation NSArray (FunctionalType_Extension)
-
 + (instancetype)allocWithElementCount:(NSUInteger)elementCount {
-    NSMutableArray *array = [NSMutableArray new];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:elementCount];
     for (NSUInteger i = 0; i < elementCount; i++) {
         [array addObject:@(i)];
     }
     return array;
+}
+
+@end
+
+@implementation NSMutableArray (FunctionalType)
+
+- (id  _Nonnull (^)(findType _Nonnull))pop {
+    return ^(findType block) {
+        id result = self.find(block);
+        if (result) {
+            [self removeObject:result];
+        }
+        return result;
+    };
 }
 
 @end

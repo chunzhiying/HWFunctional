@@ -8,6 +8,15 @@
 
 #import "NSDictionary+FunctionalType.h"
 
+NSDictionary * NotNilDictionary(NSDictionary *dic) {
+    if (dic == nil
+        || [dic isKindOfClass:[NSNull class]]
+        || ![dic isKindOfClass:[NSDictionary class]]) {
+        return @{};
+    }
+    return dic;
+}
+
 @implementation NSDictionary (FunctionalType)
 
 - (NSDictionary *(^)(mapType block))map {

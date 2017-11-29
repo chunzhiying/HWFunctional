@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+FOUNDATION_EXTERN NSDictionary * NotNilDictionary(NSDictionary *dic);
+
 @interface NSDictionary (FunctionalType) <HWFunctionalType>
 
 @property (nonatomic, readonly) NSDictionary *(^map)(mapType);

@@ -17,13 +17,21 @@ typedef void (^TableCellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @property (nonatomic, strong, readonly) NSArray<NSArray *> *content;
 
-@property (nonatomic, readonly) HWRxTableDataSource *(^registerClass)(NSArray<NSString *>*reusableIds); // class name equal to reusableId
-@property (nonatomic, readonly) HWRxTableDataSource *(^registerNib)(NSArray<NSString *>*reusableIds, NSArray<UINib *> *nibs);
-@property (nonatomic, readonly) HWRxTableDataSource *(^registerNibDefault)(NSArray<NSString *>*reusableIds); // nib name equal to reusableId、main bundle
-
 @property (nonatomic, readonly) HWRxTableDataSource *(^cellForItem)(TableCellForRowCallBack);
-@property (nonatomic, readonly) HWRxTableDataSource *(^bindTo)(NSArray<HWRxVariable *> *); // the last step should be bind
 
+// class name equal to reusableId
+// nib name equal to reusableId、main bundle
+@property (nonatomic, readonly) HWRxTableDataSource *(^registerClass)(NSArray<NSString *>*reusableIds);
+@property (nonatomic, readonly) HWRxTableDataSource *(^registerNibDefault)(NSArray<NSString *>*reusableIds);
+@property (nonatomic, readonly) HWRxTableDataSource *(^registerNib)(NSArray<NSString *>*reusableIds, NSArray<UINib *> *nibs);
+
+// Default: UITableViewRowAnimationFade
+@property (nonatomic, readonly) HWRxTableDataSource *(^insertAnimation)(UITableViewRowAnimation);
+@property (nonatomic, readonly) HWRxTableDataSource *(^deleteAnimation)(UITableViewRowAnimation);
+@property (nonatomic, readonly) HWRxTableDataSource *(^reloadAnimation)(UITableViewRowAnimation);
+
+// Bind at last
+@property (nonatomic, readonly) HWRxTableDataSource *(^bindTo)(NSArray<HWRxVariable *> *);
 @property (nonatomic, readonly) HWRxTableDataSource *(^warnings)(void(^)(NSString *));
 
 @end

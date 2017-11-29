@@ -11,9 +11,11 @@
 #import "NSArray+FunctionalType.h"
 #import "HWAnimation+Combination.h"
 #import "UIView+RxObserver.h"
+#import "HWRxVariable.h"
 
 @interface ViewController ()
 
+@property (nonatomic, strong) HWRxVariable *variable1;
 @property (weak, nonatomic) IBOutlet UIButton *testBtn;
 @property (weak, nonatomic) IBOutlet UILabel *testLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *testImg;
@@ -25,26 +27,56 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor yellowColor];
+//    self.view.backgroundColor = [UIColor yellowColor];
+//
+    NSArray *a = nil;
+//    NSMutableArray *b = [NSMutableArray arrayWithArray:@[@1, @2, @3]];
+//    HWIntNumber *bResult = b.pop(HW_BLOCK(HWIntNumber *) {
+//        return (BOOL)($0.intValue == 2);
+//    });
     
-    @[@1, @2, @3].filter(HW_BLOCK(NSNumber *) {
-        return (BOOL)($0.intValue / 2 == 1);
-    }).forEach(HW_BLOCK(NSNumber *) {
-        NSLog(@"filter %@", $0);
+     _variable1 = [HWRxVariable variable:@[@1, @2, @3]];
+    
+    
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        for (id a in _variable1.content) {
+            NSLog(@"%@", a);
+        }
+    });
+    [_variable1 removeObjectAtIndex:0];
+    [_variable1 removeObjectAtIndex:0];
+    [_variable1 removeObjectAtIndex:0];
+
+    
+    
+    
+    _variable1.observer.subscribe(^(HWVariableSequence *a) {
+        NSLog(@"%@", a.content);
     });
     
-    _testBtn.rx_tap.subscribe(^(UIButton *button) {
-        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
-    });
+//    NotNilArray(a).map(HW_BLOCK(HWIntNumber *) {
+//        return @($0.intValue + 1);
+//    }).filter(HW_BLOCK(NSNumber *) {
+//        return (BOOL)($0.intValue / 2 == 1);
+//    }).forEach(HW_BLOCK(NSNumber *) {
+//        NSLog(@"filter %@", $0);
+//    });
+//
+//    _testBtn.rx_tap.subscribe(^(UIButton *button) {
+//        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
+//    });
+//
+//    _testLabel.rx_dynamicTap.debounce(1).subscribe(HW_BLOCK(UILabel *) {
+//        NSLog(@"label tap");
+//        $0.text = @"aa";
+//    });
+//
+//    _testImg.rx_dynamicTapToAlpha(0.2).response(^{
+//        NSLog(@"img AnimTap");
+//    });
     
-    _testLabel.rx_dynamicTap.debounce(1).subscribe(HW_BLOCK(UILabel *) {
-        NSLog(@"label tap");
-        $0.text = @"aa";
-    });
     
-    _testImg.rx_dynamicTapToAlpha(0.2).response(^{
-        NSLog(@"img AnimTap");
-    });
     
 //        @[[self after:1 result:YES flag:@"一"],
 //          [self after:3 result:YES flag:@"二"],
@@ -58,28 +90,28 @@
 //              NSLog(@"全部完成:%@", results);
 //          });
     
-        [self after:1 result:YES flag:@"一"]
-        .next(^(id obj) {
-           return [self after:1 result:YES flag:@"二"];
-        })
-        .next(^(id obj) {
-            return [self after:1 result:NO flag:@"三"];
-        })
-        .next(^(id obj) {
-            return [self after:1 result:YES flag:@"四"];
-        })
-        .next(^(id obj) {
-            return [self after:1 result:YES flag:@"五"];
-        })
-        .next(^(id obj) {
-           return  [self after:1 result:YES flag:@"六"];
-        })
-        .next(^(id obj) {
-           return  [self after:1 result:YES flag:@"七"];
-        })
-        .always(^(HWPromiseResult *obj) {
-            NSLog(@"all finised %@", obj.object);
-        });
+//        [self after:1 result:YES flag:@"一"]
+//        .next(^(id obj) {
+//           return [self after:1 result:YES flag:@"二"];
+//        })
+//        .next(^(id obj) {
+//            return [self after:1 result:NO flag:@"三"];
+//        })
+//        .next(^(id obj) {
+//            return [self after:1 result:YES flag:@"四"];
+//        })
+//        .next(^(id obj) {
+//            return [self after:1 result:YES flag:@"五"];
+//        })
+//        .next(^(id obj) {
+//           return  [self after:1 result:YES flag:@"六"];
+//        })
+//        .next(^(id obj) {
+//           return  [self after:1 result:YES flag:@"七"];
+//        })
+//        .always(^(HWPromiseResult *obj) {
+//            NSLog(@"all finised %@", obj.object);
+//        });
     
     
 }

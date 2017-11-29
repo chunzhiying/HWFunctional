@@ -58,7 +58,7 @@
     
 //    [self test_base];
 //    [self test_weakDisposer];
-    [self test_promise];
+//    [self test_promise];
 //    [self test_debounce];
 //    [self test_throttle];
 //    [self test_takeUtil];
@@ -67,7 +67,7 @@
 //    [self test_behavior];
 //    [self test_Notification];
 //    [self test_switchLatest];
-//    [self test_TableView_CollectionView];
+    [self test_TableView_CollectionView];
 }
 
 
@@ -81,7 +81,7 @@
 
 #pragma mark - base
 - (void)test_base {
-    _label.Rx(@"text")
+    HWRx(_label, text)
     .map(HW_BLOCK(NSString *) {
         return [NSString stringWithFormat:@"%@，猜你个头", $0];
     })
@@ -276,7 +276,7 @@
         
 //        [_variable1 reloadObject:@[@"111", @"222", @"333"]];
         [_variable1 removeObjectAtIndex:3];
-//        [_variable2 removeObjectAtIndex:0];
+        [_variable2 reloadObject:@[@"1", @"2", @"3"]];
 //        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
 //            return (BOOL)($1 == 3);
 //        }];
@@ -290,6 +290,9 @@
     
     _tableView.RxDataSource()
     .registerNibDefault(@[@"TestTableViewCell", @"STestTableViewCell"])
+    .insertAnimation(UITableViewRowAnimationRight)
+    .deleteAnimation(UITableViewRowAnimationLeft)
+    .reloadAnimation(UITableViewRowAnimationBottom)
     .cellForItem(HW_BLOCK(UITableViewCell *, NSString *, NSIndexPath *) {
         if ($2.section == 0) {
             TestTableViewCell *cell = (TestTableViewCell *)$0;
@@ -307,7 +310,7 @@
     
     _tableView.RxDelegate()
     .heightForRow(HW_BLOCK(id, NSIndexPath *) {
-        return 80.f;
+        return 30.f;
     })
     .viewForHeader(HW_BLOCK(NSUInteger) {
         UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];

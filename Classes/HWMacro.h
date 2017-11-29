@@ -27,6 +27,7 @@
     if (!obj##_weak_) { return; } \
     Strongify(obj)
 
+
 // Log
 
 #ifdef DEBUG
@@ -83,6 +84,12 @@
 
 #define HW_PARAMETER(...)   HW_MACROCAT(HW_PARAMETER_, HW_META_argCount(__VA_ARGS__))(__VA_ARGS__)
 #define HW_BLOCK(...)       ^(HW_PARAMETER(__VA_ARGS__))
+
+
+// KeyPath
+
+#define HW_KEYPATH(OBJ, PATH) @(((void)(NO && ((void)OBJ.PATH, NO)), # PATH))
+#define HWRx(OBJ, PATH) OBJ.Rx(HW_KEYPATH(OBJ, PATH))
 
 
 #endif /* HWMacro_h */

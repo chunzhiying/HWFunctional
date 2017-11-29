@@ -15,6 +15,11 @@
 #define ErrorCallBack SafeBlock(self.warningBlock, Error(([NSString stringWithFormat:@"%s", __PRETTY_FUNCTION__])));
 
 @interface HWRxTableDataSource ()
+{
+    UITableViewRowAnimation _insertAni;
+    UITableViewRowAnimation _deleteAni;
+    UITableViewRowAnimation _reloadAni;
+}
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray<NSArray *> *content;
@@ -27,6 +32,15 @@
 
 @implementation HWRxTableDataSource
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _insertAni = UITableViewRowAnimationFade;
+        _deleteAni = UITableViewRowAnimationFade;
+        _reloadAni = UITableViewRowAnimationFade;
+    }
+    return self;
+}
+
 - (void)dealloc {
     
 }
@@ -34,27 +48,51 @@
 #pragma mark - Private
 - (void)reloadData:(HWVariableSequence *)sequence effectSection:(NSUInteger)section {
     _content[section] = sequence.content;
+    
     [_tableView beginUpdates];
     switch (sequence.type) {
         case HWVariableChangeType_Add:
             [_tableView insertRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
                 return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
-            }) withRowAnimation:UITableViewRowAnimationFade];
+            }) withRowAnimation:_insertAni];
             break;
+            
         case HWVariableChangeType_Remove:
             [_tableView deleteRowsAtIndexPaths:sequence.locations.map(HW_BLOCK(HWUIntegerNumber *) {
                 return [NSIndexPath indexPathForRow:$0.unsignedIntegerValue inSection:section];
-            }) withRowAnimation:UITableViewRowAnimationFade];
+            }) withRowAnimation:_deleteAni];
             break;
+            
         case HWVariableChangeType_Reload:
             [_tableView reloadSections:[NSIndexSet indexSetWithIndex:section]
-                      withRowAnimation:UITableViewRowAnimationFade];
+                      withRowAnimation:_reloadAni];
             break;
     }
     [_tableView endUpdates];
 }
 
 #pragma mark - Public
+- (HWRxTableDataSource * _Nonnull (^)(UITableViewRowAnimation))insertAnimation {
+    return ^(UITableViewRowAnimation animation) {
+        _insertAni = animation;
+        return self;
+    };
+}
+
+- (HWRxTableDataSource * _Nonnull (^)(UITableViewRowAnimation))deleteAnimation {
+    return ^(UITableViewRowAnimation animation) {
+        _deleteAni = animation;
+        return self;
+    };
+}
+
+- (HWRxTableDataSource * _Nonnull (^)(UITableViewRowAnimation))reloadAnimation {
+    return ^(UITableViewRowAnimation animation) {
+        _reloadAni = animation;
+        return self;
+    };
+}
+
 - (HWRxTableDataSource *(^)(void (^)(NSString *)))warnings {
     return ^(void (^callBack)(NSString *)) {
         self.warningBlock = callBack;
@@ -64,7 +102,8 @@
 
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
-        NSAssert(variable.count == self.dequeueReusableIds.count, Error(@"dataSource.count not equal to cell reusableIDs.count"));
+        NSAssert(variable.count == self.dequeueReusableIds.count,
+                 Error(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 content];
@@ -91,7 +130,8 @@
     return ^(NSArray<NSString *> *reusableIds) {
         self.dequeueReusableIds = reusableIds;
         for (NSString *reusableId in reusableIds) {
-            [_tableView registerClass:NSClassFromString(reusableId) forCellReuseIdentifier:reusableId];
+            [_tableView registerClass:NSClassFromString(reusableId)
+               forCellReuseIdentifier:reusableId];
         }
         return self;
     };
@@ -101,7 +141,8 @@
     return ^(NSArray<NSString *> *reusableIds) {
         self.dequeueReusableIds = reusableIds;
         for (NSString *reusableId in reusableIds) {
-            [_tableView registerNib:[UINib nibWithNibName:reusableId bundle:nil] forCellReuseIdentifier:reusableId];
+            [_tableView registerNib:[UINib nibWithNibName:reusableId bundle:nil]
+             forCellReuseIdentifier:reusableId];
         }
         return self;
     };
@@ -109,11 +150,13 @@
 
 - (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull, NSArray<UINib *> * _Nonnull))registerNib {
     return ^(NSArray<NSString *> *reusableIds,  NSArray<UINib *> *nibs) {
-        NSAssert(reusableIds.count == nibs.count, Error(@"reusableIds.count not equal to nibs.count"));
+        NSAssert(reusableIds.count == nibs.count,
+                 Error(@"reusableIds.count not equal to nibs.count"));
         
         self.dequeueReusableIds = reusableIds;
         for (NSInteger i = 0; i < reusableIds.count; i++) {
-            [_tableView registerNib:nibs[i] forCellReuseIdentifier:reusableIds[i]];
+            [_tableView registerNib:nibs[i]
+             forCellReuseIdentifier:reusableIds[i]];
         }
         return self;
     };

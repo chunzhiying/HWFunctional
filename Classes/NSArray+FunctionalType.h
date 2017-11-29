@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+FOUNDATION_EXTERN NSArray * NotNilArray(NSArray *ary);
+
 @interface NSArray (FunctionalType) <HWFunctionalType>
 
 @property (nonatomic, readonly) NSArray *(^map)(mapType);
@@ -24,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) id (^find)(findType);
 @property (nonatomic, readonly) BOOL(^contains)(findType);
+@property (nonatomic, readonly) NSInteger (^firstIndexOf)(findType);
 
 @property (nonatomic, readonly) NSArray *(^just)(NSUInteger count);
 @property (nonatomic, readonly) NSArray *(^justTail)(NSUInteger count);
@@ -35,11 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSMutableArray *(^mutate)();
 
++ (instancetype)allocWithElementCount:(NSUInteger)elementCount;
+
 @end
 
-@interface NSArray (FunctionalType_Extension)
 
-+ (instancetype)allocWithElementCount:(NSUInteger)elementCount;
+@interface NSMutableArray (FunctionalType)
+
+@property (nonatomic, readonly) id (^pop)(findType);
 
 @end
 
