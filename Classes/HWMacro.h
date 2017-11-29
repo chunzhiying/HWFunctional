@@ -89,7 +89,9 @@
 // KeyPath
 
 #define HW_KEYPATH(OBJ, PATH) @(((void)(NO && ((void)OBJ.PATH, NO)), # PATH))
+
 #define HWRx(OBJ, PATH) OBJ.Rx(HW_KEYPATH(OBJ, PATH))
+#define HWRxOnce(OBJ, PATH) OBJ.RxOnce(HW_KEYPATH(OBJ, PATH))
 
 
 #endif /* HWMacro_h */

@@ -106,10 +106,12 @@
         if (!self.rx_observers || self.rx_observers.count == 0) {
             return self.Rx(keyPath);
         }
+        [RxLock lock];
         HWRxObserver *existObserver = self.rx_observers
         .find(HW_BLOCK(HWRxObserver *) {
             return [$0.keyPath isEqualToString:keyPath];
         });
+        [RxLock unlock];
         if (!existObserver) {
             existObserver = self.Rx(keyPath);
         }
