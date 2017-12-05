@@ -12,10 +12,20 @@
 #import "HWAnimation+Combination.h"
 #import "UIView+RxObserver.h"
 #import "HWRxVariable.h"
+#import <objc/runtime.h>
+
+@protocol bbp <NSObject>
+- (void)show;
+@end
+
+@interface Cbbp : NSObject <bbp>
+@end
+
+@implementation Cbbp
+@end
 
 @interface ViewController ()
 
-@property (nonatomic, strong) HWRxVariable *variable1;
 @property (weak, nonatomic) IBOutlet UIButton *testBtn;
 @property (weak, nonatomic) IBOutlet UILabel *testLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *testImg;
@@ -29,39 +39,26 @@
 
 //    self.view.backgroundColor = [UIColor yellowColor];
 //
-    NSArray *a = nil;
 //    NSMutableArray *b = [NSMutableArray arrayWithArray:@[@1, @2, @3]];
 //    HWIntNumber *bResult = b.pop(HW_BLOCK(HWIntNumber *) {
 //        return (BOOL)($0.intValue == 2);
 //    });
     
-     _variable1 = [HWRxVariable variable:@[@1, @2, @3]];
-    
-    
-    
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        for (id a in _variable1.content) {
-            NSLog(@"%@", a);
-        }
+    NotNilArray(@[@1,@2,@3]).map(HW_BLOCK(HWIntNumber *) {
+        return @($0.intValue + 1);
+    }).filter(HW_BLOCK(NSNumber *) {
+        return (BOOL)($0.intValue / 2 == 1);
+    }).forEach(HW_BLOCK(NSNumber *) {
+        NSLog(@"filter %@", $0);
     });
-    [_variable1 removeObjectAtIndex:0];
-    [_variable1 removeObjectAtIndex:0];
-    [_variable1 removeObjectAtIndex:0];
+    
+    Cbbp *bb = [Cbbp new];
+    [self addMehod:bb];
+    if ([bb respondsToSelector:@selector(show)]) {
+        [bb show];
+    }
 
     
-    
-    
-    _variable1.observer.subscribe(^(HWVariableSequence *a) {
-        NSLog(@"%@", a.content);
-    });
-    
-//    NotNilArray(a).map(HW_BLOCK(HWIntNumber *) {
-//        return @($0.intValue + 1);
-//    }).filter(HW_BLOCK(NSNumber *) {
-//        return (BOOL)($0.intValue / 2 == 1);
-//    }).forEach(HW_BLOCK(NSNumber *) {
-//        NSLog(@"filter %@", $0);
-//    });
 //
 //    _testBtn.rx_tap.subscribe(^(UIButton *button) {
 //        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
@@ -114,6 +111,23 @@
 //        });
     
     
+}
+
+- (void)addMehod:(NSObject *)b {
+    Method method = class_getInstanceMethod([self class], @selector(show));
+    BOOL success = class_addMethod([b class],
+                                   @selector(show),
+                                   method_getImplementation(method),
+                                   method_getTypeEncoding(method));
+    if (!success) {
+        NSLog(@"add method not success");
+    } else {
+        NSLog(@"add method success");
+    }
+}
+
+- (void)show {
+    NSLog(@"add method call");
 }
 
 

@@ -194,12 +194,10 @@
 @interface HWRxTableDelegate ()
 
 @property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) id<UITableViewDelegate> bridge;
 
 @property (nonatomic, copy) void(^cellSelectedBlock)(id, NSIndexPath *);
 @property (nonatomic, copy) float(^heightForRowBlock)(id, NSIndexPath *);
-
-@property (nonatomic, copy) UIView *(^viewForHeaderBlock)(NSUInteger);
-@property (nonatomic, copy) UIView *(^viewForFooterBlock)(NSUInteger);
 
 @end
 
@@ -220,58 +218,65 @@
     };
 }
 
-- (HWRxTableDelegate *(^)(UIView *(^)(NSUInteger)))viewForHeader {
-    return ^(UIView *(^callBack)(NSUInteger)) {
-        self.viewForHeaderBlock = callBack;
+- (HWRxTableDelegate * _Nonnull (^)(id<UITableViewDelegate> _Nonnull))bridgeTo {
+    return ^(id<UITableViewDelegate> bridge) {
+        [self handleBridge:bridge];
         return self;
     };
 }
-
-- (HWRxTableDelegate *(^)(UIView *(^)(NSUInteger)))viewForFooter {
-    return ^(UIView *(^callBack)(NSUInteger)) {
-        self.viewForFooterBlock = callBack;
-        return self;
-    };
-}
-
 
 #pragma mark - Helper
-- (id)getRowDataFor:(NSIndexPath *)indexPath {
-    NSArray<NSArray *> *array = _tableView.RxDataSource().content;
+static id getRowDataFor(UITableView *tableView, NSIndexPath *indexPath) {
+    NSArray<NSArray *> *array = tableView.RxDataSource().content;
     if (array.count > indexPath.section && array[indexPath.section].count > indexPath.row) {
         return array[indexPath.section][indexPath.row];
     }
     return nil;
 }
 
-#pragma mark - UITableViewDelegate
-#define RowsEnsure \
-if ([tableView.dataSource tableView:tableView numberOfRowsInSection:section] == 0) {return CGFLOAT_MIN;}
+- (void)handleBridge:(id<UITableViewDelegate>)bridge {
+    if (!bridge) {
+        return;
+    }
+    self.bridge = bridge;
+    self.tableView.delegate = bridge;
+    
+    if (![bridge respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]
+        && self.cellSelectedBlock) {
+        [self bridgeAddMethod:@selector(tableView:didSelectRowAtIndexPath:)];
+    }
+    
+    if (![bridge respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]
+        && self.heightForRowBlock) {
+        [self bridgeAddMethod:@selector(tableView:heightForRowAtIndexPath:)];
+    }
+}
 
+- (void)bridgeAddMethod:(SEL)sel {
+    Method method = class_getInstanceMethod([self class], sel);
+    BOOL success = class_addMethod([_bridge class],
+                                   sel,
+                                   method_getImplementation(method),
+                                   method_getTypeEncoding(method));
+    if (!success) {
+        NSLog(@"add method not success");
+    } else {
+        NSLog(@"add method success");
+    }
+}
+
+#pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    SafeBlock(self.cellSelectedBlock, [self getRowDataFor:indexPath], indexPath);
+    SafeBlock(tableView.RxDelegate().cellSelectedBlock,
+              getRowDataFor(tableView, indexPath),
+              indexPath);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return SafeBlockDefault(50.f, self.heightForRowBlock, [self getRowDataFor:indexPath], indexPath);
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section { RowsEnsure
-    UIView *header = SafeBlockDefault([UIView new], self.viewForHeaderBlock, section);
-    return header.bounds.size.height;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section { RowsEnsure
-    UIView *header = SafeBlockDefault([UIView new], self.viewForFooterBlock, section);
-    return header.bounds.size.height;
-}
-
-- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return SafeBlockDefault([UIView new], self.viewForHeaderBlock, section);
-}
-
-- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return SafeBlockDefault([UIView new], self.viewForFooterBlock, section);
+    return SafeBlockDefault(50.f,
+                            tableView.RxDelegate().heightForRowBlock,
+                            getRowDataFor(tableView, indexPath),
+                            indexPath);
 }
 
 @end

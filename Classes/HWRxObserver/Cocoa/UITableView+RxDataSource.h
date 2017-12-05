@@ -41,8 +41,8 @@ typedef void (^TableCellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @property (nonatomic, readonly) HWRxTableDelegate *(^cellSelected)(void(^)(id data, NSIndexPath *));
 @property (nonatomic, readonly) HWRxTableDelegate *(^heightForRow)(float(^)(id data, NSIndexPath *));
-@property (nonatomic, readonly) HWRxTableDelegate *(^viewForHeader)(UIView *(^)(NSUInteger)); //frame.height for heightForHeader
-@property (nonatomic, readonly) HWRxTableDelegate *(^viewForFooter)(UIView *(^)(NSUInteger)); //frame.height for heightForFooter
+
+@property (nonatomic, readonly) HWRxTableDelegate *(^bridgeTo)(id<UITableViewDelegate>);
 
 @end
 

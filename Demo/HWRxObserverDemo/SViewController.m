@@ -18,9 +18,10 @@
 #import "STestCollectionViewCell.h"
 #import "HWPromise+RxObserver.h"
 #import "NSNotificationCenter+RxObserver.h"
+#import <objc/runtime.h>
 
 
-@interface SViewController ()
+@interface SViewController () <UITableViewDelegate>
 
 @property (nonatomic) dispatch_queue_t queue;
 
@@ -241,12 +242,12 @@
 #pragma mark - TableView & CollectionView
 - (void)test_TableView_CollectionView {
     _variable1 = [HWRxVariable variable:@[
-                                          @"1",
-                                          @"2",
-                                          @"3",
-                                          @"4",
-                                          @"5",
-                                          @"6",
+//                                          @"1",
+//                                          @"2",
+//                                          @"3",
+//                                          @"4",
+//                                          @"5",
+//                                          @"6",
                                           ]];
 
     _variable2 = [HWRxVariable variable:@[@"11",
@@ -274,9 +275,9 @@
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), _queue, ^{
         
-//        [_variable1 reloadObject:@[@"111", @"222", @"333"]];
-        [_variable1 removeObjectAtIndex:3];
-        [_variable2 reloadObject:@[@"1", @"2", @"3"]];
+        [_variable1 addObject:@"333"];
+//        [_variable1 removeObjectAtIndex:3];
+//        [_variable2 reloadObject:@[@"1", @"2", @"3"]];
 //        [_variable1 replaceByObject:@"11111" select:HW_BLOCK(NSString *, NSInteger) {
 //            return (BOOL)($1 == 3);
 //        }];
@@ -312,16 +313,6 @@
     .heightForRow(HW_BLOCK(id, NSIndexPath *) {
         return 30.f;
     })
-    .viewForHeader(HW_BLOCK(NSUInteger) {
-        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)];
-        header.backgroundColor = [UIColor purpleColor];
-        return header;
-    })
-    .viewForFooter(HW_BLOCK(NSUInteger) {
-        UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
-        footer.backgroundColor = [UIColor greenColor];
-        return footer;
-    })
     .cellSelected(HW_BLOCK(NSString *, NSIndexPath *) { Strongify(self)
         NSLog(@"%@", $0);
         if ($1.section == 0) {
@@ -329,8 +320,19 @@
         } else {
             [self.variable2 removeObjectAtIndex:$1.row];
         }
-    });
+    })
+    .bridgeTo(self);
     
+}
+
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    return [UIView new].then(HW_BLOCK(UIView *) {
+        $0.backgroundColor = [UIColor yellowColor];
+    });
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 50.f;
 }
 
 #pragma mark - CollectionView RxDataSource
