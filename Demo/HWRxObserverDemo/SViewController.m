@@ -310,7 +310,7 @@
     
     
     _tableView.RxDelegate()
-    .heightForRow(HW_BLOCK(id, NSIndexPath *) {
+    .heightForRow(^(id a, NSIndexPath *b) {
         return 30.f;
     })
     .cellSelected(HW_BLOCK(NSString *, NSIndexPath *) { Strongify(self)
@@ -320,8 +320,7 @@
         } else {
             [self.variable2 removeObjectAtIndex:$1.row];
         }
-    })
-    .bridgeTo(self);
+    });
     
 }
 

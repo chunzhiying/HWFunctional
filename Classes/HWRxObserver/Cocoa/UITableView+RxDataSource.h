@@ -42,7 +42,7 @@ typedef void (^TableCellForRowCallBack)(id cell, id data, NSIndexPath *);
 @property (nonatomic, readonly) HWRxTableDelegate *(^cellSelected)(void(^)(id data, NSIndexPath *));
 @property (nonatomic, readonly) HWRxTableDelegate *(^heightForRow)(float(^)(id data, NSIndexPath *));
 
-@property (nonatomic, readonly) HWRxTableDelegate *(^bridgeTo)(id<UITableViewDelegate>);
+//@property (nonatomic, readonly) HWRxTableDelegate *(^bridgeTo)(id<UITableViewDelegate>);
 
 @end
 

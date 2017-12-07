@@ -218,12 +218,12 @@
     };
 }
 
-- (HWRxTableDelegate * _Nonnull (^)(id<UITableViewDelegate> _Nonnull))bridgeTo {
-    return ^(id<UITableViewDelegate> bridge) {
-        [self handleBridge:bridge];
-        return self;
-    };
-}
+//- (HWRxTableDelegate * _Nonnull (^)(id<UITableViewDelegate> _Nonnull))bridgeTo {
+//    return ^(id<UITableViewDelegate> bridge) {
+//        [self handleBridge:bridge];
+//        return self;
+//    };
+//}
 
 #pragma mark - Helper
 static id getRowDataFor(UITableView *tableView, NSIndexPath *indexPath) {
@@ -234,36 +234,31 @@ static id getRowDataFor(UITableView *tableView, NSIndexPath *indexPath) {
     return nil;
 }
 
-- (void)handleBridge:(id<UITableViewDelegate>)bridge {
-    if (!bridge) {
-        return;
-    }
-    self.bridge = bridge;
-    self.tableView.delegate = bridge;
-    
-    if (![bridge respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]
-        && self.cellSelectedBlock) {
-        [self bridgeAddMethod:@selector(tableView:didSelectRowAtIndexPath:)];
-    }
-    
-    if (![bridge respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]
-        && self.heightForRowBlock) {
-        [self bridgeAddMethod:@selector(tableView:heightForRowAtIndexPath:)];
-    }
-}
-
-- (void)bridgeAddMethod:(SEL)sel {
-    Method method = class_getInstanceMethod([self class], sel);
-    BOOL success = class_addMethod([_bridge class],
-                                   sel,
-                                   method_getImplementation(method),
-                                   method_getTypeEncoding(method));
-    if (!success) {
-        NSLog(@"add method not success");
-    } else {
-        NSLog(@"add method success");
-    }
-}
+//- (void)handleBridge:(id<UITableViewDelegate>)bridge {
+//    if (!bridge) {
+//        return;
+//    }
+//    self.bridge = bridge;
+//    self.tableView.delegate = bridge;
+//
+//    if (![bridge respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]
+//        && self.cellSelectedBlock) {
+//        [self bridgeAddMethod:@selector(tableView:didSelectRowAtIndexPath:)];
+//    }
+//
+//    if (![bridge respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]
+//        && self.heightForRowBlock) {
+//        [self bridgeAddMethod:@selector(tableView:heightForRowAtIndexPath:)];
+//    }
+//}
+//
+//- (void)bridgeAddMethod:(SEL)sel {
+//    Method method = class_getInstanceMethod([self class], sel);
+//    class_addMethod([_bridge class],
+//                    sel,
+//                    method_getImplementation(method),
+//                    method_getTypeEncoding(method));
+//}
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

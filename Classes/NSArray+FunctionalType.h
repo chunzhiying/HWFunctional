@@ -21,13 +21,6 @@ FOUNDATION_EXTERN NSArray * NotNilArray(NSArray *ary);
 @property (nonatomic, readonly) NSArray *(^sort)(sortType);
 @property (nonatomic, readonly) NSArray *(^filter)(filterType);
 
-@property (nonatomic, readonly) id (^reduce)(id, reduceType);
-@property (nonatomic, readonly) BOOL(^compare)(compareType);
-
-@property (nonatomic, readonly) id (^find)(findType);
-@property (nonatomic, readonly) BOOL(^contains)(findType);
-@property (nonatomic, readonly) NSInteger (^firstIndexOf)(findType);
-
 @property (nonatomic, readonly) NSArray *(^just)(NSUInteger count);
 @property (nonatomic, readonly) NSArray *(^justTail)(NSUInteger count);
 @property (nonatomic, readonly) NSArray *(^drop)(NSUInteger count);
@@ -37,6 +30,13 @@ FOUNDATION_EXTERN NSArray * NotNilArray(NSArray *ary);
 @property (nonatomic, readonly) NSArray *(^forEachWithIndex)(forEachWithIndexType);
 
 @property (nonatomic, readonly) NSMutableArray *(^mutate)();
+
+@property (nonatomic, readonly) id (^reduce)(id, reduceType);
+@property (nonatomic, readonly) BOOL(^compare)(compareType);
+
+@property (nonatomic, readonly) id (^find)(findType);
+@property (nonatomic, readonly) BOOL(^contains)(findType);
+@property (nonatomic, readonly) NSInteger (^firstIndexOf)(findType);
 
 + (instancetype)allocWithElementCount:(NSUInteger)elementCount;
 
