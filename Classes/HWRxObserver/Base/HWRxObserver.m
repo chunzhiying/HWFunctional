@@ -113,7 +113,6 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         ((HWRxObserver *)_rxObj).disconnect();
     }
     
-    // HWRxObserverType_Special rxObj = self.target
     if (_type != HWRxObserverType_Special) {
         _rxObj = rxObj;
     }
@@ -154,10 +153,6 @@ if (_queue) {                                           \
 }                                                       \
 
 - (void)postTo:(nextType)block with:(NSObject *)data {
-    if (_type == HWRxObserverType_Special) {
-        // RxObserver_dealloc, _target = nil
-        data = _target;
-    }
     if (!data || [data isKindOfClass:[NSNull class]]) {
         data = nil;
     }

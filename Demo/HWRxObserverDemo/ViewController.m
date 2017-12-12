@@ -34,27 +34,26 @@
 //        return (BOOL)($0.intValue == 2);
 //    });
     
-    NotNilArray(@[@1,@2,@3]).map(HW_BLOCK(HWIntNumber *) {
-        return @($0.intValue + 1);
-    }).filter(HW_BLOCK(NSNumber *) {
-        return (BOOL)($0.intValue / 2 == 1);
-    }).forEach(HW_BLOCK(NSNumber *) {
-        NSLog(@"filter %@", $0);
-    });
+//    NotNilArray(@[@1,@2,@3]).map(HW_BLOCK(HWIntNumber *) {
+//        return @($0.intValue + 1);
+//    }).filter(HW_BLOCK(NSNumber *) {
+//        return (BOOL)($0.intValue / 2 == 1);
+//    }).forEach(HW_BLOCK(NSNumber *) {
+//        NSLog(@"filter %@", $0);
+//    });
 
 //
-//    _testBtn.rx_tap.subscribe(^(UIButton *button) {
-//        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
-//    });
-//
-//    _testLabel.rx_dynamicTap.debounce(1).subscribe(HW_BLOCK(UILabel *) {
-//        NSLog(@"label tap");
-//        $0.text = @"aa";
-//    });
-//
-//    _testImg.rx_dynamicTapToAlpha(0.2).response(^{
-//        NSLog(@"img AnimTap");
-//    });
+    _testBtn.rx_tap.subscribe(^(UIButton *button) {
+        HWAnimInstance.scale(0.1, 2, 1, 1, 0.1).addTo(_testBtn.layer).run();
+    });
+
+    _testLabel.rx_dynamicTap.debounce(1).subscribe(HW_BLOCK(NSString *) {
+        NSLog(@"label tap");
+    });
+
+    _testImg.rx_dynamicTapToAlpha(0.2).response(^{
+        NSLog(@"img AnimTap");
+    });
     
     
     
