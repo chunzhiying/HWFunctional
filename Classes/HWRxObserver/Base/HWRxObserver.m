@@ -113,8 +113,9 @@ typedef NS_ENUM(NSUInteger, HWRxObserverType) {
         ((HWRxObserver *)_rxObj).disconnect();
     }
     
+    // HWRxObserverType_Special rxObj = nil
     if (_type != HWRxObserverType_Special) {
-        _rxObj = rxObj;
+        _rxObj = rxObj; // including HWRxObserverType_UnOwned
     }
     
     if (!(_debounceEnable && _throttleEnable && _connect)) {
