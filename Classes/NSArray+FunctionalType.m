@@ -269,7 +269,7 @@ NSArray * NotNilArray(NSArray *ary) {
 
 @implementation NSMutableArray (FunctionalType)
 
-- (id  _Nonnull (^)(findType _Nonnull))pop {
+- (id  _Nonnull (^)(findType _Nonnull))popout {
     return ^(findType block) {
         id result = self.find(block);
         if (result) {

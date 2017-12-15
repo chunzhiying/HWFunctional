@@ -45,7 +45,7 @@ FOUNDATION_EXTERN NSArray * NotNilArray(NSArray *ary);
 
 @interface NSMutableArray (FunctionalType)
 
-@property (nonatomic, readonly) id (^pop)(findType);
+@property (nonatomic, readonly) id (^popout)(findType);
 
 @end
 
