@@ -34,7 +34,8 @@
 #pragma mark - Private
 - (void)reloadData:(HWVariableSequence *)sequence effectSection:(NSUInteger)section {
     _content[section] = sequence.content;
-    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
+//    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:section]];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Public
