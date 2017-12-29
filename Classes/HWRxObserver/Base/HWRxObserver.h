@@ -26,6 +26,7 @@ typedef void(^nextType)(id obj);
 @property (nonatomic, copy) NSString *keyPath;
 @property (nonatomic) SEL tapAction;
 
+- (instancetype)init NS_UNAVAILABLE;
 - (void)registeredToObserve:(NSObject *)object;
 
 @end

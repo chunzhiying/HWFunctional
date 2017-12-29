@@ -20,8 +20,9 @@ typedef BOOL(^refreshCallBack)(id object, NSInteger index);
 @property (nonatomic, strong, readonly) HWRxObserver *observer; //HWVariableSquence
 
 + (instancetype)variable:(NSArray *)array;
-- (NSArray *)content;
+- (instancetype)init NS_UNAVAILABLE;
 
+- (NSArray *)content;
 - (void)clean; // removeAllObjects without trigger signal
 
 - (id)objectAtIndex:(NSUInteger)index;
