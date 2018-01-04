@@ -315,7 +315,7 @@ if (_queue) {                                           \
 
 - (void)handleSchedule:(NSUInteger)interval repeat:(BOOL)repeat {
     self.next(@(++_timerValue));
-    if (repeat) {
+    if (repeat && _timer) {
         [self runTimer:interval repeat:repeat];
     }
 }
