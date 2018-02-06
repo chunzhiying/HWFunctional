@@ -102,8 +102,6 @@
 
 - (HWRxTableDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
-        NSAssert(variable.count == self.dequeueReusableIds.count,
-                 Error(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 content];
@@ -122,6 +120,13 @@
 - (HWRxTableDataSource *(^)(TableCellForRowCallBack))cellForItem {
     return ^(TableCellForRowCallBack callBack) {
         self.cellForRowBlock = callBack;
+        return self;
+    };
+}
+
+- (HWRxTableDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull))setReusableIds {
+    return ^(NSArray<NSString *> *reusableIds) {
+        self.dequeueReusableIds = reusableIds;
         return self;
     };
 }
@@ -179,10 +184,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section >= self.content.count
-        || indexPath.row >= self.content[indexPath.section].count) { ErrorCallBack
+        || indexPath.row >= self.content[indexPath.section].count
+        || 0 == self.dequeueReusableIds.count ) { ErrorCallBack
         return [UITableViewCell new];
     }
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIds[indexPath.section] forIndexPath:indexPath];
+
+    NSUInteger index = MIN(indexPath.section, self.dequeueReusableIds.count - 1);
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.dequeueReusableIds[index]
+                                                            forIndexPath:indexPath];
     SafeBlock(self.cellForRowBlock, cell, self.content[indexPath.section][indexPath.row], indexPath);
     return cell;
 }

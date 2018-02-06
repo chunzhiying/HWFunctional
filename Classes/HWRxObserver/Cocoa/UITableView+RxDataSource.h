@@ -19,6 +19,9 @@ typedef void (^TableCellForRowCallBack)(id cell, id data, NSIndexPath *);
 
 @property (nonatomic, readonly) HWRxTableDataSource *(^cellForItem)(TableCellForRowCallBack);
 
+// use when cell created by tableView in storyboard (no need to register)
+@property (nonatomic, readonly) HWRxTableDataSource *(^setReusableIds)(NSArray<NSString *>*reusableIds);
+
 // class name equal to reusableId
 // nib name equal to reusableId、main bundle
 @property (nonatomic, readonly) HWRxTableDataSource *(^registerClass)(NSArray<NSString *>*reusableIds);

@@ -47,7 +47,6 @@
 
 - (HWRxCollectionDataSource *(^)(NSArray<HWRxVariable *> *))bindTo {
     return ^(NSArray<HWRxVariable *> *variable) { Weakify(self)
-        NSAssert(variable.count == self.dequeueReusableIds.count, Error(@"dataSource.count not equal to cell reusableIDs.count"));
         
         self.content = variable.map(HW_BLOCK(HWRxVariable *) {
             return [$0 content];
@@ -66,6 +65,13 @@
 - (HWRxCollectionDataSource *(^)(CollectionCellForRowCallBack))cellForItem {
     return ^(CollectionCellForRowCallBack callBack) {
         self.cellForRowBlock = callBack;
+        return self;
+    };
+}
+
+- (HWRxCollectionDataSource * _Nonnull (^)(NSArray<NSString *> * _Nonnull))setReusableIds {
+    return ^(NSArray<NSString *> *reusableIds) {
+        self.dequeueReusableIds = reusableIds;
         return self;
     };
 }
@@ -119,11 +125,14 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section >= self.content.count
-        || indexPath.item >= self.content[indexPath.section].count) { ErrorCallBack
+        || indexPath.item >= self.content[indexPath.section].count
+        || 0 == self.dequeueReusableIds.count) { ErrorCallBack
         return [UICollectionViewCell new];
     }
     
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.dequeueReusableIds[indexPath.section] forIndexPath:indexPath];
+    NSUInteger index = MIN(indexPath.section, self.dequeueReusableIds.count - 1);
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:self.dequeueReusableIds[index] forIndexPath:indexPath];
     SafeBlock(self.cellForRowBlock, cell, self.content[indexPath.section][indexPath.item], indexPath);
     return cell;
 }
