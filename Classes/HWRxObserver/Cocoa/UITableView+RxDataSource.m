@@ -42,7 +42,7 @@
 }
 
 - (void)dealloc {
-    
+    _tableView.dataSource = nil;
 }
 
 #pragma mark - Private
@@ -211,6 +211,10 @@
 @end
 
 @implementation HWRxTableDelegate
+
+- (void)dealloc {
+    _tableView.delegate = nil;
+}
 
 #pragma mark - Public
 - (HWRxTableDelegate *(^)(void (^)(id, NSIndexPath *)))cellSelected {

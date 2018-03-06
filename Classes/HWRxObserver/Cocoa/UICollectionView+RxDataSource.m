@@ -28,7 +28,7 @@
 @implementation HWRxCollectionDataSource
 
 - (void)dealloc {
-    
+    _collectionView.dataSource = nil;
 }
 
 #pragma mark - Private
